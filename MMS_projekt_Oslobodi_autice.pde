@@ -3,6 +3,8 @@ String firstLevel = "city.tmx";
 Level next, cur;
 boolean drawLevel = false; // zamijeniti s ozbiljnim main menu kodom!
 
+PImage carImage;
+
 void setNextLevel(String filename){
   next = new Level(this, filename);
 }
@@ -19,7 +21,7 @@ void finishLevel(){
 
 void setup(){
   size(640, 640);
-  println(this);
+  carImage = loadImage("car.png");
   setNextLevel(firstLevel);
   startLevel();
 }

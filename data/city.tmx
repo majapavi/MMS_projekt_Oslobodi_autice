@@ -56,7 +56,7 @@
 </data>
  </layer>
  <objectgroup color="#1c71d8" id="2" name="cars" visible="0" opacity="0.4" tintcolor="#99c1f1">
-  <object id="1" name="pero" type="car" x="64" y="352" width="32" height="32">
+  <object id="1" name="pero" type="car" x="64" y="288" width="32" height="96">
    <properties>
     <property name="orientation" value="up"/>
     <property name="speed" type="int" value="2"/>
@@ -69,7 +69,7 @@
     <property name="speed" type="int" value="1"/>
    </properties>
   </object>
-  <object id="5" name="marko" type="car" x="0" y="128" width="32" height="32">
+  <object id="5" name="marko" type="car" x="0" y="128" width="64" height="64">
    <properties>
     <property name="orientation" value="right"/>
     <property name="speed" type="float" value="1"/>
