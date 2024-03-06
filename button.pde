@@ -1,7 +1,3 @@
-enum Direction {
-  UP, RIGHT, DOWN, LEFT
-}
-
 interface Button {
   void draw();
   void click();
@@ -44,7 +40,48 @@ class ResetButton extends ImageButton {
   }
 
   void click(){
-    println("CLICK");
     startLevel();
+  }
+}
+
+
+abstract class InvisibleCarButton implements CarButton {
+  int x, y, w, h, right, down;
+  Car car;
+  InvisibleCarButton(Car car){
+    this.car = car;
+    w = car.w;
+    h = car.h;
+  }
+  
+  void draw(){
+  }
+
+  boolean validCursor(int x, int y){
+    return this.x < x && x < right && this.y < y && y < down;
+  }
+
+  void setLevelRef(int x, int y){
+  }
+
+  void setCarPos(int x, int y){
+    this.x = x;
+    this.y = y;
+    right = x + w;
+    down = y + h;
+  }
+
+  void setCarDirection(Direction dir){
+  }
+}
+
+
+class CarForwardButton extends InvisibleCarButton {
+  CarForwardButton(Car car){
+    super(car);
+  }
+
+  void click(){
+    car.forward();
   }
 }

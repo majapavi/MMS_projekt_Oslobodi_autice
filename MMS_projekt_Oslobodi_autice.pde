@@ -1,7 +1,9 @@
 String firstLevel = "city.tmx";
 
-Level next, cur;
+Level cur;
+String nextLevelName;
 boolean drawLevel = false; // zamijeniti s ozbiljnim main menu kodom!
+boolean startLevelFlag = false;
 
 PImage carImage;
 ResetButton reset;
@@ -9,13 +11,25 @@ ResetButton reset;
 ArrayList<Button> buttons;
 boolean lastMousePressed = false;
 
+int lastTime; // u milisekundama
+float deltaTime; // u sekundama
+
 void setNextLevel(String filename){
-  next = new Level(this, filename);
+  nextLevelName = filename;
 }
 
 void startLevel(){
-  cur = next;
+  startLevelFlag = true;
+}
+
+void realStartLevel(){
+  if (cur != null){
+    buttons.removeAll(cur.getButtons());
+  }
+  cur = new Level(this, nextLevelName);
+  buttons.addAll(cur.getButtons());
   drawLevel = true;
+  startLevelFlag = false;
 }
 
 void finishLevel(){
@@ -31,6 +45,7 @@ void setup(){
   buttons.add(reset);
   setNextLevel(firstLevel);
   startLevel();
+  lastTime = millis();
 }
 
 void onClick(int x, int y){
@@ -47,6 +62,16 @@ void draw(){
     onClick(mouseX, mouseY);
   }
   lastMousePressed = mousePressed;
+
+  int curTime = millis();
+  deltaTime = float(curTime - lastTime) / 1000.0;
+  lastTime = curTime;
+
+  // update
+  if (drawLevel){
+    cur.update(deltaTime);
+  }
+
   // crtaj
   background(35);
   if (drawLevel){
@@ -54,5 +79,8 @@ void draw(){
   }
   for (Button button : buttons){
     button.draw();
+  }
+  if (startLevelFlag){
+    realStartLevel();
   }
 }
