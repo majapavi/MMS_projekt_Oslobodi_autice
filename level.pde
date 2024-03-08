@@ -6,7 +6,7 @@ class Level {
   int mapWidth, mapHeight; // broj tile-ova u nivou
   ArrayList<Car> cars;
   ArrayList<LevelButton> buttons;
-  boolean[][] occupationMatrix;
+  int[][] occupationMatrix;
   Level(PApplet game, String filename){
     map = new Ptmx(game, filename);
 
@@ -17,8 +17,14 @@ class Level {
     PVector mapSize = map.getMapSize();
     mapWidth = int(mapSize.x);
     mapHeight = int(mapSize.y);
-    occupationMatrix = new boolean[mapHeight][mapWidth];
-
+    occupationMatrix = new int[mapHeight][mapWidth]; //ovo je prije bilo boolean
+    //sad govori i koji auto (po redu u arrayu cars) je na tom mjestu, ne samo ima li auta
+    for (int i=0;i<mapHeight;i++){
+      for (int j=0;j<mapHeight;j++){
+         occupationMatrix[i][j]=0; 
+      }
+    }
+    
     cars = new ArrayList<Car>();
     buttons = new ArrayList<LevelButton>();
     for (int i = 0;map.getType(i)!=null;i++){
@@ -26,11 +32,13 @@ class Level {
 
       if (type.equals("objectgroup")){
         StringDict objs[] = map.getObjects(i);
+        int j=1;
         for (StringDict obj : objs){
           if (obj.get("type").equals("car")){
-            Car car = new Car(this, obj);
+            Car car = new Car(this, obj, j);
             cars.add(car);
             buttons.addAll(car.getButtons());
+            j++;
           }
 
         }
@@ -66,7 +74,7 @@ class Level {
     return buttons;
   }
 
-  private boolean outOfMap(int x, int y){
+  boolean outOfMap(int x, int y){ //ovo je bilo private u preth verziji
     if (x < 0) return true;
     if (y < 0) return true;
     if (x >= mapWidth) return true;
@@ -76,15 +84,17 @@ class Level {
 
   boolean valid(int x, int y){
     if (outOfMap(x, y)) return true;
-    return !occupationMatrix[y][x];
+    //return !occupationMatrix[y][x]; //verzija kad je matrica bila boolean
+    if (occupationMatrix[y][x]==0) return true;
+    return false;
   }
 
   boolean endTile(int x, int y){
     return outOfMap(x, y);
   }
 
-  void setTile(int x, int y, boolean occupied){
-    if (!outOfMap(x, y)){
+  void setTile(int x, int y, int occupied){
+    if (outOfMap(x, y)==false){
       occupationMatrix[y][x] = occupied;
     }
   }
