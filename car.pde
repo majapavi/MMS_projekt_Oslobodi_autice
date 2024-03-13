@@ -25,7 +25,7 @@ class Car {
   int ordNumber;
   int movingX, movingY;
   PImage img;
-  int speed=3;
+  int speed=2;
   ArrayList<CarButton> buttons;
   Direction orient;
   boolean finish;
@@ -189,10 +189,14 @@ class Car {
       //level.setTile(tileX, tileY, 0);
       level.setTile(auxTileX, auxTileY, 0);
       if(orient==Direction.RIGHT) level.setTile(auxTileX-2,auxTileY,0);
+      if(orient==Direction.RIGHT) level.setTile(auxTileX-1,auxTileY,0);
             //ako netko shvati zasto je ovdje potrebno -2 umjesto -1 (sto ne radi dobro) nek javi
        if(orient==Direction.DOWN) level.setTile(auxTileX,auxTileY-2,0);
+       if(orient==Direction.DOWN) level.setTile(auxTileX,auxTileY-1,0);
        if(orient==Direction.LEFT) level.setTile(auxTileX+2,auxTileY,0);
+       if(orient==Direction.LEFT) level.setTile(auxTileX+1,auxTileY,0);
        if(orient==Direction.UP) level.setTile(auxTileX,auxTileY+2,0);
+       if(orient==Direction.UP) level.setTile(auxTileX,auxTileY+1,0);
       finish=true;
       return;
     }
