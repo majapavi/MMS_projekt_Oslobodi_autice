@@ -50,8 +50,8 @@ abstract class InvisibleCarButton implements CarButton {
   Car car;
   InvisibleCarButton(Car car){
     this.car = car;
-    w = car.w;
-    h = car.h;
+    w = int(car.w);
+    h = int(car.h);
   }
   
   void draw(){
@@ -82,7 +82,6 @@ class CarForwardButton extends InvisibleCarButton {
   }
 
   void click(){
-   // car.forward(); //jakov verzija - auto se pomice za jedan tile na svaki klik
-   car.fastForwardFlag=true; //nora verzija - auto na klik ide ravno dok se ne sudari/izađe iz ekrana
+   car.fastForwardFlag=true; //auto na klik ide ravno dok se ne sudari/izađe iz ekrana
   }
 }

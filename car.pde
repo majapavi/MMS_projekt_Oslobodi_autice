@@ -18,9 +18,38 @@ Direction getDirection(String name){
   return Direction.UP;
 }
 
-class Car {
+interface Collideable {
+  int getX();
+  int getY();
+  int getW();
+  int getH();
+  boolean canCollide();
+}
+
+boolean pointInColliddeable(int x, int y, Collideable b){
+  return (b.getX() < x && x < b.getX() + b.getW()
+       && b.getY() < y && y < b.getY() + b.getH());
+}
+
+boolean collides(Collideable a, Collideable b){
+  if (!a.canCollide() || !b.canCollide()) return false;
+
+  if (pointInColliddeable(a.getX(), a.getY(), b)) return true;
+  if (pointInColliddeable(a.getX() + a.getW(), a.getY(), b)) return true;
+  if (pointInColliddeable(a.getX(), a.getY() + a.getH(), b)) return true;
+  if (pointInColliddeable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return true;
+
+  if (pointInColliddeable(b.getX(), b.getY(), a)) return true;
+  if (pointInColliddeable(b.getX() + b.getW(), b.getY(), a)) return true;
+  if (pointInColliddeable(b.getX(), b.getY() + b.getH(), a)) return true;
+  if (pointInColliddeable(b.getX() + b.getW(), b.getY() + b.getH(), a)) return true;
+  return false;
+}
+
+class Car implements Collideable {
   Level level;
   int x, y, w, h;
+  float preciseX, preciseY;
   int tileX, tileY, tileW, tileH;
   int ordNumber;
   PImage img;
@@ -33,6 +62,8 @@ class Car {
     this.level = level;
     x = int(attrib.get("x"));
     y = int(attrib.get("y"));
+    preciseX = x;
+    preciseY = y;
     w = int(attrib.get("width"));
     h = int(attrib.get("height"));
     orient = getDirection(attrib.get("orientation"));
@@ -55,6 +86,26 @@ class Car {
 
   void update(float dt){
     if(fastForwardFlag) fastForward();
+  }
+
+  int getX(){
+    return x;
+  }
+
+  int getY(){
+    return y;
+  }
+
+  int getW(){
+    return w;
+  }
+
+  int getH(){
+    return h;
+  }
+
+  boolean canCollide(){
+    return !finish;
   }
 
   PImage rotateCar(){
@@ -134,59 +185,32 @@ class Car {
     return true;
   }
   
+  void collideAction(Collideable obj){
+    level.crashed(this);
+    level.setTile(tileX, tileY, ordNumber);
+    fastForwardFlag=false;
+  }
+
   void fastForward(){
-    int auxTileX=0, auxTileY=0;
     if(orient==Direction.UP){
-      y -= speed;
-      auxTileX=level.pxToTileX(x + w / 2);
-      auxTileY=level.pxToTileY(y);
+      preciseY -= speed;
     }
     if(orient==Direction.DOWN){
-      y += speed;
-      auxTileX=level.pxToTileX(x + w / 2);
-      auxTileY=level.pxToTileY(y + h);
+      preciseY += speed;
     }
     if(orient==Direction.LEFT){
-      x -= speed;
-      auxTileX=level.pxToTileX(x);
-      auxTileY=level.pxToTileY(y + h / 2);
+      preciseX -= speed;
     }
     if(orient==Direction.RIGHT){
-      x += speed;
-      auxTileX=level.pxToTileX(x + w);
-      auxTileY=level.pxToTileY(y + h / 2);
+      preciseX += speed;
     }
-    
+    x = int(preciseX);
+    y = int(preciseY);
+
     updateButtons();
-    if(!level.outOfMap(auxTileX,auxTileY) && level.occupationMatrix[auxTileY][auxTileX]==0){
-       level.occupationMatrix[auxTileY][auxTileX]=ordNumber;
-       if(orient==Direction.RIGHT) level.occupationMatrix[auxTileY][auxTileX-1]=0;
-       if(orient==Direction.DOWN) level.occupationMatrix[auxTileY-1][auxTileX]=0;
-       if(orient==Direction.LEFT) level.occupationMatrix[auxTileY][auxTileX+1]=0;
-       if(orient==Direction.UP) level.occupationMatrix[auxTileY+1][auxTileX]=0;
-    }
-    if(!level.outOfMap(auxTileX,auxTileY) && level.occupationMatrix[auxTileY][auxTileX]>0){
-      if(level.occupationMatrix[auxTileY][auxTileX]!=ordNumber){
-        level.crashed(this);
-        level.setTile(tileX, tileY, ordNumber);
-        fastForwardFlag=false;
-      }
-    }
+
     if(outOfBounds()){
-      fastForwardFlag=false;
-      //level.setTile(tileX, tileY, 0);
-      level.setTile(auxTileX, auxTileY, 0);
-      if(orient==Direction.RIGHT) level.setTile(auxTileX-2,auxTileY,0);
-      if(orient==Direction.RIGHT) level.setTile(auxTileX-1,auxTileY,0);
-      //ako netko shvati zasto je ovdje potrebno -2 umjesto -1 (sto ne radi dobro) nek javi
-      if(orient==Direction.DOWN) level.setTile(auxTileX,auxTileY-2,0);
-      if(orient==Direction.DOWN) level.setTile(auxTileX,auxTileY-1,0);
-      if(orient==Direction.LEFT) level.setTile(auxTileX+2,auxTileY,0);
-      if(orient==Direction.LEFT) level.setTile(auxTileX+1,auxTileY,0);
-      if(orient==Direction.UP) level.setTile(auxTileX,auxTileY+2,0);
-      if(orient==Direction.UP) level.setTile(auxTileX,auxTileY+1,0);
       finish=true;
-      return;
     }
   }
 }

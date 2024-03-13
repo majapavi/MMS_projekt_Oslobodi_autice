@@ -7,6 +7,7 @@ class Level {
   ArrayList<Car> cars;
   ArrayList<LevelButton> buttons;
   int[][] occupationMatrix;
+  ArrayList<Collideable> collideObjects;
   Level(PApplet game, String filename){
     map = new Ptmx(game, filename);
 
@@ -25,6 +26,7 @@ class Level {
       }
     }
     
+    collideObjects = new ArrayList<Collideable>();
     cars = new ArrayList<Car>();
     buttons = new ArrayList<LevelButton>();
     for (int i = 0;map.getType(i)!=null;i++){
@@ -37,6 +39,7 @@ class Level {
           if (obj.get("type").equals("car")){
             Car car = new Car(this, obj, j);
             cars.add(car);
+            collideObjects.add(car);
             buttons.addAll(car.getButtons());
             j++;
           }
@@ -61,6 +64,16 @@ class Level {
     return true;
   }
 
+  private void collisionDetection(){
+    for (Car car : cars){
+      for (Collideable obj : collideObjects){
+        if (car != obj && collides(car, obj)){
+          car.collideAction(obj);
+        }
+      }
+    }
+  }
+
   void update(float dt){
     if (finished()){ // mozda bi igra trebala provoditi ovu provjeru, a ne nivo
       finishLevel();
@@ -68,6 +81,7 @@ class Level {
     for (Car car : cars){
       car.update(dt);
     }
+    collisionDetection();
   }
 
   ArrayList<LevelButton> getButtons(){
