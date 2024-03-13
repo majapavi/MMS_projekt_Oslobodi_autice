@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="6">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="7">
  <tileset firstgid="1" source="street.tsx"/>
  <layer id="1" name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
@@ -39,6 +39,12 @@
    </properties>
   </object>
   <object id="5" name="marko" type="car" x="0" y="128" width="32" height="32">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="right"/>
+   </properties>
+  </object>
+  <object id="6" name="jurica" type="car" x="65.5453" y="129.391" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>

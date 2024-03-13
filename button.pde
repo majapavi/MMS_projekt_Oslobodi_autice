@@ -82,6 +82,7 @@ class CarForwardButton extends InvisibleCarButton {
   }
 
   void click(){
-    car.forward();
+   // car.forward(); //jakov verzija - auto se pomice za jedan tile na svaki klik
+   car.fastForwardFlag=true; //nora verzija - auto na klik ide ravno dok se ne sudari/izađe iz ekrana
   }
 }
