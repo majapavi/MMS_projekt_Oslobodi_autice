@@ -23,7 +23,6 @@ class Car {
   int x, y, w, h;
   int tileX, tileY, tileW, tileH;
   int ordNumber;
-  int movingX, movingY;
   PImage img;
   int speed=3;
   ArrayList<CarButton> buttons;
@@ -42,8 +41,6 @@ class Car {
     tileW = level.pxToTileX(w);
     tileH = level.pxToTileY(h);
     ordNumber=number;
-    movingX=x;
-    movingY=y;
     level.setTile(tileX, tileY, ordNumber);
     img = rotateCar();
     buttons = new ArrayList<CarButton>();
@@ -53,11 +50,11 @@ class Car {
   }
   
   void draw(){
-    if(fastForwardFlag) fastForward();
-    image(img, movingX, movingY, w, h);
+    image(img, x, y, w, h);
   }
 
   void update(float dt){
+    if(fastForwardFlag) fastForward();
   }
 
   PImage rotateCar(){
@@ -96,18 +93,10 @@ class Car {
   }
   
   boolean outOfBounds(){
-    if (orient == Direction.UP){
-      if(movingY+h<0) return true;
-    }
-    if (orient == Direction.DOWN){
-      if(movingY>height) return true;
-    }
-    if (orient == Direction.RIGHT){
-      if(movingX>width) return true;
-    }
-    if (orient == Direction.LEFT){
-      if(movingX+w<0) return true;
-    }
+    if(y + h < 0) return true;
+    if(y > height) return true;
+    if(x > width) return true;
+    if(x + w < 0) return true;
     return false;
   }
 
@@ -148,24 +137,24 @@ class Car {
   void fastForward(){
     int auxTileX=0, auxTileY=0;
     if(orient==Direction.UP){
-      movingY-=speed;
-      auxTileX=level.pxToTileX(movingX+w/2);
-      auxTileY=level.pxToTileY(movingY);
+      y -= speed;
+      auxTileX=level.pxToTileX(x + w / 2);
+      auxTileY=level.pxToTileY(y);
     }
     if(orient==Direction.DOWN){
-      movingY+=speed;
-      auxTileX=level.pxToTileX(movingX+w/2);
-      auxTileY=level.pxToTileY(movingY+h);
+      y += speed;
+      auxTileX=level.pxToTileX(x + w / 2);
+      auxTileY=level.pxToTileY(y + h);
     }
     if(orient==Direction.LEFT){
-      movingX-=speed;
-      auxTileX=level.pxToTileX(movingX);
-      auxTileY=level.pxToTileY(movingY+h/2);
+      x -= speed;
+      auxTileX=level.pxToTileX(x);
+      auxTileY=level.pxToTileY(y + h / 2);
     }
     if(orient==Direction.RIGHT){
-      movingX+=speed;
-      auxTileX=level.pxToTileX(movingX+w);
-      auxTileY=level.pxToTileY(movingY+h/2);
+      x += speed;
+      auxTileX=level.pxToTileX(x + w);
+      auxTileY=level.pxToTileY(y + h / 2);
     }
     
     updateButtons();
@@ -178,8 +167,7 @@ class Car {
     }
     if(!level.outOfMap(auxTileX,auxTileY) && level.occupationMatrix[auxTileY][auxTileX]>0){
       if(level.occupationMatrix[auxTileY][auxTileX]!=ordNumber){
-        movingX=x;
-        movingY=y;
+        level.crashed(this);
         level.setTile(tileX, tileY, ordNumber);
         fastForwardFlag=false;
       }
@@ -189,10 +177,14 @@ class Car {
       //level.setTile(tileX, tileY, 0);
       level.setTile(auxTileX, auxTileY, 0);
       if(orient==Direction.RIGHT) level.setTile(auxTileX-2,auxTileY,0);
-            //ako netko shvati zasto je ovdje potrebno -2 umjesto -1 (sto ne radi dobro) nek javi
-       if(orient==Direction.DOWN) level.setTile(auxTileX,auxTileY-2,0);
-       if(orient==Direction.LEFT) level.setTile(auxTileX+2,auxTileY,0);
-       if(orient==Direction.UP) level.setTile(auxTileX,auxTileY+2,0);
+      if(orient==Direction.RIGHT) level.setTile(auxTileX-1,auxTileY,0);
+      //ako netko shvati zasto je ovdje potrebno -2 umjesto -1 (sto ne radi dobro) nek javi
+      if(orient==Direction.DOWN) level.setTile(auxTileX,auxTileY-2,0);
+      if(orient==Direction.DOWN) level.setTile(auxTileX,auxTileY-1,0);
+      if(orient==Direction.LEFT) level.setTile(auxTileX+2,auxTileY,0);
+      if(orient==Direction.LEFT) level.setTile(auxTileX+1,auxTileY,0);
+      if(orient==Direction.UP) level.setTile(auxTileX,auxTileY+2,0);
+      if(orient==Direction.UP) level.setTile(auxTileX,auxTileY+1,0);
       finish=true;
       return;
     }

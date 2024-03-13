@@ -17,8 +17,8 @@ class Level {
     PVector mapSize = map.getMapSize();
     mapWidth = int(mapSize.x);
     mapHeight = int(mapSize.y);
-    occupationMatrix = new int[mapHeight][mapWidth]; //ovo je prije bilo boolean
-    //sad govori i koji auto (po redu u arrayu cars) je na tom mjestu, ne samo ima li auta
+    occupationMatrix = new int[mapHeight][mapWidth];
+    //matrica govori koji auto (po redu u arrayu cars) je na tom mjestu
     for (int i=0;i<mapHeight;i++){
       for (int j=0;j<mapHeight;j++){
          occupationMatrix[i][j]=0; 
@@ -74,7 +74,12 @@ class Level {
     return buttons;
   }
 
-  boolean outOfMap(int x, int y){ //ovo je bilo private u preth verziji
+  void crashed(Car car){
+    println("ANIMACIJA SUDARA");
+    startLevel();
+  }
+
+  boolean outOfMap(int x, int y){
     if (x < 0) return true;
     if (y < 0) return true;
     if (x >= mapWidth) return true;
@@ -84,7 +89,6 @@ class Level {
 
   boolean valid(int x, int y){
     if (outOfMap(x, y)) return true;
-    //return !occupationMatrix[y][x]; //verzija kad je matrica bila boolean
     if (occupationMatrix[y][x]==0) return true;
     return false;
   }
