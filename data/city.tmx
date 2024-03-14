@@ -25,7 +25,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup color="#1c71d8" id="2" name="cars" visible="0" opacity="0.4" tintcolor="#99c1f1">
+ <objectgroup color="#1c71d8" id="2" name="cars" opacity="0.4" tintcolor="#99c1f1">
   <object id="1" name="pero" type="car" x="128" y="224" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
@@ -58,7 +58,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="4" name="walls" visible="0">
-  <object id="8" name="zid" type="wall" x="175" y="112"/>
+ <objectgroup id="4" name="walls">
+  <object id="8" name="zid" type="wall" x="145" y="111"/>
  </objectgroup>
 </map>

@@ -2,16 +2,19 @@ import ptmx.*;
 
 class Level {
   Ptmx map;
+  Ptmx map2;
   int tileWidth, tileHeight; // sirina pojedinog tile-a u pikselima
   int mapWidth, mapHeight; // broj tile-ova u nivou
   ArrayList<Car> cars;
+  ArrayList<Wall> walls;
   ArrayList<LevelButton> buttons;
   int[][] occupationMatrix;
   int[][] wallMatrix;
+  int[][] tileMatrix;
   ArrayList<Collideable> collideObjects;
   Level(PApplet game, String filename){
     map = new Ptmx(game, filename);
-
+    
     PVector tileSize = map.getTileSize();
     tileWidth = int(tileSize.x);
     tileHeight = int(tileSize.y);
@@ -26,36 +29,48 @@ class Level {
          occupationMatrix[i][j]=0; 
       }
     }
-    
     //matrica prati gdje se nalazi zid (pomoc pri skretanju auta)
+    //u ovoj verziji umjesto nje koristi se klasa Wall
     wallMatrix = new int[mapHeight][mapWidth];
     for (int i=0;i<mapHeight;i++){
       for (int j=0;j<mapWidth;j++){
         wallMatrix[i][j]=0; 
       }
     }
+    int k=0;
+    //matrica prati gdje je cesta
+    tileMatrix = new int[mapHeight][mapWidth];
+    for (int i=0;i<mapHeight;i++){
+      for (int j=0;j<mapWidth;j++){
+        tileMatrix[i][j]=map.getTileIndex(1,j,i); 
+        println(tileMatrix[i][j]);
+      }
+    }
     collideObjects = new ArrayList<Collideable>();
     cars = new ArrayList<Car>();
+    walls = new ArrayList<Wall>();
     buttons = new ArrayList<LevelButton>();
     for (int i = 0;map.getType(i)!=null;i++){
       String type = map.getType(i);
       if (type.equals("objectgroup")){
         StringDict objs[] = map.getObjects(i);
-        int j=1;
         for (StringDict obj : objs){
+          int j=int(obj.get("name"));
           if (obj.get("type").equals("car")){
             Car car = new Car(this, obj, j);
             cars.add(car);
             collideObjects.add(car);
             buttons.addAll(car.getButtons());
-            j++;
           }
           if (obj.get("type").equals("wall")){
+            Wall wall = new Wall(obj, j);
+            walls.add(wall);
+            
             int tmp = int(obj.get("x"));
             int tmpTileX = pxToTileX(tmp);
             tmp = int(obj.get("y"));
             int tmpTileY = pxToTileY(tmp);
-            wallMatrix[tmpTileY][tmpTileX]=1;
+            wallMatrix[tmpTileY][tmpTileX]=j;
           }
         }
       }
@@ -68,7 +83,7 @@ class Level {
       car.draw();
     }
   }
-
+  
   boolean finished(){
     for (Car car : cars){
       if (!car.finished()) return false;
