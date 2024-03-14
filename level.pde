@@ -7,6 +7,7 @@ class Level {
   ArrayList<Car> cars;
   ArrayList<LevelButton> buttons;
   int[][] occupationMatrix;
+  ArrayList<Collideable> collideObjects;
   Level(PApplet game, String filename){
     map = new Ptmx(game, filename);
 
@@ -17,14 +18,15 @@ class Level {
     PVector mapSize = map.getMapSize();
     mapWidth = int(mapSize.x);
     mapHeight = int(mapSize.y);
-    occupationMatrix = new int[mapHeight][mapWidth]; //ovo je prije bilo boolean
-    //sad govori i koji auto (po redu u arrayu cars) je na tom mjestu, ne samo ima li auta
+    occupationMatrix = new int[mapHeight][mapWidth];
+    //matrica govori koji auto (po redu u arrayu cars) je na tom mjestu
     for (int i=0;i<mapHeight;i++){
       for (int j=0;j<mapHeight;j++){
          occupationMatrix[i][j]=0; 
       }
     }
     
+    collideObjects = new ArrayList<Collideable>();
     cars = new ArrayList<Car>();
     buttons = new ArrayList<LevelButton>();
     for (int i = 0;map.getType(i)!=null;i++){
@@ -37,6 +39,7 @@ class Level {
           if (obj.get("type").equals("car")){
             Car car = new Car(this, obj, j);
             cars.add(car);
+            collideObjects.add(car);
             buttons.addAll(car.getButtons());
             j++;
           }
@@ -61,6 +64,16 @@ class Level {
     return true;
   }
 
+  private void collisionDetection(){
+    for (Car car : cars){
+      for (Collideable obj : collideObjects){
+        if (car != obj && collides(car, obj)){
+          car.collideAction(obj);
+        }
+      }
+    }
+  }
+
   void update(float dt){
     if (finished()){ // mozda bi igra trebala provoditi ovu provjeru, a ne nivo
       finishLevel();
@@ -68,13 +81,19 @@ class Level {
     for (Car car : cars){
       car.update(dt);
     }
+    collisionDetection();
   }
 
   ArrayList<LevelButton> getButtons(){
     return buttons;
   }
 
-  boolean outOfMap(int x, int y){ //ovo je bilo private u preth verziji
+  void crashed(Car car){
+    println("ANIMACIJA SUDARA");
+    startLevel();
+  }
+
+  boolean outOfMap(int x, int y){
     if (x < 0) return true;
     if (y < 0) return true;
     if (x >= mapWidth) return true;
@@ -84,7 +103,6 @@ class Level {
 
   boolean valid(int x, int y){
     if (outOfMap(x, y)) return true;
-    //return !occupationMatrix[y][x]; //verzija kad je matrica bila boolean
     if (occupationMatrix[y][x]==0) return true;
     return false;
   }
