@@ -27,8 +27,8 @@ interface Collideable {
 }
 
 boolean pointInColliddeable(int x, int y, Collideable b){
-  return (b.getX() < x && x < b.getX() + b.getW()
-       && b.getY() < y && y < b.getY() + b.getH());
+  return (b.getX() <= x && x <= b.getX() + b.getW()
+       && b.getY() <= y && y <= b.getY() + b.getH());
 }
 
 boolean collides(Collideable a, Collideable b){
@@ -58,6 +58,7 @@ class Car implements Collideable {
   Direction orient;
   boolean finish;
   boolean fastForwardFlag = false; 
+  int turnable = 0;
   Car(Level level, StringDict attrib, int number){
     this.level = level;
     x = int(attrib.get("x"));
@@ -78,10 +79,45 @@ class Car implements Collideable {
     buttons.add(new CarForwardButton(this));
     updateButtons();
     finish = false;
+    turnable = turner(attrib);
   }
   
   void draw(){
-    image(img, x, y, w, h);
+    PImage tmp=carImage;
+    pushMatrix();
+    translate(x+w/2,y+h/2);
+    altRotateCar();
+    translate(-w/2,-h/2);
+    image(tmp, 0, 0, w, h);
+    popMatrix();
+  }
+  
+  void altRotateCar(){
+    if(orient==Direction.UP){
+       rotate(0);
+    }
+    if(orient==Direction.RIGHT){
+       rotate(PI/2);
+    }
+    if(orient==Direction.DOWN){
+       rotate(PI);
+    }
+    if(orient==Direction.LEFT){
+       rotate(3*PI/2);
+    }
+    return;
+  }
+  
+  int turner(StringDict attrib){
+    if (attrib.get("orientation").equals("upturn")){
+      if(attrib.get("turning").equals("right")) return 1;
+      if(attrib.get("turning").equals("left")) return -1;
+    }
+    if (attrib.get("orientation").equals("downturn")){
+      if(attrib.get("turning").equals("right")) return 1;
+      if(attrib.get("turning").equals("left")) return -1;
+    }
+    return 0;
   }
 
   void update(float dt){
@@ -190,8 +226,22 @@ class Car implements Collideable {
     level.setTile(tileX, tileY, ordNumber);
     fastForwardFlag=false;
   }
+  
+  void animateTurn(){
+    
+  }
 
   void fastForward(){
+    if(turnable==1){
+      int tmpTX = level.pxToTileX(int(preciseX));
+      int tmpTY = level.pxToTileY(int(preciseY));
+      if(level.wallMatrix[tmpTY][tmpTX+1]==1){
+        orient=Direction.RIGHT;
+        turnable=0;
+        animateTurn();
+      }
+    }
+    
     if(orient==Direction.UP){
       preciseY -= speed;
     }

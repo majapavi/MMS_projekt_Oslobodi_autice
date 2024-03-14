@@ -7,6 +7,7 @@ class Level {
   ArrayList<Car> cars;
   ArrayList<LevelButton> buttons;
   int[][] occupationMatrix;
+  int[][] wallMatrix;
   ArrayList<Collideable> collideObjects;
   Level(PApplet game, String filename){
     map = new Ptmx(game, filename);
@@ -21,17 +22,23 @@ class Level {
     occupationMatrix = new int[mapHeight][mapWidth];
     //matrica govori koji auto (po redu u arrayu cars) je na tom mjestu
     for (int i=0;i<mapHeight;i++){
-      for (int j=0;j<mapHeight;j++){
+      for (int j=0;j<mapWidth;j++){
          occupationMatrix[i][j]=0; 
       }
     }
     
+    //matrica prati gdje se nalazi zid (pomoc pri skretanju auta)
+    wallMatrix = new int[mapHeight][mapWidth];
+    for (int i=0;i<mapHeight;i++){
+      for (int j=0;j<mapWidth;j++){
+        wallMatrix[i][j]=0; 
+      }
+    }
     collideObjects = new ArrayList<Collideable>();
     cars = new ArrayList<Car>();
     buttons = new ArrayList<LevelButton>();
     for (int i = 0;map.getType(i)!=null;i++){
       String type = map.getType(i);
-
       if (type.equals("objectgroup")){
         StringDict objs[] = map.getObjects(i);
         int j=1;
@@ -43,10 +50,15 @@ class Level {
             buttons.addAll(car.getButtons());
             j++;
           }
-
+          if (obj.get("type").equals("wall")){
+            int tmp = int(obj.get("x"));
+            int tmpTileX = pxToTileX(tmp);
+            tmp = int(obj.get("y"));
+            int tmpTileY = pxToTileY(tmp);
+            wallMatrix[tmpTileY][tmpTileX]=1;
+          }
         }
       }
-
     }
   }
 
