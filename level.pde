@@ -22,13 +22,6 @@ class Level {
     PVector mapSize = map.getMapSize();
     mapWidth = int(mapSize.x);
     mapHeight = int(mapSize.y);
-    occupationMatrix = new int[mapHeight][mapWidth];
-    //matrica govori koji auto (po redu u arrayu cars) je na tom mjestu
-    for (int i=0;i<mapHeight;i++){
-      for (int j=0;j<mapWidth;j++){
-         occupationMatrix[i][j]=0; 
-      }
-    }
     //matrica prati gdje se nalazi zid (pomoc pri skretanju auta)
     //u ovoj verziji umjesto nje koristi se klasa Wall
     wallMatrix = new int[mapHeight][mapWidth];
@@ -128,20 +121,8 @@ class Level {
     return false;
   }
 
-  boolean valid(int x, int y){
-    if (outOfMap(x, y)) return true;
-    if (occupationMatrix[y][x]==0) return true;
-    return false;
-  }
-
   boolean endTile(int x, int y){
     return outOfMap(x, y);
-  }
-
-  void setTile(int x, int y, int occupied){
-    if (outOfMap(x, y)==false){
-      occupationMatrix[y][x] = occupied;
-    }
   }
 
   int pxToTileX(int pixelX){

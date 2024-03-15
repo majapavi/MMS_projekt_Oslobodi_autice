@@ -106,8 +106,7 @@ class Car implements Collideable {
     tileW = level.pxToTileX(w);
     tileH = level.pxToTileY(h);
     ordNumber=number;
-    level.setTile(tileX, tileY, ordNumber);
-    img = rotateCar();
+    img = carImage;
     buttons = new ArrayList<CarButton>();
     buttons.add(new CarForwardButton(this));
     updateButtons();
@@ -116,12 +115,11 @@ class Car implements Collideable {
   }
   
   void draw(){
-    PImage tmp=carImage;
     pushMatrix();
     translate(x+w/2,y+h/2);
     altRotateCar();
     translate(-w/2,-h/2);
-    image(tmp, 0, 0, w, h);
+    image(img, 0, 0, w, h);
     popMatrix();
   }
   
@@ -185,26 +183,6 @@ class Car implements Collideable {
     return !finish;
   }
 
-  PImage rotateCar(){
-    PImage img;
-    if(orient==Direction.UP){
-       img=loadImage("car.png"); 
-       return img;
-    }
-    if(orient==Direction.RIGHT){
-       img=loadImage("rightcar.png");
-       return img;
-    }
-    if(orient==Direction.DOWN){
-       img=loadImage("downcar.png");
-       return img;
-    }
-    if(orient==Direction.LEFT){
-       img=loadImage("leftcar.png");
-       return img;
-    }
-    return carImage;
-  }
 
   private void updateButtons(){
     for (CarButton button : buttons){
@@ -227,44 +205,9 @@ class Car implements Collideable {
     if(x + w < 0) return true;
     return false;
   }
-
-  boolean forward(){
-    int newX = tileX;
-    int newY = tileY;
-    if (orient == Direction.UP){
-      newY--;
-    }
-    if (orient == Direction.RIGHT){
-      newX++;
-    }
-    if (orient == Direction.DOWN){
-      newY++;
-    }
-    if (orient == Direction.LEFT){
-      newX--;
-    }
-    if (!level.valid(newX, newY)){
-      return false;
-    }
-    level.setTile(tileX, tileY, ordNumber);
-    tileX = newX;
-    tileY = newY;
-    level.setTile(tileX, tileY, ordNumber);
-    if (level.endTile(tileX, tileY)){
-      finish = true;
-    }
-
-    // ovaj dio se treba animirati:
-    x = level.tileToPxX(tileX);
-    y = level.tileToPxX(tileY);
-
-    updateButtons();
-    return true;
-  }
   
   void collideAction(Collideable obj){
     level.crashed(this);
-    level.setTile(tileX, tileY, ordNumber);
     fastForwardFlag=false;
   }
   
