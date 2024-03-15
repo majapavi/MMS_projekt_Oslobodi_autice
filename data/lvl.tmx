@@ -65,8 +65,8 @@
   <object id="3" name="3" type="car" x="33" y="161" width="30" height="30">
    <properties>
     <property name="action" value="forward"/>
-    <property name="orientation" value="downturn"/>
-    <property name="turning" value="left"/>
+    <property name="orientation" value="down"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
   <object id="5" name="4" type="car" x="161.333" y="257" width="30" height="30">
@@ -84,36 +84,36 @@
   <object id="7" name="6" type="car" x="320.97" y="289.182" width="30" height="30">
    <properties>
     <property name="action" value="forward"/>
-    <property name="orientation" value="rightturn"/>
-    <property name="turning" value="down"/>
+    <property name="orientation" value="right"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
   <object id="10" name="7" type="car" x="481.333" y="449.333" width="30" height="30">
    <properties>
     <property name="action" value="forward"/>
-    <property name="orientation" value="upturn"/>
-    <property name="turning" value="right"/>
+    <property name="orientation" value="up"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
   <object id="11" name="8" type="car" x="481.424" y="96.7576" width="30" height="30">
    <properties>
     <property name="action" value="forward"/>
-    <property name="orientation" value="leftturn"/>
-    <property name="turning" value="up"/>
+    <property name="orientation" value="left"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
   <object id="12" name="9" type="car" x="353.03" y="32.9091" width="30" height="30">
    <properties>
     <property name="action" value="forward"/>
-    <property name="orientation" value="downturn"/>
-    <property name="turning" value="left"/>
+    <property name="orientation" value="down"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
   <object id="18" name="10" type="car" x="577.5" y="257.25" width="30" height="30">
    <properties>
     <property name="action" value="forward"/>
-    <property name="orientation" value="leftturn"/>
-    <property name="turning" value="up"/>
+    <property name="orientation" value="left"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
  </objectgroup>

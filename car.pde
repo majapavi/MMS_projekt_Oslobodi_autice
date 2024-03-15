@@ -18,6 +18,49 @@ Direction getDirection(String name){
   return Direction.UP;
 }
 
+Direction leftTurnDirection(Direction dir){
+  switch (dir){
+    case UP: return Direction.LEFT;
+    case RIGHT: return Direction.UP;
+    case DOWN: return Direction.RIGHT;
+    case LEFT: return Direction.DOWN;
+    default: return Direction.UP;
+  }
+}
+
+Direction rightTurnDirection(Direction dir){
+  switch (dir){
+    case UP: return Direction.RIGHT;
+    case RIGHT: return Direction.DOWN;
+    case DOWN: return Direction.LEFT;
+    case LEFT: return Direction.UP;
+    default: return Direction.UP;
+  }
+}
+
+enum Turn {
+  LEFT, RIGHT, FORWARD
+}
+
+Turn getTurn(String name){
+  if (name.startsWith("l")){
+    return Turn.LEFT;
+  }
+  if (name.startsWith("r")){
+    return Turn.RIGHT;
+  }
+  return Turn.FORWARD;
+}
+
+Direction applyTurn(Turn t, Direction dir){
+  switch (t){
+    case LEFT: return leftTurnDirection(dir);
+    case RIGHT: return rightTurnDirection(dir);
+    case FORWARD: return dir;
+    default: return dir;
+  }
+}
+
 interface Collideable {
   int getX();
   int getY();
@@ -89,6 +132,7 @@ class Car implements Collideable {
   int speed=3;
   ArrayList<CarButton> buttons;
   Direction orient;
+  Turn turn;
   boolean finish;
   boolean fastForwardFlag = false; 
   Direction turnable;
@@ -111,7 +155,9 @@ class Car implements Collideable {
     buttons.add(new CarForwardButton(this));
     updateButtons();
     finish = false;
-    turnable = turner(attrib);
+    String tmp = attrib.get("turn");
+    if (tmp == null) turn = Turn.FORWARD;
+    else turn = getTurn(tmp);
   }
   
   void draw(){
@@ -139,28 +185,8 @@ class Car implements Collideable {
     return;
   }
   
-  Direction turner(StringDict attrib){
-    if (attrib.get("orientation").equals("upturn")){
-      if(attrib.get("turning").equals("right")) return Direction.RIGHT;
-      if(attrib.get("turning").equals("left")) return Direction.LEFT;
-    }
-    if (attrib.get("orientation").equals("downturn")){
-      if(attrib.get("turning").equals("right")) return Direction.RIGHT;
-      if(attrib.get("turning").equals("left")) return Direction.LEFT;
-    }
-    if (attrib.get("orientation").equals("leftturn")){
-      if(attrib.get("turning").equals("up")) return Direction.UP;
-      if(attrib.get("turning").equals("down")) return Direction.DOWN;
-    }
-    if (attrib.get("orientation").equals("rightturn")){
-      if(attrib.get("turning").equals("up")) return Direction.UP;
-      if(attrib.get("turning").equals("down")) return Direction.DOWN;
-    }
-    return null;
-  }
-
   void update(float dt){
-    if(fastForwardFlag) fastForward();
+    if (fastForwardFlag) fastForward();
   }
 
   int getX(){
@@ -216,98 +242,6 @@ class Car implements Collideable {
   }
 
   void fastForward(){
-    
-    //verzija sa klasom Wall
-    if(turnable!=null){ 
-      for (Wall wall : level.walls){
-        if(wall.ordNumber==ordNumber){
-         if(collides(this,wall)){
-           orient=turnable;
-           turnable=null;
-           animateTurn();
-         }
-        }
-      }
-    }
-    
-    //verzija sa tileMatrix
-    //za neke aute misteriozno ne radi dobro
-    /*if(turnable!=null){
-      int i=level.pxToTileX(int(preciseX));
-      int j=level.pxToTileY(int(preciseY));
-      if(turnable==Direction.RIGHT){
-        if(level.tileMatrix[j][i+1]!=48){
-          //48=id za svaki tile koji nije cesta
-          orient=turnable;
-          turnable=null;
-          animateTurn();
-        }
-      }
-      if(turnable==Direction.LEFT){
-        if(level.tileMatrix[j][i-1]!=48){
-          //48=id za svaki tile koji nije cesta
-          orient=turnable;
-          turnable=null;
-          animateTurn();
-        }
-      }
-      if(turnable==Direction.UP){
-        if(level.tileMatrix[j-1][i]!=48){
-          //48=id za svaki tile koji nije cesta
-          orient=turnable;
-          turnable=null;
-          animateTurn();
-        }
-      }
-      if(turnable==Direction.DOWN){
-        if(level.tileMatrix[j+1][i]!=48){
-          //48=id za svaki tile koji nije cesta
-          orient=turnable;
-          turnable=null;
-          animateTurn();
-        }
-      }
-    }
-    */
-    
-    //prethodna verzija (mozda ne radi dobro)
-    /*if(turnable!=null){
-      int tmpTX = level.pxToTileX(int(preciseX));
-      int tmpTY = level.pxToTileY(int(preciseY));
-      if(orient==Direction.UP){
-        if(!level.outOfMap(tmpTX,tmpTY) &&
-          level.wallMatrix[tmpTY][tmpTX]==ordNumber){
-            orient=turnable;
-            turnable=null;
-            animateTurn();
-        }
-      }
-      if(orient==Direction.DOWN){
-        if(!level.outOfMap(tmpTX,tmpTY+1) &&
-          level.wallMatrix[tmpTY+1][tmpTX]==ordNumber){
-            orient=turnable;
-            turnable=null;
-            animateTurn();
-        }
-      }
-      if(orient==Direction.RIGHT){
-        if(!level.outOfMap(tmpTX+1,tmpTY) &&
-          level.wallMatrix[tmpTY][tmpTX+1]==ordNumber){
-            orient=turnable;
-            turnable=null;
-            animateTurn();
-        }
-      }
-      if(orient==Direction.LEFT){
-        if(!level.outOfMap(tmpTX,tmpTY) &&
-          level.wallMatrix[tmpTY][tmpTX]==ordNumber){
-          orient=turnable;
-          turnable=null;
-          animateTurn();
-        }
-      }
-    }*/
-    
     if(orient==Direction.UP){
       preciseY -= speed;
     }
@@ -323,6 +257,15 @@ class Car implements Collideable {
     x = int(preciseX);
     y = int(preciseY);
 
+    //verzija sa klasom Wall
+    for (Wall wall : level.walls){
+      if(collides(this,wall)){
+        orient = applyTurn(turn, orient);
+        turn = Turn.FORWARD;
+        animateTurn();
+      }
+    }
+    
     updateButtons();
 
     if(outOfBounds()){

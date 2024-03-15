@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="9">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="10">
  <tileset firstgid="1" source="street.tsx"/>
  <layer id="1" name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
@@ -25,40 +25,43 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup color="#1c71d8" id="2" name="cars" opacity="0.4" tintcolor="#99c1f1">
+ <objectgroup color="#1c71d8" id="2" name="cars" visible="0" opacity="0.4" tintcolor="#99c1f1">
   <object id="1" name="pero" type="car" x="128" y="224" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
+    <property name="turn" value="left"/>
    </properties>
   </object>
   <object id="2" name="ivan" type="car" x="192" y="64" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="left"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
-  <object id="5" name="marko" type="car" x="0" y="129" width="32" height="32">
+  <object id="5" name="marko" type="car" x="0" y="128" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>
    </properties>
   </object>
-  <object id="6" name="jurica" type="car" x="65" y="129" width="32" height="32">
+  <object id="6" name="jurica" type="car" x="64" y="128" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>
    </properties>
   </object>
-  <object id="7" name="koraljka" type="car" x="128" y="353" width="32" height="32">
+  <object id="7" name="koraljka" type="car" x="128" y="352" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
-    <property name="orientation" value="upturn"/>
+    <property name="orientation" value="up"/>
     <property name="turning" value="right"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="4" name="walls">
-  <object id="8" name="zid" type="wall" x="145" y="111"/>
+ <objectgroup id="4" name="walls" visible="0">
+  <object id="8" name="zid" type="wall" x="129" y="97" width="30" height="30"/>
+  <object id="9" name="zid" type="wall" x="97" y="65" width="30" height="30"/>
  </objectgroup>
 </map>
