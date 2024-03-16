@@ -34,7 +34,6 @@ class Level {
     for (int i=0;i<mapHeight;i++){
       for (int j=0;j<mapWidth;j++){
         tileMatrix[i][j]=map.getTileIndex(1,j,i); 
-        println(tileMatrix[i][j]);
       }
     }
     collideObjects = new ArrayList<Collideable>();
