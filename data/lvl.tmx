@@ -49,7 +49,7 @@
 49,25,25,49,49,49,49,49,25,25,49,49,49,49,25,25,49,49,49,49
 </data>
  </layer>
- <objectgroup id="2" name="cars">
+ <objectgroup id="2" name="cars" visible="0">
   <object id="1" name="1" type="car" x="65" y="577.333" width="30" height="30">
    <properties>
     <property name="action" value="forward"/>
@@ -117,7 +117,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="3" name="walls">
+ <objectgroup id="3" name="walls" visible="0">
   <object id="20" name="zid" type="wall" x="28" y="252" width="72.5" height="72"/>
   <object id="28" name="zid" type="wall" x="28.5" y="381" width="71.5" height="71"/>
   <object id="29" name="zid" type="wall" x="28" y="508" width="71.5" height="72.5"/>

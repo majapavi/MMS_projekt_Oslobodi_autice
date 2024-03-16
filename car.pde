@@ -195,41 +195,49 @@ class Car implements Collideable {
       imageMode(CORNER);
       image(img, 0, 0, w, h);
       popMatrix();
-    } else{
+    }
+    if(animateFlag){
+      pushMatrix();
       if(orient==Direction.UP && turn==Turn.LEFT){
         translate(animatedFrom.x-level.tileWidth,animatedFrom.y);
         translate(level.tileWidth*cos(turningAngle),level.tileWidth*sin(turningAngle));
+        rotate(turningAngle);
       }
       if(orient==Direction.UP && turn==Turn.RIGHT){
         translate(animatedFrom.x+level.tileWidth,animatedFrom.y);
         translate(-level.tileWidth*cos(turningAngle),-level.tileWidth*sin(turningAngle));
+        rotate(turningAngle);
       }
       if(orient==Direction.LEFT && turn==Turn.RIGHT){
         translate(animatedFrom.x,animatedFrom.y-level.tileWidth);
         translate(-level.tileWidth*cos(turningAngle),-level.tileWidth*sin(turningAngle));
+        rotate(turningAngle);
       }
       if(orient==Direction.RIGHT && turn==Turn.LEFT){
         translate(animatedFrom.x,animatedFrom.y-level.tileWidth);
         translate(level.tileWidth*cos(turningAngle),level.tileWidth*sin(turningAngle));
+        rotate(turningAngle);
       }
       if(orient==Direction.DOWN && turn==Turn.LEFT){
         translate(animatedFrom.x+level.tileWidth,animatedFrom.y);
         translate(level.tileWidth*cos(turningAngle),level.tileWidth*sin(turningAngle));
+        rotate(turningAngle);
       }
       if(orient==Direction.RIGHT && turn==Turn.RIGHT){
         translate(animatedFrom.x,animatedFrom.y+level.tileWidth);
         translate(-level.tileWidth*cos(turningAngle),-level.tileWidth*sin(turningAngle));
+        rotate(turningAngle);
       }
       if(orient==Direction.DOWN && turn==Turn.RIGHT){
         translate(animatedFrom.x-level.tileWidth,animatedFrom.y);
         translate(-level.tileWidth*cos(turningAngle),-level.tileWidth*sin(turningAngle));
+        rotate(turningAngle);
       }
       if(orient==Direction.LEFT && turn==Turn.LEFT){
         translate(animatedFrom.x,animatedFrom.y+level.tileWidth);
         translate(level.tileWidth*cos(turningAngle),level.tileWidth*sin(turningAngle));
+        rotate(turningAngle);
       }
-      pushMatrix();
-      rotate(turningAngle);
       imageMode(CENTER);
       image(img,0,0,w,h);
       popMatrix();
@@ -248,8 +256,6 @@ class Car implements Collideable {
         if(turn==Turn.FORWARD) break;
         if(collides(this,wall)){ // usli smo u raskrsce
           currentWall = wall;
-          println(turn);
-          println(orient);
           if (wall.forbidden && applyTurn(turn, orient) == wall.forbiddenDirection)
             continue;
           
@@ -352,63 +358,46 @@ class Car implements Collideable {
   }
   
   void animateTurn(float dt){
-    if(orient==Direction.UP && turn==Turn.LEFT){
-      turningAngle-=dt;
-      if(turningAngle<=-PI/2){
+    if(turn==Turn.LEFT){
+      turningAngle-=dt*3; 
+      //mnozenje s 3 je arbitrarno, da brzina bude ok
+      if(orient==Direction.UP && turningAngle<=-PI/2){
+        afterTurn();
+        return;
+      }
+      if(orient==Direction.RIGHT && turningAngle<=0){
+        afterTurn();
+        return;
+      }
+      if(orient==Direction.DOWN && turningAngle<=PI/2){
+        afterTurn();
+        return;
+      }
+      if(orient==Direction.LEFT && turningAngle<=PI){
         afterTurn();
         return;
       }
     }
-    if(orient==Direction.LEFT && turn==Turn.RIGHT){
-      turningAngle+=dt;
-      if(turningAngle>=2*PI){
+    if(turn==Turn.RIGHT){
+      turningAngle+=dt*3;
+      if(orient==Direction.UP && turningAngle>=PI/2){
         afterTurn();
         return;
       }
-    }
-    if(orient==Direction.UP && turn==Turn.RIGHT){
-      turningAngle+=dt;
-      if(turningAngle>=PI/2){
+      if(orient==Direction.RIGHT && turningAngle>=PI){
         afterTurn();
         return;
       }
-    }
-    if(orient==Direction.RIGHT && turn==Turn.LEFT){
-      turningAngle-=dt;
-      if(turningAngle<=0){
+      if(orient==Direction.DOWN && turningAngle>=3*PI/2){
         afterTurn();
         return;
       }
-    }
-    if(orient==Direction.DOWN && turn==Turn.LEFT){
-      turningAngle-=dt;
-      if(turningAngle<=PI/2){
+      if(orient==Direction.LEFT && turningAngle>=2*PI){
         afterTurn();
         return;
       }
     }
     
-    if(orient==Direction.RIGHT && turn==Turn.RIGHT){
-      turningAngle+=dt;
-      if(turningAngle>=PI){
-        afterTurn();
-        return;
-      }
-    }
-    if(orient==Direction.DOWN && turn==Turn.RIGHT){
-      turningAngle+=dt;
-      if(turningAngle>=3*PI/2){
-        afterTurn();
-        return;
-      }
-    }
-    if(orient==Direction.LEFT && turn==Turn.LEFT){
-      turningAngle-=dt;
-      if(turningAngle<=PI){
-        afterTurn();
-        return;
-      }
-    }
    /* animationProgress += dt * speed / level.tileWidth / 2;
     preciseX = lerp(animatedFrom.x, animatedTo.x, animationProgress);
     preciseY = lerp(animatedFrom.y, animatedTo.y, animationProgress);
@@ -424,10 +413,7 @@ class Car implements Collideable {
   }
   
   void afterTurn(){
-        println(orient);
-        println(turn);
         orient=applyTurn(turn,orient);
-        println(orient);
         angle=directionToAngle(orient);
         turn=Turn.FORWARD;
         preciseX=animatedTo.x;
