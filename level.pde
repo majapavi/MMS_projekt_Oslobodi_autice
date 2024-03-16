@@ -2,13 +2,11 @@ import ptmx.*;
 
 class Level {
   Ptmx map;
-  Ptmx map2;
   int tileWidth, tileHeight; // sirina pojedinog tile-a u pikselima
   int mapWidth, mapHeight; // broj tile-ova u nivou
   ArrayList<Car> cars;
   ArrayList<Wall> walls;
   ArrayList<LevelButton> buttons;
-  int[][] occupationMatrix;
   int[][] wallMatrix;
   int[][] tileMatrix;
   ArrayList<Collideable> collideObjects;

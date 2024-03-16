@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="10">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="13">
  <tileset firstgid="1" source="street.tsx"/>
  <layer id="1" name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
-1,2,3,4,5,6,7,24,24,24,24,0,0,0,0,0,0,0,0,0,
-8,9,10,11,12,13,14,0,0,0,0,0,0,0,0,0,0,0,0,0,
-15,16,17,18,19,20,21,0,0,0,0,0,0,0,0,0,0,0,0,0,
-22,23,24,25,26,27,28,0,0,0,0,0,0,0,0,0,0,0,0,0,
-29,30,31,32,33,34,35,0,0,0,0,0,0,0,0,0,0,0,0,0,
-36,37,38,39,40,41,42,0,0,0,0,0,0,0,0,0,0,0,0,0,
-43,44,45,46,47,48,49,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,3,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,3,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,3,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,3,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,3,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,3,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,3,4,5,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1,2,3,4,5,6,7,24,24,24,24,25,25,44,45,46,47,6,25,25,
+8,9,10,11,12,13,14,8,8,8,8,8,8,9,38,39,40,13,8,8,
+15,16,17,18,19,20,21,15,15,15,15,15,15,16,17,18,19,16,21,21,
+22,23,24,25,26,27,28,22,22,22,22,22,22,23,24,25,26,23,28,28,
+29,30,31,32,33,34,35,29,29,29,29,29,29,30,31,32,33,30,35,35,
+36,37,38,39,40,41,42,42,42,42,42,42,42,37,10,11,12,41,42,42,
+43,44,45,46,47,48,49,49,49,49,49,49,49,44,3,4,5,6,1,1,
+1,2,3,4,5,6,49,49,49,49,49,49,49,44,3,4,5,6,1,1,
+1,2,3,4,5,6,49,49,49,49,49,49,49,44,3,4,5,6,1,1,
+1,2,3,4,5,6,49,49,49,49,49,49,49,44,3,4,5,6,1,1,
+1,2,3,4,5,6,49,49,49,49,49,49,49,44,3,4,5,6,1,1,
+1,2,3,4,5,6,49,49,49,49,49,49,49,44,3,4,5,6,1,1,
+1,2,3,4,5,6,49,49,49,49,49,49,49,44,3,4,5,6,1,1,
+8,9,10,11,12,13,8,8,8,8,8,8,8,9,10,11,12,13,14,14,
+15,20,17,18,19,20,15,15,15,15,15,15,15,20,17,18,19,20,15,15,
+22,27,24,25,26,27,22,22,22,22,22,22,22,27,24,25,26,27,22,22,
+29,34,31,32,33,34,29,29,29,29,29,29,29,34,31,32,33,34,29,29,
+42,37,10,11,12,41,42,42,42,42,42,42,42,37,10,11,12,41,42,42,
+25,44,45,46,47,6,1,1,1,1,1,1,1,44,45,46,47,6,1,1,
+25,44,45,46,47,6,1,1,1,1,1,1,1,44,45,46,47,6,1,1
 </data>
  </layer>
  <objectgroup color="#1c71d8" id="2" name="cars" visible="0" opacity="0.4" tintcolor="#99c1f1">
@@ -44,24 +44,28 @@
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
-  <object id="6" name="jurica" type="car" x="64" y="128" width="32" height="32">
+  <object id="6" name="jurica" type="car" x="192" y="128" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>
+    <property name="turn" value="left"/>
    </properties>
   </object>
   <object id="7" name="koraljka" type="car" x="128" y="352" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
-    <property name="turning" value="right"/>
+    <property name="turn" value="right"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="4" name="walls" visible="0">
-  <object id="8" name="zid" type="wall" x="129" y="97" width="30" height="30"/>
-  <object id="9" name="zid" type="wall" x="97" y="65" width="30" height="30"/>
+  <object id="9" name="zid" type="wall" x="64" y="64" width="96" height="96"/>
+  <object id="10" name="zid" type="wall" x="448" y="64" width="96" height="96"/>
+  <object id="11" name="zid" type="wall" x="448" y="448" width="96" height="96"/>
+  <object id="12" name="zid" type="wall" x="64" y="448" width="96" height="96"/>
  </objectgroup>
 </map>

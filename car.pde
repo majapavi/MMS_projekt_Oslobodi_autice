@@ -38,6 +38,16 @@ Direction rightTurnDirection(Direction dir){
   }
 }
 
+float directionToAngle(Direction dir){
+  switch (dir){
+    case UP: return 0;
+    case RIGHT: return PI/2;
+    case DOWN: return PI;
+    case LEFT: return 3*PI/2;
+    default: return 0;
+  }
+}
+
 enum Turn {
   LEFT, RIGHT, FORWARD
 }
@@ -93,11 +103,20 @@ boolean collides(Collideable a, Collideable b){
 class Wall implements Collideable{
   int x,y,w,h;
   int ordNumber;
+  boolean forbidden;
+  Direction forbiddenDirection;
   Wall(StringDict attrib, int num){
     x = int(attrib.get("x"));
     y = int(attrib.get("y"));
     w = int(attrib.get("width"));
     h = int(attrib.get("height"));
+    String tmp = attrib.get("forbidden");
+    if (tmp == null){
+      forbidden = false;
+    } else {
+      forbidden = true;
+      forbiddenDirection = getDirection(tmp);
+    }
     ordNumber = num;
   }
   
@@ -129,13 +148,16 @@ class Car implements Collideable {
   int tileX, tileY, tileW, tileH;
   int ordNumber;
   PImage img;
-  int speed=3;
+  float speed = 150; // brzina u pikselima po sekundi
   ArrayList<CarButton> buttons;
   Direction orient;
   Turn turn;
+  float angle;
   boolean finish;
-  boolean fastForwardFlag = false; 
-  Direction turnable;
+  boolean fastForwardFlag = false, animateFlag = false; 
+  Wall currentWall;
+  PVector animatedFrom, animatedTo;
+  float animationProgress, angleFrom, angleTo;
   Car(Level level, StringDict attrib, int number){
     this.level = level;
     x = int(attrib.get("x"));
@@ -145,6 +167,7 @@ class Car implements Collideable {
     w = int(attrib.get("width"));
     h = int(attrib.get("height"));
     orient = getDirection(attrib.get("orientation"));
+    angle = directionToAngle(orient);
     tileX = level.pxToTileX(x);
     tileY = level.pxToTileY(y);
     tileW = level.pxToTileX(w);
@@ -158,35 +181,64 @@ class Car implements Collideable {
     String tmp = attrib.get("turn");
     if (tmp == null) turn = Turn.FORWARD;
     else turn = getTurn(tmp);
+    currentWall = null;
   }
   
   void draw(){
     pushMatrix();
     translate(x+w/2,y+h/2);
-    altRotateCar();
+    rotate(angle);
     translate(-w/2,-h/2);
     image(img, 0, 0, w, h);
     popMatrix();
   }
   
-  void altRotateCar(){
-    if(orient==Direction.UP){
-       rotate(0);
-    }
-    if(orient==Direction.RIGHT){
-       rotate(PI/2);
-    }
-    if(orient==Direction.DOWN){
-       rotate(PI);
-    }
-    if(orient==Direction.LEFT){
-       rotate(3*PI/2);
-    }
-    return;
-  }
-  
   void update(float dt){
-    if (fastForwardFlag) fastForward();
+    if (fastForwardFlag) fastForward(dt);
+    if (animateFlag) animateTurn(dt);
+    x = int(preciseX);
+    y = int(preciseY);
+
+    //verzija sa klasom Wall
+    if (currentWall == null){
+      for (Wall wall : level.walls){
+        if(collides(this,wall)){ // usli smo u raskrsce
+          currentWall = wall;
+          if (wall.forbidden && applyTurn(turn, orient) == wall.forbiddenDirection)
+            continue;
+          animatedFrom = new PVector(preciseX, preciseY);
+          animatedTo = animatedFrom.copy();
+          PVector firstTileMove = new PVector(0, -(float) level.tileWidth);
+          angleFrom = directionToAngle(orient);
+          firstTileMove.rotate(angleFrom);
+
+          orient = applyTurn(turn, orient);
+
+          PVector secondTileMove = new PVector(0, -(float) level.tileWidth);
+          angleTo = directionToAngle(orient);
+          secondTileMove.rotate(angleTo);
+
+          animatedTo.add(firstTileMove);
+          animatedTo.add(secondTileMove);
+
+          turn = Turn.FORWARD;
+          // zakomentirati prethodnu liniju za super Koraljku :)
+          animateFlag = true;
+          fastForwardFlag = false;
+          animationProgress = 0;
+        }
+      }
+    } else {
+      if (!collides(this, currentWall)){ // izasli smo iz raskrsca
+        currentWall = null;
+      }
+    }
+
+    updateButtons();
+
+    if(outOfBounds()){
+      finish=true;
+    }
   }
 
   int getX(){
@@ -237,39 +289,25 @@ class Car implements Collideable {
     fastForwardFlag=false;
   }
   
-  void animateTurn(){
-    
+  void animateTurn(float dt){
+    animationProgress += dt * speed / level.tileWidth / 2;
+    preciseX = lerp(animatedFrom.x, animatedTo.x, animationProgress);
+    preciseY = lerp(animatedFrom.y, animatedTo.y, animationProgress);
+    angle = lerp(angleFrom, angleTo, animationProgress);
+    if (animationProgress >= 1.0){
+      preciseX = animatedTo.x;
+      preciseY = animatedTo.y;
+      angle = angleTo;
+      animateFlag = false;
+      fastForwardFlag = true;
+    }
   }
 
-  void fastForward(){
-    if(orient==Direction.UP){
-      preciseY -= speed;
-    }
-    if(orient==Direction.DOWN){
-      preciseY += speed;
-    }
-    if(orient==Direction.LEFT){
-      preciseX -= speed;
-    }
-    if(orient==Direction.RIGHT){
-      preciseX += speed;
-    }
-    x = int(preciseX);
-    y = int(preciseY);
-
-    //verzija sa klasom Wall
-    for (Wall wall : level.walls){
-      if(collides(this,wall)){
-        orient = applyTurn(turn, orient);
-        turn = Turn.FORWARD;
-        animateTurn();
-      }
-    }
-    
-    updateButtons();
-
-    if(outOfBounds()){
-      finish=true;
-    }
+  void fastForward(float dt){
+    PVector displace = new PVector(0, -1);
+    displace.rotate(directionToAngle(orient));
+    displace.mult(speed * dt);
+    preciseX += displace.x;
+    preciseY += displace.y;
   }
 }

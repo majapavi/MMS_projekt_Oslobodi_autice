@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="20">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="32">
  <tileset firstgid="1" source="street.tsx"/>
  <layer id="1" name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
@@ -118,11 +118,39 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="walls" visible="0">
-  <object id="13" name="9" type="wall" x="352" y="282.5" width="32" height="5"/>
-  <object id="14" name="8" type="wall" x="385.417" y="96.5" width="5" height="32"/>
-  <object id="15" name="7" type="wall" x="480.25" y="289" width="32" height="5"/>
-  <object id="16" name="6" type="wall" x="507" y="288" width="5" height="31.75"/>
-  <object id="17" name="3" type="wall" x="32.25" y="282" width="32" height="5"/>
-  <object id="19" name="10" type="wall" x="386" y="256" width="5" height="32"/>
+  <object id="20" name="zid" type="wall" x="32" y="256" width="64" height="64"/>
+  <object id="21" name="zid" type="wall" x="192" y="256" width="64" height="64">
+   <properties>
+    <property name="forbidden" value="down"/>
+   </properties>
+  </object>
+  <object id="22" name="zid" type="wall" x="352" y="256" width="64" height="64">
+   <properties>
+    <property name="forbidden" value="down"/>
+   </properties>
+  </object>
+  <object id="23" name="zid" type="wall" x="352" y="96" width="64" height="64">
+   <properties>
+    <property name="forbidden" value="left"/>
+   </properties>
+  </object>
+  <object id="24" name="zid" type="wall" x="448" y="256" width="64" height="64">
+   <properties>
+    <property name="forbidden" value="up"/>
+   </properties>
+  </object>
+  <object id="25" name="zid" type="wall" x="448" y="384" width="64" height="64">
+   <properties>
+    <property name="forbidden" value="right"/>
+   </properties>
+  </object>
+  <object id="28" name="zid" type="wall" x="32" y="384" width="64" height="64"/>
+  <object id="29" name="zid" type="wall" x="32" y="512" width="64" height="64"/>
+  <object id="30" name="zid" type="wall" x="256" y="512" width="64" height="64">
+   <properties>
+    <property name="forbidden" value="down"/>
+   </properties>
+  </object>
+  <object id="31" name="zid" type="wall" x="448" y="512" width="64" height="64"/>
  </objectgroup>
 </map>
