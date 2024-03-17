@@ -5,6 +5,8 @@ String nextLevelName;
 boolean drawLevel = false; // zamijeniti s ozbiljnim main menu kodom!
 boolean startLevelFlag = false;
 
+Display display;
+
 PImage carImage;
 ResetButton reset;
 
@@ -46,6 +48,7 @@ void setup(){
   setNextLevel(firstLevel);
   startLevel();
   lastTime = millis();
+  display = screenState.START;
 }
 
 void onClick(int x, int y){

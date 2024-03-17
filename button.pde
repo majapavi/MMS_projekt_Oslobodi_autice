@@ -13,7 +13,6 @@ interface CarButton extends LevelButton {
   void setCarDirection(Direction dir);
 }
 
-
 abstract class ImageButton implements Button {
   int x, y, right, down;
   PImage img;
@@ -31,6 +30,44 @@ abstract class ImageButton implements Button {
 
   boolean validCursor(int x, int y){
     return this.x < x && x < right && this.y < y && y < down;
+  }
+}
+
+// Aplikacijski gumb sa tekstom
+abstract class TextButton implements Button {
+  int x, y, right, down, h, w;
+  Text text;
+  color buttonColor;
+  
+  TextButton(int x, int y, String text){
+    this.x = x;
+    this.y = y;
+    this.text = new Text(this.x + this.w / 2, this.y + this.h / 2, text);
+    h = 50;
+    w = 80;
+    right = x + w;
+    down = y + h;
+    buttonColor = 256;
+  }
+  
+  void draw() {
+    fill(buttonColor);
+    rect(x, y, w, h);
+    this.text.ispisiText();
+  }
+
+  boolean validCursor(int x, int y){
+    return this.x < x && x < right && this.y < y && y < down;
+  }
+}
+
+class StartButton extends TextButton {
+  StartButton(int x, int y){
+    super(x, y, "START");
+  }
+
+  void click(){
+    display.mode = screenState.PLAY;
   }
 }
 
