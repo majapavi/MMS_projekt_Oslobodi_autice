@@ -193,6 +193,11 @@ class Car implements Collideable {
       translate(-w/2,-h/2);
       imageMode(CORNER);
       image(img, 0, 0, w, h);
+      if (turn == Turn.LEFT){
+        image(level.leftArrowImage, 0, 0, w, h);
+      } else if (turn == Turn.RIGHT){
+        image(level.rightArrowImage, 0, 0, w, h);
+      }
       popMatrix();
     }
     if(animateFlag){
@@ -239,6 +244,11 @@ class Car implements Collideable {
       }
       imageMode(CENTER);
       image(img,0,0,w,h);
+      if (turn == Turn.LEFT){
+        image(level.leftArrowImage, 0, 0, w, h);
+      } else if (turn == Turn.RIGHT){
+        image(level.rightArrowImage, 0, 0, w, h);
+      }
       popMatrix();
     }
   }

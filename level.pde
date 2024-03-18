@@ -10,6 +10,7 @@ class Level {
   int[][] wallMatrix;
   int[][] tileMatrix;
   ArrayList<Collideable> collideObjects;
+  PImage leftArrowImage, rightArrowImage;
   Level(PApplet game, String filename){
     map = new Ptmx(game, filename);
     
@@ -20,6 +21,8 @@ class Level {
     PVector mapSize = map.getMapSize();
     mapWidth = int(mapSize.x);
     mapHeight = int(mapSize.y);
+    leftArrowImage = loadImage("strelica_lijevo.png");
+    rightArrowImage = loadImage("strelica_desno.png");
     //matrica prati gdje se nalazi zid (pomoc pri skretanju auta)
     //u ovoj verziji umjesto nje koristi se klasa Wall
     wallMatrix = new int[mapHeight][mapWidth];
