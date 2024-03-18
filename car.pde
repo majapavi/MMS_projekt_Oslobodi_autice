@@ -383,7 +383,7 @@ class Car implements Collideable {
   void afterTurn(){
     orient=applyTurn(turn,orient);
     angle=directionToAngle(orient);
-    // turn=Turn.FORWARD;
+    turn=Turn.FORWARD;
     // zakomentirati prethodnu liniju za super Koraljku :)
     preciseX=animatedTo.x;
     preciseY=animatedTo.y;
