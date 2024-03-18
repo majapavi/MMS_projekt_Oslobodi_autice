@@ -169,7 +169,6 @@ class Car implements Collideable {
     h = 30;
     orient = getDirection(attrib.get("orientation"));
     angle = directionToAngle(orient);
-    turningAngle = angle;
     tileX = level.pxToTileX(x);
     tileY = level.pxToTileY(y);
     tileW = level.pxToTileX(w);
@@ -272,28 +271,9 @@ class Car implements Collideable {
           if((orient==Direction.DOWN && turn==Turn.RIGHT)||
              (orient==Direction.LEFT && turn==Turn.LEFT))
               animatedTo = new PVector(preciseX-level.tileWidth,preciseY+level.tileHeight);
-          /*animatedTo = animatedFrom.copy();
-          PVector firstTileMove = new PVector(0, -(float) level.tileWidth);
-          angleFrom = directionToAngle(orient);
-          firstTileMove.rotate(angleFrom);
-
-          orient = applyTurn(turn, orient);
-
-          PVector secondTileMove = new PVector(0, -(float) level.tileWidth);
-          angleTo = directionToAngle(orient);
-          secondTileMove.rotate(angleTo);
-
-          animatedTo.add(firstTileMove);
-          animatedTo.add(secondTileMove);
-
-          
-          
-          
-          turn = Turn.FORWARD;
-          // zakomentirati prethodnu liniju za super Koraljku :)*/
           animateFlag = true;
           fastForwardFlag = false;
-          //animationProgress = 0;
+          turningAngle = angle;
         }
       }
     } else {
@@ -359,8 +339,7 @@ class Car implements Collideable {
   
   void animateTurn(float dt){
     if(turn==Turn.LEFT){
-      turningAngle-=dt*3; 
-      //mnozenje s 3 je arbitrarno, da brzina bude ok
+      turningAngle -= dt * speed / level.tileWidth; 
       if(orient==Direction.UP && turningAngle<=-PI/2){
         afterTurn();
         return;
@@ -379,7 +358,7 @@ class Car implements Collideable {
       }
     }
     if(turn==Turn.RIGHT){
-      turningAngle+=dt*3;
+      turningAngle += dt * speed / level.tileWidth; 
       if(orient==Direction.UP && turningAngle>=PI/2){
         afterTurn();
         return;
@@ -398,30 +377,20 @@ class Car implements Collideable {
       }
     }
     
-   /* animationProgress += dt * speed / level.tileWidth / 2;
-    preciseX = lerp(animatedFrom.x, animatedTo.x, animationProgress);
-    preciseY = lerp(animatedFrom.y, animatedTo.y, animationProgress);
-    angle = lerp(angleFrom, angleTo, animationProgress);
-    if (animationProgress >= 1.0){
-      preciseX = animatedTo.x;
-      preciseY = animatedTo.y;
-      angle = angleTo;
-      animateFlag = false;
-      fastForwardFlag = true;
-    }*/
     return;
   }
   
   void afterTurn(){
-        orient=applyTurn(turn,orient);
-        angle=directionToAngle(orient);
-        turn=Turn.FORWARD;
-        preciseX=animatedTo.x;
-        preciseY=animatedTo.y;
-        animateFlag = false;
-        fastForwardFlag = true;
-        turningAngle=0;
-        return;    
+    orient=applyTurn(turn,orient);
+    angle=directionToAngle(orient);
+    // turn=Turn.FORWARD;
+    // zakomentirati prethodnu liniju za super Koraljku :)
+    preciseX=animatedTo.x;
+    preciseY=animatedTo.y;
+    animateFlag = false;
+    fastForwardFlag = true;
+    turningAngle=0;
+    return;    
   }
 
   void fastForward(float dt){
