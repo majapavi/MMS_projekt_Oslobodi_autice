@@ -18,6 +18,16 @@ Direction getDirection(String name){
   return Direction.UP;
 }
 
+Direction oppositeDirection(Direction dir){
+  switch (dir){
+    case UP: return Direction.DOWN;
+    case RIGHT: return Direction.LEFT;
+    case DOWN: return Direction.UP;
+    case LEFT: return Direction.RIGHT;
+    default: return Direction.UP;
+  }
+}
+
 Direction leftTurnDirection(Direction dir){
   switch (dir){
     case UP: return Direction.LEFT;
@@ -343,7 +353,7 @@ class Car implements Collideable {
   }
   
   void collideAction(Collideable obj){
-    if (obj instanceof Car){
+    if (obj instanceof Car || obj instanceof Pjesak){
       level.crashed(this);
       fastForwardFlag=false;
     } else if (obj instanceof TurnSign){
@@ -400,7 +410,7 @@ class Car implements Collideable {
   void afterTurn(){
     orient=applyTurn(turn,orient);
     angle=directionToAngle(orient);
-    // turn=Turn.FORWARD;
+    turn=Turn.FORWARD;
     // zakomentirati prethodnu liniju za super Koraljku :)
     preciseX=animatedTo.x;
     preciseY=animatedTo.y;

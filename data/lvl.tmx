@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="38">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="42">
  <tileset firstgid="1" source="street.tsx"/>
  <layer id="1" name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
@@ -118,7 +118,11 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="walls" visible="0">
-  <object id="20" name="zid" type="wall" x="28" y="252" width="72.5" height="72"/>
+  <object id="20" name="zid" type="wall" x="28" y="252" width="72.5" height="72">
+   <properties>
+    <property name="light" value="yes"/>
+   </properties>
+  </object>
   <object id="28" name="zid" type="wall" x="28.5" y="381" width="71.5" height="71"/>
   <object id="29" name="zid" type="wall" x="28" y="508" width="71.5" height="72.5"/>
   <object id="30" name="zid" type="wall" x="253" y="508" width="70" height="72.5">
@@ -150,6 +154,18 @@
   <object id="37" name="zid" type="wall" x="188.5" y="252.25" width="70" height="72.5">
    <properties>
     <property name="forbidden" value="down"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="pjesaci">
+  <object id="39" name="trpimir" type="pjesak" x="96" y="320" width="32" height="32">
+   <properties>
+    <property name="direction" value="left"/>
+   </properties>
+  </object>
+  <object id="41" name="hladimir" type="pjesak" x="0" y="224" width="32" height="32">
+   <properties>
+    <property name="direction" value="right"/>
    </properties>
   </object>
  </objectgroup>

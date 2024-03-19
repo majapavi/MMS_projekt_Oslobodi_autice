@@ -61,8 +61,8 @@ class TurnButton implements LevelButton {
     right = x + w;
     down = y + h;
     this.cur = cur;
-    leftSignImage = loadImage("znak_lijevo.png");
-    rightSignImage = loadImage("znak_desno.png");
+    leftSignImage = loadImage("leftsign.png");
+    rightSignImage = loadImage("rightsign.png");
   }
 
   void draw(){
