@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="42">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="44">
  <tileset firstgid="1" source="street.tsx"/>
  <layer id="1" name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
@@ -116,8 +116,14 @@
     <property name="turn" value="right"/>
    </properties>
   </object>
+  <object id="43" name="11" type="car" x="448" y="352" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="down"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="3" name="walls" visible="0">
+ <objectgroup id="3" name="walls">
   <object id="20" name="zid" type="wall" x="28" y="252" width="72.5" height="72">
    <properties>
     <property name="light" value="yes"/>
@@ -130,7 +136,11 @@
     <property name="forbidden" value="up"/>
    </properties>
   </object>
-  <object id="32" name="zid" type="wall" x="445" y="507.75" width="70" height="72.5"/>
+  <object id="32" name="zid" type="wall" x="445" y="507.75" width="70" height="72.5">
+   <properties>
+    <property name="light" value="yes"/>
+   </properties>
+  </object>
   <object id="33" name="zid" type="wall" x="445" y="381.25" width="70" height="72.5">
    <properties>
     <property name="forbidden" value="right"/>
@@ -157,8 +167,8 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="pjesaci">
-  <object id="39" name="trpimir" type="pjesak" x="96" y="320" width="32" height="32">
+ <objectgroup id="5" name="pjesaci" visible="0">
+  <object id="39" name="trpimir" type="pjesak" x="512" y="576" width="32" height="32">
    <properties>
     <property name="direction" value="left"/>
    </properties>
@@ -166,6 +176,11 @@
   <object id="41" name="hladimir" type="pjesak" x="0" y="224" width="32" height="32">
    <properties>
     <property name="direction" value="right"/>
+   </properties>
+  </object>
+  <object id="42" name="maksimir" type="pjesak" x="96" y="448" width="32" height="32">
+   <properties>
+    <property name="direction" value="up"/>
    </properties>
   </object>
  </objectgroup>

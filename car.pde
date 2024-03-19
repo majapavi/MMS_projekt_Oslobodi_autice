@@ -90,7 +90,7 @@ interface Collideable {
 }
 
 
-boolean pointInColliddeable(int x, int y, Collideable b){
+boolean pointInCollideable(int x, int y, Collideable b){
   return (b.getX() <= x && x <= b.getX() + b.getW()
        && b.getY() <= y && y <= b.getY() + b.getH());
 }
@@ -98,15 +98,15 @@ boolean pointInColliddeable(int x, int y, Collideable b){
 boolean collides(Collideable a, Collideable b){
   if (!a.canCollide() || !b.canCollide()) return false;
 
-  if (pointInColliddeable(a.getX(), a.getY(), b)) return true;
-  if (pointInColliddeable(a.getX() + a.getW(), a.getY(), b)) return true;
-  if (pointInColliddeable(a.getX(), a.getY() + a.getH(), b)) return true;
-  if (pointInColliddeable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return true;
+  if (pointInCollideable(a.getX(), a.getY(), b)) return true;
+  if (pointInCollideable(a.getX() + a.getW(), a.getY(), b)) return true;
+  if (pointInCollideable(a.getX(), a.getY() + a.getH(), b)) return true;
+  if (pointInCollideable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return true;
 
-  if (pointInColliddeable(b.getX(), b.getY(), a)) return true;
-  if (pointInColliddeable(b.getX() + b.getW(), b.getY(), a)) return true;
-  if (pointInColliddeable(b.getX(), b.getY() + b.getH(), a)) return true;
-  if (pointInColliddeable(b.getX() + b.getW(), b.getY() + b.getH(), a)) return true;
+  if (pointInCollideable(b.getX(), b.getY(), a)) return true;
+  if (pointInCollideable(b.getX() + b.getW(), b.getY(), a)) return true;
+  if (pointInCollideable(b.getX(), b.getY() + b.getH(), a)) return true;
+  if (pointInCollideable(b.getX() + b.getW(), b.getY() + b.getH(), a)) return true;
   return false;
 }
 
@@ -114,7 +114,9 @@ class Wall implements Collideable{
   int x,y,w,h;
   int ordNumber;
   boolean forbidden;
+  boolean trafficLight;
   Direction forbiddenDirection;
+  LightButton lightButton;
   Wall(StringDict attrib, int num){
     x = int(attrib.get("x"));
     y = int(attrib.get("y"));
@@ -126,6 +128,13 @@ class Wall implements Collideable{
     } else {
       forbidden = true;
       forbiddenDirection = getDirection(tmp);
+    }
+    tmp=attrib.get("light");
+    if(tmp==null){
+      trafficLight=false;
+    } else {
+      trafficLight=true;
+      lightButton=new LightButton(x+w-8,y+h-8,18,18,false);
     }
     ordNumber = num;
   }
@@ -272,11 +281,21 @@ class Car implements Collideable {
     //verzija sa klasom Wall
     if (currentWall == null){
       for (Wall wall : level.walls){
-        if(turn==Turn.FORWARD) break;
         if(collides(this,wall)){ // usli smo u raskrsce
           currentWall = wall;
+          if(wall.trafficLight){
+            if(!wall.lightButton.lightColor){
+              fastForwardFlag=false;
+            }
+            else{
+              fastForwardFlag=true;
+            }
+          }
+          if(turn==Turn.FORWARD) break;
+          
           if (wall.forbidden && applyTurn(turn, orient) == wall.forbiddenDirection)
             continue;
+          
           
           animatedFrom = new PVector(preciseX+w/2, preciseY+h/2);
           if((orient==Direction.UP && turn==Turn.LEFT)||
@@ -297,6 +316,14 @@ class Car implements Collideable {
         }
       }
     } else {
+      if(currentWall.trafficLight){
+        if(!currentWall.lightButton.lightColor){
+          fastForwardFlag=false;
+        }
+        else{
+          fastForwardFlag=true;
+         }
+      }
       if (!collides(this, currentWall)){ // izasli smo iz raskrsca
         currentWall = null;
       }

@@ -59,6 +59,10 @@ class Level {
           if (obj.get("type").equals("wall")){
             Wall wall = new Wall(obj, j);
             walls.add(wall);
+            if(wall.trafficLight){
+             LevelButton bt=wall.lightButton;
+             buttons.add(bt);
+            }
             
             int tmp = int(obj.get("x"));
             int tmpTileX = pxToTileX(tmp);
@@ -75,7 +79,6 @@ class Level {
             Pjesak pjesak = new Pjesak(obj);
             pjesaci.add(pjesak);
             collideObjects.add(pjesak);
-            println(obj.get("name"));
           }
         }
       }
