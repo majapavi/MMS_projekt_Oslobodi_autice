@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="21">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="25">
  <tileset firstgid="1" source="street.tsx"/>
  <layer id="1" name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
@@ -61,7 +61,7 @@
     <property name="turn" value="right"/>
    </properties>
   </object>
-  <object id="13" name="koraljka" type="car" x="512" y="256" width="32" height="32">
+  <object id="13" name="marta" type="car" x="512" y="256" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
@@ -82,16 +82,32 @@
     <property name="turn" value="right"/>
    </properties>
   </object>
- </objectgroup>
- <objectgroup id="4" name="walls" visible="0">
-  <object id="9" name="zid" type="wall" x="55.3333" y="56" width="111.333" height="111.333"/>
-  <object id="17" name="marko" type="car" x="384" y="128" width="32" height="32">
+  <object id="22" name="marko drugi" type="car" x="384" y="128" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>
     <property name="turn" value="right"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="5" name="signs" visible="0">
+  <object id="23" name="a" type="sign" x="448" y="256" width="32" height="32">
+   <properties>
+    <property name="default" value="left"/>
+    <property name="orientation" value="down"/>
+    <property name="turn" value="lr"/>
+   </properties>
+  </object>
+  <object id="24" name="b" type="sign" x="288" y="64" width="32" height="32">
+   <properties>
+    <property name="default" value="left"/>
+    <property name="orientation" value="left"/>
+    <property name="turn" value="lf"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="walls" visible="0">
+  <object id="9" name="zid" type="wall" x="55.3333" y="56" width="111.333" height="111.333"/>
   <object id="18" name="zid" type="wall" x="441.667" y="56.6668" width="111.333" height="111.333"/>
   <object id="19" name="zid" type="wall" x="443.334" y="440.333" width="111.333" height="111.333"/>
   <object id="20" name="zid" type="wall" x="56.3335" y="440.334" width="111.333" height="111.333"/>

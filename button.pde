@@ -45,6 +45,58 @@ class ResetButton extends ImageButton {
 }
 
 
+class TurnButton implements LevelButton {
+  int x, y, w, h, right, down;
+  PImage leftSignImage, rightSignImage, forwardSignImage;
+  Turn cur;
+  Direction orient;
+  TurnSign turnSign;
+  TurnButton(TurnSign turnSign, int x, int y, int w, int h, Direction orient, Turn cur){
+    this.turnSign = turnSign;
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.orient = orient;
+    right = x + w;
+    down = y + h;
+    this.cur = cur;
+    leftSignImage = loadImage("znak_lijevo.png");
+    rightSignImage = loadImage("znak_desno.png");
+  }
+
+  void draw(){
+    pushMatrix();
+    translate(x+w/2,y+h/2);
+    rotate(directionToAngle(orient));
+    translate(-w/2,-h/2);
+    imageMode(CORNER);
+    if (cur == Turn.LEFT){
+      image(leftSignImage, 0, 0);
+    }
+    if (cur == Turn.RIGHT){
+      image(rightSignImage, 0, 0);
+    }
+    popMatrix();
+  }
+
+  void setTurn(Turn newCur){
+    cur = newCur;
+  }
+
+  boolean validCursor(int x, int y){
+    return this.x < x && x < right && this.y < y && y < down;
+  }
+
+  void setLevelRef(int x, int y){
+  }
+
+  void click(){
+    turnSign.change();
+  }
+}
+
+
 abstract class InvisibleCarButton implements CarButton {
   int x, y, w, h, right, down;
   Car car;
