@@ -65,6 +65,11 @@ class Level {
             int tmpTileY = pxToTileY(tmp);
             wallMatrix[tmpTileY][tmpTileX]=j;
           }
+          if (obj.get("type").equals("sign")){
+            TurnSign turnSign = new TurnSign(this, obj);
+            collideObjects.add(turnSign);
+            buttons.add(turnSign.getButton());
+          }
         }
       }
     }

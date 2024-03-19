@@ -343,8 +343,15 @@ class Car implements Collideable {
   }
   
   void collideAction(Collideable obj){
-    level.crashed(this);
-    fastForwardFlag=false;
+    if (obj instanceof Car){
+      level.crashed(this);
+      fastForwardFlag=false;
+    } else if (obj instanceof TurnSign){
+      TurnSign turnSign = (TurnSign) obj;
+      if (turnSign.orient == orient){
+        turn = turnSign.getNew();
+      }
+    }
   }
   
   void animateTurn(float dt){
@@ -393,7 +400,7 @@ class Car implements Collideable {
   void afterTurn(){
     orient=applyTurn(turn,orient);
     angle=directionToAngle(orient);
-    turn=Turn.FORWARD;
+    // turn=Turn.FORWARD;
     // zakomentirati prethodnu liniju za super Koraljku :)
     preciseX=animatedTo.x;
     preciseY=animatedTo.y;
