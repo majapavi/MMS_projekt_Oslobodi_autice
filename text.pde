@@ -5,7 +5,7 @@ class Text {
   String text;
   color textColor;
   
-  Text(float x_, float y_, String text_, int textSize_, color textColor_) {    // predaje se pozicija centra teksta
+  Text(float x_, float y_, String text_, int textSize_, color textColor_) {
     x = x_;
     y = y_;
     textSize = textSize_;
@@ -13,7 +13,8 @@ class Text {
     textColor = textColor_;
   }
 
-  Text(float x_, float y_, String text_, int textSize_) {    // predaje se pozicija centra teksta
+  //konstruktor: boja_teksta-crna
+  Text(float x_, float y_, String text_, int textSize_) {
     x = x_;
     y = y_;
     textSize = textSize_;
@@ -21,11 +22,11 @@ class Text {
     textColor = color(0);
   }
 
-  //defaultna crna boja i velicina teksta 10
-  Text(float x_, float y_, String text_) {    // predaje se pozicija centra teksta
+  //konstruktor: boja_teksta-crna, velicina_teksta-15
+  Text(float x_, float y_, String text_) {
     x = x_;
     y = y_;
-    textSize = 10;
+    textSize = 15;
     text = text_;
     textColor = color(0);
   }

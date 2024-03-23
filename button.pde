@@ -4,6 +4,8 @@ interface Button {
   boolean validCursor(int x, int y);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 abstract class GameButton implements Button {
   int x, y, h, w;
   GameButton(int x, int y, int h, int w){
@@ -63,13 +65,24 @@ abstract class TextButton extends GameButton {
 
 class StartButton extends TextButton {
   StartButton(int x, int y){
-    super(x, y, "START");
+    super(x, y, "Započni igru", 20, 90);
   }
 
   void click(){
-    display.mode = screenState.PLAY;
+    display.state = screenState.PLAY;
   }
 }
+
+class GoToSelectButton extends TextButton {
+  GoToSelectButton(int x, int y){
+    super(x, y, "Izaberi level", 20, 80);
+  }
+
+  void click(){
+    display.changeDisplayState(screenState.LEVEL_SELECT);
+  }
+}
+
 
 class ResetButton extends ImageButton {
   ResetButton(int x, int y){
@@ -81,7 +94,7 @@ class ResetButton extends ImageButton {
   }
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 interface LevelButton extends Button {
   void setLevelRef(int x, int y);

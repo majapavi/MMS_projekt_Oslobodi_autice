@@ -1,16 +1,16 @@
 String firstLevel = "lvl.tmx";
 
 Level cur;
-String nextLevelName;            // current level
-boolean drawLevel = false;       // flag za crtanje levela na ekran
-boolean startLevelFlag = false;  // aktivan kad se treba ucitati nivo nextLevelName (pokretanje, reset)
+String nextLevelName;                        // current level
+boolean drawLevel = false;                   // flag za crtanje levela na ekran
+boolean startLevelFlag = false;              // aktivan kad se treba ucitati nivo nextLevelName (pokretanje, reset)
 
 Display display;
 
 PImage carImage;
 ResetButton reset;
 
-ArrayList<Button> buttons;      // svi gumbi, resetira se skrz kod novog levela
+ArrayList<Button> buttons;                    // svi gumbi, resetira se skrz kod novog levela
 boolean lastMousePressed = false;
 
 int lastTime; // u milisekundama
@@ -20,13 +20,13 @@ void setNextLevel(String filename){
   nextLevelName = filename;
 }
 
-void startLevel(){                          // "svaka susa poziva", na klik, reset/pokretanje
+void startLevel(){                            // "svaka susa poziva", na klik, reset/pokretanje
   startLevelFlag = true;
 }
 
-void realStartLevel(){                      // interna funkcija, stanje
+void realStartLevel(){                        // interna funkcija, stanje
   if (cur != null){
-    buttons.removeAll(cur.getButtons());
+    buttons.removeAll(cur.getButtons());    
   }
   cur = new Level(this, nextLevelName);
   buttons.addAll(cur.getButtons());
@@ -34,9 +34,10 @@ void realStartLevel(){                      // interna funkcija, stanje
   startLevelFlag = false;
 }
 
-void finishLevel(){                        // poziva se kad su svi autici izvan nivoa
+void finishLevel(){                          // poziva se kad su svi autici izvan nivoa
   println("BRAVO");
-  exit();
+  display.changeDisplayState(screenState.END);
+//  exit();
 }
 
 void setup(){
