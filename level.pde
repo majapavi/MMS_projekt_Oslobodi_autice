@@ -35,13 +35,7 @@ class Level {
       if (type.equals("objectgroup")){
         StringDict objs[] = map.getObjects(i);
         for (StringDict obj : objs){
-          int j=int(obj.get("name"));
-          if (obj.get("type").equals("car")){
-            Car car = new Car(this, obj, j);
-            cars.add(car);
-            collideObjects.add(car);
-            buttons.addAll(car.getButtons());
-          }
+          String j=obj.get("name");
           if (obj.get("type").equals("light")){
             Light light=new Light(obj);
             lights.add(light);
@@ -61,6 +55,12 @@ class Level {
             Pjesak pjesak = new Pjesak(obj);
             pjesaci.add(pjesak);
             collideObjects.add(pjesak);
+          }
+          if (obj.get("type").equals("car")){
+            Car car = new Car(this, obj, int(j));
+            cars.add(car);
+            collideObjects.add(car);
+            buttons.addAll(car.getButtons());
           }
         }
       }

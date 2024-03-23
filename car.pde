@@ -151,10 +151,10 @@ class Light implements Collideable{
 
 class Wall implements Collideable{
   int x,y,w,h;
-  int ordNumber;
+  String ordNumber;
   boolean forbidden;
   Direction forbiddenDirection;
-  Wall(StringDict attrib, int num){
+  Wall(StringDict attrib, String num){
     x = int(attrib.get("x"));
     y = int(attrib.get("y"));
     w = int(attrib.get("width"));
@@ -233,7 +233,7 @@ class Car implements Collideable {
     if (tmp == null) turn = Turn.FORWARD;
     else turn = getTurn(tmp);
     currentWall = null;
-    currentLight=null;
+    currentLight = null;
   }
   
   void draw(){
@@ -309,7 +309,6 @@ class Car implements Collideable {
   }
   
   void update(float dt){
-    if (fastForwardFlag) fastForward(dt);
     if (animateFlag) animateTurn(dt);
     x = int(preciseX);
     y = int(preciseY);
@@ -372,6 +371,8 @@ class Car implements Collideable {
         currentWall = null;
       }
     }
+    
+    if (fastForwardFlag) fastForward(dt);
 
     updateButtons();
 
@@ -424,10 +425,23 @@ class Car implements Collideable {
   }
   
   void collideAction(Collideable obj){
-    if (obj instanceof Car || obj instanceof Pjesak){
+    if (obj instanceof Car){
+      lives-=0.5;
+      if(lives==0){
+        println("GUBITAK");
+        exit();
+      }
       level.crashed(this);
       fastForwardFlag=false;
-    } else if (obj instanceof TurnSign){
+    }  else if (obj instanceof Pjesak){
+        lives-=1;
+        if(lives==0){
+          println("Izgubili ste sve zivote!");
+          exit();
+        }
+        level.crashed(this);
+        fastForwardFlag=false;
+    }  else if (obj instanceof TurnSign){
       TurnSign turnSign = (TurnSign) obj;
       if (turnSign.orient == orient){
         turn = turnSign.getNew();
