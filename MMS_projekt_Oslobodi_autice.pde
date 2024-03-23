@@ -1,16 +1,16 @@
 String firstLevel = "lvl.tmx";
 
 Level cur;
-String nextLevelName;
-boolean drawLevel = false; // zamijeniti s ozbiljnim main menu kodom!
-boolean startLevelFlag = false;
+String nextLevelName;            // current level
+boolean drawLevel = false;       // flag za crtanje levela na ekran
+boolean startLevelFlag = false;  // aktivan kad se treba ucitati nivo nextLevelName (pokretanje, reset)
 
 Display display;
 
 PImage carImage;
 ResetButton reset;
 
-ArrayList<Button> buttons;
+ArrayList<Button> buttons;      // svi gumbi, resetira se skrz kod novog levela
 boolean lastMousePressed = false;
 
 int lastTime; // u milisekundama
@@ -20,11 +20,11 @@ void setNextLevel(String filename){
   nextLevelName = filename;
 }
 
-void startLevel(){
+void startLevel(){                          // "svaka susa poziva", na klik, reset/pokretanje
   startLevelFlag = true;
 }
 
-void realStartLevel(){
+void realStartLevel(){                      // interna funkcija, stanje
   if (cur != null){
     buttons.removeAll(cur.getButtons());
   }
@@ -34,7 +34,7 @@ void realStartLevel(){
   startLevelFlag = false;
 }
 
-void finishLevel(){
+void finishLevel(){                        // poziva se kad su svi autici izvan nivoa
   println("BRAVO");
   exit();
 }
@@ -48,10 +48,10 @@ void setup(){
   setNextLevel(firstLevel);
   startLevel();
   lastTime = millis();
-  display = screenState.START;
+  display = new Display();
 }
 
-void onClick(int x, int y){
+void onClick(int x, int y){                  // pomocna funkcija za klikanje misa, da se ne klikne 10000 puta
   for (Button button : buttons){
     if (button.validCursor(x, y)){
       button.click();
@@ -70,20 +70,13 @@ void draw(){
   deltaTime = float(curTime - lastTime) / 1000.0;
   lastTime = curTime;
 
-  // update
-  if (drawLevel){
-    cur.update(deltaTime);
-  }
-
-  // crtaj
-  background(35);
-  if (drawLevel){
-    cur.draw();
-  }
   for (Button button : buttons){
     button.draw();
   }
   if (startLevelFlag){
     realStartLevel();
   }
+
+  display.showDisplay();
+
 }

@@ -4,60 +4,60 @@ interface Button {
   boolean validCursor(int x, int y);
 }
 
-interface LevelButton extends Button {
-  void setLevelRef(int x, int y);
-}
-
-interface CarButton extends LevelButton {
-  void setCarPos(int x, int y);
-  void setCarDirection(Direction dir);
-}
-
-abstract class ImageButton implements Button {
-  int x, y, right, down;
-  PImage img;
-  ImageButton(int x, int y, String filename){
+abstract class GameButton implements Button {
+  int x, y, h, w;
+  GameButton(int x, int y, int h, int w){
     this.x = x;
     this.y = y;
-    img = loadImage(filename);
-    right = x + img.width;
-    down = y + img.height;
+    this.h = h;
+    this.w = w;
+    
+    buttons.add(this);
+  }
+  
+  boolean validCursor(int x, int y){
+    return this.x < x && x < this.x + w && this.y < y && y < this.y + h;
+  }
+}
+
+abstract class ImageButton extends GameButton {
+  PImage img;
+  ImageButton(int x, int y, PImage img){
+    super(x, y, img.width, img.height);
+    this.img = img;
   }
   
   void draw(){
     image(img, x, y);
   }
-
-  boolean validCursor(int x, int y){
-    return this.x < x && x < right && this.y < y && y < down;
-  }
 }
 
-// Aplikacijski gumb sa tekstom
-abstract class TextButton implements Button {
-  int x, y, right, down, h, w;
+abstract class TextButton extends GameButton {
   Text text;
   color buttonColor;
   
-  TextButton(int x, int y, String text){
-    this.x = x;
-    this.y = y;
+  TextButton(int x, int y, String text, int h, int w, color buttonColor){
+    super(x, y, h, w);
     this.text = new Text(this.x + this.w / 2, this.y + this.h / 2, text);
-    h = 50;
-    w = 80;
-    right = x + w;
-    down = y + h;
-    buttonColor = 256;
+    this.buttonColor = buttonColor;
   }
   
+  TextButton(int x, int y, String text, int h, int w){
+    super(x, y, h, w);
+    this.text = new Text(this.x + this.w / 2, this.y + this.h / 2, text);
+    this.buttonColor = 255;
+  }
+
+  TextButton(int x, int y, String text){
+    super(x, y, 20, 40);
+    this.text = new Text(this.x + this.w / 2, this.y + this.h / 2, text);
+    this.buttonColor = 255;
+  }
+
   void draw() {
     fill(buttonColor);
     rect(x, y, w, h);
     this.text.ispisiText();
-  }
-
-  boolean validCursor(int x, int y){
-    return this.x < x && x < right && this.y < y && y < down;
   }
 }
 
@@ -73,7 +73,7 @@ class StartButton extends TextButton {
 
 class ResetButton extends ImageButton {
   ResetButton(int x, int y){
-    super(x, y, "dummy.png");
+    super(x, y, loadImage("dummy.png"));
   }
 
   void click(){
@@ -81,6 +81,16 @@ class ResetButton extends ImageButton {
   }
 }
 
+
+
+interface LevelButton extends Button {
+  void setLevelRef(int x, int y);
+}
+
+interface CarButton extends LevelButton {
+  void setCarPos(int x, int y);
+  void setCarDirection(Direction dir);
+}
 
 abstract class InvisibleCarButton implements CarButton {
   int x, y, w, h, right, down;
@@ -111,7 +121,6 @@ abstract class InvisibleCarButton implements CarButton {
   void setCarDirection(Direction dir){
   }
 }
-
 
 class CarForwardButton extends InvisibleCarButton {
   CarForwardButton(Car car){
