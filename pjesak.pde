@@ -4,6 +4,7 @@ class Pjesak implements Collideable{
   Direction dir;
   float path=0;
   int speed=1;
+  int delay;
   
   Pjesak(StringDict attrib){
    x = int(attrib.get("x"))+10;
@@ -12,6 +13,9 @@ class Pjesak implements Collideable{
    h=25;
    pjesakImage = loadImage("pjesak.png");
    dir = getDirection(attrib.get("direction"));
+   if(dir==Direction.DOWN || dir==Direction.UP) delay=1;
+   else delay=0;
+   path-=delay;
   }
   
   void draw(){

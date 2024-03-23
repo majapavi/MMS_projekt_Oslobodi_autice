@@ -205,6 +205,7 @@ class Car implements Collideable {
   float turningAngle;
   boolean finish;
   boolean fastForwardFlag = false, animateFlag = false; 
+  boolean startingPosition;
   Wall currentWall;
   Light currentLight;
   PVector animatedFrom, animatedTo;
@@ -229,11 +230,22 @@ class Car implements Collideable {
     buttons.add(new CarForwardButton(this));
     updateButtons();
     finish = false;
+    startingPosition = true;
     String tmp = attrib.get("turn");
     if (tmp == null) turn = Turn.FORWARD;
     else turn = getTurn(tmp);
-    currentWall = null;
-    currentLight = null;
+    for (Wall wall : level.walls){
+      if(collides(this,wall)){
+        currentWall=wall;
+        break;
+      } else currentWall=null;
+    }
+    for (Light light : level.lights){
+      if(collides(this,light)){
+        currentLight=light;
+        break;
+      } else currentLight = null;
+    }
   }
   
   void draw(){
@@ -313,7 +325,7 @@ class Car implements Collideable {
     x = int(preciseX);
     y = int(preciseY);
     
-    if(currentLight==null){
+    if(currentLight==null && !startingPosition){
       for(Light light : level.lights){
         if(collides(this,light)){
            if(orient==light.orient){
@@ -325,19 +337,21 @@ class Car implements Collideable {
            }
         }
       }
-    } else {
-        if(!currentLight.lightButton.lightColor){
-          fastForwardFlag=false;
+    } else if (currentLight!=null){
+        if(!startingPosition){
+          if(!currentLight.lightButton.lightColor){
+            fastForwardFlag=false;
+          }
+          else{
+            fastForwardFlag=true;
+           }
+          if (!collides(this, currentLight)){
+            currentLight = null;
+          }
         }
-        else{
-          fastForwardFlag=true;
-         }
-      if (!collides(this, currentLight)){
-        currentLight = null;
       }
-    }
     //verzija sa klasom Wall
-    if (currentWall == null){
+    if (currentWall == null && !startingPosition){
       for (Wall wall : level.walls){
         if(collides(this,wall)){ // usli smo u raskrsce
           currentWall = wall;
@@ -366,13 +380,16 @@ class Car implements Collideable {
           turningAngle = angle;
          }
       }
-    } else {
+    } else if(currentWall!=null){
       if (!collides(this, currentWall)){ // izasli smo iz raskrsca
         currentWall = null;
       }
     }
     
-    if (fastForwardFlag) fastForward(dt);
+    if (fastForwardFlag){
+      startingPosition=false;
+      fastForward(dt);
+    }
 
     updateButtons();
 

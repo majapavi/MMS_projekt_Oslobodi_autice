@@ -1,4 +1,4 @@
-String firstLevel = "lvl2.tmx";
+String firstLevel = "lvl2alt.tmx";
 
 Level cur;
 String nextLevelName;
