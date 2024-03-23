@@ -110,13 +110,50 @@ boolean collides(Collideable a, Collideable b){
   return false;
 }
 
+class Light implements Collideable{
+  int x,y,w,h;
+  LightButton lightButton;
+  Direction orient;
+  Light(StringDict attrib){
+    x = int(attrib.get("x"));
+    y = int(attrib.get("y"));
+    w = int(attrib.get("width"));
+    h = int(attrib.get("height"));
+    orient = getDirection(attrib.get("direction"));
+    if(orient==Direction.DOWN || orient==Direction.LEFT){
+      lightButton=new LightButton(x+7,y+7,18,18,false);
+    }
+    if(orient==Direction.UP || orient==Direction.RIGHT){
+      lightButton=new LightButton(x+w-25,y+h-25,18,18,false);
+    }
+  }
+  
+  int getX(){
+    return x;
+  }
+
+  int getY(){
+    return y;
+  }
+
+  int getW(){
+    return w;
+  }
+
+  int getH(){
+    return h;
+  }
+
+  boolean canCollide(){
+    return true;
+  }
+}
+
 class Wall implements Collideable{
   int x,y,w,h;
   int ordNumber;
   boolean forbidden;
-  boolean trafficLight;
   Direction forbiddenDirection;
-  LightButton lightButton;
   Wall(StringDict attrib, int num){
     x = int(attrib.get("x"));
     y = int(attrib.get("y"));
@@ -128,13 +165,6 @@ class Wall implements Collideable{
     } else {
       forbidden = true;
       forbiddenDirection = getDirection(tmp);
-    }
-    tmp=attrib.get("light");
-    if(tmp==null){
-      trafficLight=false;
-    } else {
-      trafficLight=true;
-      lightButton=new LightButton(x+w-8,y+h-8,18,18,false);
     }
     ordNumber = num;
   }
@@ -176,6 +206,7 @@ class Car implements Collideable {
   boolean finish;
   boolean fastForwardFlag = false, animateFlag = false; 
   Wall currentWall;
+  Light currentLight;
   PVector animatedFrom, animatedTo;
   float animationProgress, angleFrom, angleTo;
   Car(Level level, StringDict attrib, int number){
@@ -202,6 +233,7 @@ class Car implements Collideable {
     if (tmp == null) turn = Turn.FORWARD;
     else turn = getTurn(tmp);
     currentWall = null;
+    currentLight=null;
   }
   
   void draw(){
@@ -216,6 +248,8 @@ class Car implements Collideable {
         image(level.leftArrowImage, 0, 0, w, h);
       } else if (turn == Turn.RIGHT){
         image(level.rightArrowImage, 0, 0, w, h);
+      } else if (turn == Turn.FORWARD){
+        image(level.upArrowImage, 0, 0, w, h);
       }
       popMatrix();
     }
@@ -267,6 +301,8 @@ class Car implements Collideable {
         image(level.leftArrowImage, 0, 0, w, h);
       } else if (turn == Turn.RIGHT){
         image(level.rightArrowImage, 0, 0, w, h);
+      } else if (turn == Turn.FORWARD){
+        image(level.upArrowImage, 0, 0, w, h);
       }
       popMatrix();
     }
@@ -277,20 +313,36 @@ class Car implements Collideable {
     if (animateFlag) animateTurn(dt);
     x = int(preciseX);
     y = int(preciseY);
-
+    
+    if(currentLight==null){
+      for(Light light : level.lights){
+        if(collides(this,light)){
+           if(orient==light.orient){
+             if(!light.lightButton.lightColor){
+                  fastForwardFlag=false;
+                } else{
+                  fastForwardFlag=true;
+                }
+           }
+        }
+      }
+    } else {
+        if(!currentLight.lightButton.lightColor){
+          fastForwardFlag=false;
+        }
+        else{
+          fastForwardFlag=true;
+         }
+      if (!collides(this, currentLight)){
+        currentLight = null;
+      }
+    }
     //verzija sa klasom Wall
     if (currentWall == null){
       for (Wall wall : level.walls){
         if(collides(this,wall)){ // usli smo u raskrsce
           currentWall = wall;
-          if(wall.trafficLight){
-            if(!wall.lightButton.lightColor){
-              fastForwardFlag=false;
-            }
-            else{
-              fastForwardFlag=true;
-            }
-          }
+          
           if(turn==Turn.FORWARD) break;
           
           if (wall.forbidden && applyTurn(turn, orient) == wall.forbiddenDirection)
@@ -313,17 +365,9 @@ class Car implements Collideable {
           animateFlag = true;
           fastForwardFlag = false;
           turningAngle = angle;
-        }
-      }
-    } else {
-      if(currentWall.trafficLight){
-        if(!currentWall.lightButton.lightColor){
-          fastForwardFlag=false;
-        }
-        else{
-          fastForwardFlag=true;
          }
       }
+    } else {
       if (!collides(this, currentWall)){ // izasli smo iz raskrsca
         currentWall = null;
       }

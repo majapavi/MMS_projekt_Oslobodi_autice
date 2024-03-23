@@ -6,12 +6,11 @@ class Level {
   int mapWidth, mapHeight; // broj tile-ova u nivou
   ArrayList<Car> cars;
   ArrayList<Wall> walls;
+  ArrayList<Light> lights;
   ArrayList<LevelButton> buttons;
   ArrayList<Pjesak> pjesaci;
-  int[][] wallMatrix;
-  int[][] tileMatrix;
   ArrayList<Collideable> collideObjects;
-  PImage leftArrowImage, rightArrowImage;
+  PImage leftArrowImage, rightArrowImage, upArrowImage;
   Level(PApplet game, String filename){
     map = new Ptmx(game, filename);
     
@@ -24,24 +23,11 @@ class Level {
     mapHeight = int(mapSize.y);
     leftArrowImage = loadImage("leftarrow.png");
     rightArrowImage = loadImage("rightarrow.png");
-    //matrica prati gdje se nalazi zid (pomoc pri skretanju auta)
-    //u ovoj verziji umjesto nje koristi se klasa Wall
-    wallMatrix = new int[mapHeight][mapWidth];
-    for (int i=0;i<mapHeight;i++){
-      for (int j=0;j<mapWidth;j++){
-        wallMatrix[i][j]=0; 
-      }
-    }
-    //matrica prati gdje je cesta
-    tileMatrix = new int[mapHeight][mapWidth];
-    for (int i=0;i<mapHeight;i++){
-      for (int j=0;j<mapWidth;j++){
-        tileMatrix[i][j]=map.getTileIndex(1,j,i); 
-      }
-    }
+    upArrowImage = loadImage("uparrow.png");
     collideObjects = new ArrayList<Collideable>();
     cars = new ArrayList<Car>();
     walls = new ArrayList<Wall>();
+    lights = new ArrayList<Light>();
     buttons = new ArrayList<LevelButton>();
     pjesaci = new ArrayList<Pjesak>();
     for (int i = 0;map.getType(i)!=null;i++){
@@ -56,19 +42,15 @@ class Level {
             collideObjects.add(car);
             buttons.addAll(car.getButtons());
           }
+          if (obj.get("type").equals("light")){
+            Light light=new Light(obj);
+            lights.add(light);
+            LevelButton bt=light.lightButton;
+            buttons.add(bt);
+          }
           if (obj.get("type").equals("wall")){
             Wall wall = new Wall(obj, j);
             walls.add(wall);
-            if(wall.trafficLight){
-             LevelButton bt=wall.lightButton;
-             buttons.add(bt);
-            }
-            
-            int tmp = int(obj.get("x"));
-            int tmpTileX = pxToTileX(tmp);
-            tmp = int(obj.get("y"));
-            int tmpTileY = pxToTileY(tmp);
-            wallMatrix[tmpTileY][tmpTileX]=j;
           }
           if (obj.get("type").equals("sign")){
             TurnSign turnSign = new TurnSign(this, obj);
