@@ -1,9 +1,10 @@
-String firstLevel = "city.tmx";
+String firstLevel = "lvl2alt.tmx";
 
 Level cur;
 String nextLevelName;
 boolean drawLevel = false; // zamijeniti s ozbiljnim main menu kodom!
 boolean startLevelFlag = false;
+float lives = 3;
 
 PImage carImage;
 ResetButton reset;
@@ -80,6 +81,9 @@ void draw(){
   for (Button button : buttons){
     button.draw();
   }
+  textSize(40);
+  fill(0);
+  text(lives,608,94);
   if (startLevelFlag){
     realStartLevel();
   }

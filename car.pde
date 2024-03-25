@@ -18,6 +18,16 @@ Direction getDirection(String name){
   return Direction.UP;
 }
 
+Direction oppositeDirection(Direction dir){
+  switch (dir){
+    case UP: return Direction.DOWN;
+    case RIGHT: return Direction.LEFT;
+    case DOWN: return Direction.UP;
+    case LEFT: return Direction.RIGHT;
+    default: return Direction.UP;
+  }
+}
+
 Direction leftTurnDirection(Direction dir){
   switch (dir){
     case UP: return Direction.LEFT;
@@ -80,7 +90,7 @@ interface Collideable {
 }
 
 
-boolean pointInColliddeable(int x, int y, Collideable b){
+boolean pointInCollideable(int x, int y, Collideable b){
   return (b.getX() <= x && x <= b.getX() + b.getW()
        && b.getY() <= y && y <= b.getY() + b.getH());
 }
@@ -88,24 +98,63 @@ boolean pointInColliddeable(int x, int y, Collideable b){
 boolean collides(Collideable a, Collideable b){
   if (!a.canCollide() || !b.canCollide()) return false;
 
-  if (pointInColliddeable(a.getX(), a.getY(), b)) return true;
-  if (pointInColliddeable(a.getX() + a.getW(), a.getY(), b)) return true;
-  if (pointInColliddeable(a.getX(), a.getY() + a.getH(), b)) return true;
-  if (pointInColliddeable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return true;
+  if (pointInCollideable(a.getX(), a.getY(), b)) return true;
+  if (pointInCollideable(a.getX() + a.getW(), a.getY(), b)) return true;
+  if (pointInCollideable(a.getX(), a.getY() + a.getH(), b)) return true;
+  if (pointInCollideable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return true;
 
-  if (pointInColliddeable(b.getX(), b.getY(), a)) return true;
-  if (pointInColliddeable(b.getX() + b.getW(), b.getY(), a)) return true;
-  if (pointInColliddeable(b.getX(), b.getY() + b.getH(), a)) return true;
-  if (pointInColliddeable(b.getX() + b.getW(), b.getY() + b.getH(), a)) return true;
+  if (pointInCollideable(b.getX(), b.getY(), a)) return true;
+  if (pointInCollideable(b.getX() + b.getW(), b.getY(), a)) return true;
+  if (pointInCollideable(b.getX(), b.getY() + b.getH(), a)) return true;
+  if (pointInCollideable(b.getX() + b.getW(), b.getY() + b.getH(), a)) return true;
   return false;
+}
+
+class Light implements Collideable{
+  int x,y,w,h;
+  LightButton lightButton;
+  Direction orient;
+  Light(StringDict attrib){
+    x = int(attrib.get("x"));
+    y = int(attrib.get("y"));
+    w = int(attrib.get("width"));
+    h = int(attrib.get("height"));
+    orient = getDirection(attrib.get("direction"));
+    if(orient==Direction.DOWN || orient==Direction.LEFT){
+      lightButton=new LightButton(x+7,y+7,18,18,false);
+    }
+    if(orient==Direction.UP || orient==Direction.RIGHT){
+      lightButton=new LightButton(x+w-25,y+h-25,18,18,false);
+    }
+  }
+  
+  int getX(){
+    return x;
+  }
+
+  int getY(){
+    return y;
+  }
+
+  int getW(){
+    return w;
+  }
+
+  int getH(){
+    return h;
+  }
+
+  boolean canCollide(){
+    return true;
+  }
 }
 
 class Wall implements Collideable{
   int x,y,w,h;
-  int ordNumber;
+  String ordNumber;
   boolean forbidden;
   Direction forbiddenDirection;
-  Wall(StringDict attrib, int num){
+  Wall(StringDict attrib, String num){
     x = int(attrib.get("x"));
     y = int(attrib.get("y"));
     w = int(attrib.get("width"));
@@ -156,7 +205,9 @@ class Car implements Collideable {
   float turningAngle;
   boolean finish;
   boolean fastForwardFlag = false, animateFlag = false; 
+  boolean startingPosition;
   Wall currentWall;
+  Light currentLight;
   PVector animatedFrom, animatedTo;
   float animationProgress, angleFrom, angleTo;
   Car(Level level, StringDict attrib, int number){
@@ -179,10 +230,22 @@ class Car implements Collideable {
     buttons.add(new CarForwardButton(this));
     updateButtons();
     finish = false;
+    startingPosition = true;
     String tmp = attrib.get("turn");
     if (tmp == null) turn = Turn.FORWARD;
     else turn = getTurn(tmp);
-    currentWall = null;
+    for (Wall wall : level.walls){
+      if(collides(this,wall)){
+        currentWall=wall;
+        break;
+      } else currentWall=null;
+    }
+    for (Light light : level.lights){
+      if(collides(this,light)){
+        currentLight=light;
+        break;
+      } else currentLight = null;
+    }
   }
   
   void draw(){
@@ -197,6 +260,8 @@ class Car implements Collideable {
         image(level.leftArrowImage, 0, 0, w, h);
       } else if (turn == Turn.RIGHT){
         image(level.rightArrowImage, 0, 0, w, h);
+      } else if (turn == Turn.FORWARD){
+        image(level.upArrowImage, 0, 0, w, h);
       }
       popMatrix();
     }
@@ -248,25 +313,54 @@ class Car implements Collideable {
         image(level.leftArrowImage, 0, 0, w, h);
       } else if (turn == Turn.RIGHT){
         image(level.rightArrowImage, 0, 0, w, h);
+      } else if (turn == Turn.FORWARD){
+        image(level.upArrowImage, 0, 0, w, h);
       }
       popMatrix();
     }
   }
   
   void update(float dt){
-    if (fastForwardFlag) fastForward(dt);
     if (animateFlag) animateTurn(dt);
     x = int(preciseX);
     y = int(preciseY);
-
+    
+    if(currentLight==null && !startingPosition){
+      for(Light light : level.lights){
+        if(collides(this,light)){
+           if(orient==light.orient){
+             if(!light.lightButton.lightColor){
+                  fastForwardFlag=false;
+                } else{
+                  fastForwardFlag=true;
+                }
+           }
+        }
+      }
+    } else if (currentLight!=null){
+        if(!startingPosition){
+          if(!currentLight.lightButton.lightColor){
+            fastForwardFlag=false;
+          }
+          else{
+            fastForwardFlag=true;
+           }
+          if (!collides(this, currentLight)){
+            currentLight = null;
+          }
+        }
+      }
     //verzija sa klasom Wall
-    if (currentWall == null){
+    if (currentWall == null && !startingPosition){
       for (Wall wall : level.walls){
-        if(turn==Turn.FORWARD) break;
         if(collides(this,wall)){ // usli smo u raskrsce
           currentWall = wall;
+          
+          if(turn==Turn.FORWARD) break;
+          
           if (wall.forbidden && applyTurn(turn, orient) == wall.forbiddenDirection)
             continue;
+          
           
           animatedFrom = new PVector(preciseX+w/2, preciseY+h/2);
           if((orient==Direction.UP && turn==Turn.LEFT)||
@@ -284,12 +378,17 @@ class Car implements Collideable {
           animateFlag = true;
           fastForwardFlag = false;
           turningAngle = angle;
-        }
+         }
       }
-    } else {
+    } else if(currentWall!=null){
       if (!collides(this, currentWall)){ // izasli smo iz raskrsca
         currentWall = null;
       }
+    }
+    
+    if (fastForwardFlag){
+      startingPosition=false;
+      fastForward(dt);
     }
 
     updateButtons();
@@ -344,9 +443,22 @@ class Car implements Collideable {
   
   void collideAction(Collideable obj){
     if (obj instanceof Car){
+      lives-=0.5;
+      if(lives==0){
+        println("GUBITAK");
+        exit();
+      }
       level.crashed(this);
       fastForwardFlag=false;
-    } else if (obj instanceof TurnSign){
+    }  else if (obj instanceof Pjesak){
+        lives-=1;
+        if(lives==0){
+          println("Izgubili ste sve zivote!");
+          exit();
+        }
+        level.crashed(this);
+        fastForwardFlag=false;
+    }  else if (obj instanceof TurnSign){
       TurnSign turnSign = (TurnSign) obj;
       if (turnSign.orient == orient){
         turn = turnSign.getNew();
@@ -400,7 +512,7 @@ class Car implements Collideable {
   void afterTurn(){
     orient=applyTurn(turn,orient);
     angle=directionToAngle(orient);
-    // turn=Turn.FORWARD;
+    turn=Turn.FORWARD;
     // zakomentirati prethodnu liniju za super Koraljku :)
     preciseX=animatedTo.x;
     preciseY=animatedTo.y;

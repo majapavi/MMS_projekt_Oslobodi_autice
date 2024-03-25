@@ -44,6 +44,43 @@ class ResetButton extends ImageButton {
   }
 }
 
+class LightButton implements LevelButton {
+  int x,y,w,h;
+  PImage img;
+  boolean lightColor;
+  LightButton(int x, int y, int w, int h, boolean clr){
+      this.x=x;
+      this.y=y;
+      this.w = w;
+      this.h = h;
+      lightColor=clr;
+      if(clr) img=loadImage("green.png");
+      else img=loadImage("red.png");
+  }
+  
+  void draw(){
+    image(img, x, y, w, h);
+  }
+
+  void click(){
+    changeColor();
+  }
+  
+  void changeColor(){
+    lightColor=!lightColor;
+    if(lightColor) this.img=loadImage("green.png");
+    else this.img=loadImage("red.png"); 
+  }
+  
+  boolean validCursor(int x, int y){
+    return this.x < x && x < this.x+w && this.y < y && y < this.y+h;
+  }
+  
+  void setLevelRef(int x, int y){
+    
+  }
+}
+
 
 class TurnButton implements LevelButton {
   int x, y, w, h, right, down;
@@ -61,8 +98,8 @@ class TurnButton implements LevelButton {
     right = x + w;
     down = y + h;
     this.cur = cur;
-    leftSignImage = loadImage("znak_lijevo.png");
-    rightSignImage = loadImage("znak_desno.png");
+    leftSignImage = loadImage("leftsign.png");
+    rightSignImage = loadImage("rightsign.png");
   }
 
   void draw(){
