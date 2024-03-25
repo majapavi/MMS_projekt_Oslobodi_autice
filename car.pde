@@ -1,3 +1,5 @@
+boolean DEBUG_COLLISION = false;
+
 enum Direction {
   UP, RIGHT, DOWN, LEFT
 }
@@ -212,8 +214,8 @@ class Car implements Collideable {
   float animationProgress, angleFrom, angleTo;
   Car(Level level, StringDict attrib, int number){
     this.level = level;
-    x = int(attrib.get("x"))+8;
-    y = int(attrib.get("y"));
+    x = level.centerX(int(attrib.get("x")));
+    y = level.centerY(int(attrib.get("y")));
     preciseX = x;
     preciseY = y;
     w = 16;
@@ -249,12 +251,15 @@ class Car implements Collideable {
   }
   
   void draw(){
+    if (DEBUG_COLLISION){
+      color(255, 255, 255);
+      rect(getX(), getY(), getW(), getH());
+    }
     if(!animateFlag){
       pushMatrix();
-      translate(x+w/2,y+h/2);
+      translate(x,y);
       rotate(angle);
-      translate(-w/2,-h/2);
-      imageMode(CORNER);
+      imageMode(CENTER);
       image(img, 0, 0, w, h);
       if (turn == Turn.LEFT){
         image(level.leftArrowImage, 0, 0, w, h);
@@ -263,6 +268,7 @@ class Car implements Collideable {
       } else if (turn == Turn.FORWARD){
         image(level.upArrowImage, 0, 0, w, h);
       }
+      imageMode(CORNER);
       popMatrix();
     }
     if(animateFlag){
@@ -316,6 +322,7 @@ class Car implements Collideable {
       } else if (turn == Turn.FORWARD){
         image(level.upArrowImage, 0, 0, w, h);
       }
+      imageMode(CORNER);
       popMatrix();
     }
   }
@@ -362,19 +369,19 @@ class Car implements Collideable {
             continue;
           
           
-          animatedFrom = new PVector(preciseX+w/2, preciseY+h/2);
+          animatedFrom = new PVector(getX()+getW()/2, getY()+getH()/2);
           if((orient==Direction.UP && turn==Turn.LEFT)||
              (orient==Direction.LEFT && turn==Turn.RIGHT))
-              animatedTo = new PVector(preciseX-level.tileWidth,preciseY-level.tileHeight);
+              animatedTo = new PVector(getX()-level.tileWidth,getY()-level.tileHeight);
           if((orient==Direction.UP && turn==Turn.RIGHT)||
              (orient==Direction.RIGHT && turn==Turn.LEFT))
-              animatedTo = new PVector(preciseX+level.tileWidth,preciseY-level.tileHeight);
+              animatedTo = new PVector(getX()+level.tileWidth,getY()-level.tileHeight);
           if((orient==Direction.DOWN && turn==Turn.LEFT)||
              (orient==Direction.RIGHT && turn==Turn.RIGHT))
-              animatedTo = new PVector(preciseX+level.tileWidth,preciseY+level.tileHeight);
+              animatedTo = new PVector(getX()+level.tileWidth,getY()+level.tileHeight);
           if((orient==Direction.DOWN && turn==Turn.RIGHT)||
              (orient==Direction.LEFT && turn==Turn.LEFT))
-              animatedTo = new PVector(preciseX-level.tileWidth,preciseY+level.tileHeight);
+              animatedTo = new PVector(getX()-level.tileWidth,getY()+level.tileHeight);
           animateFlag = true;
           fastForwardFlag = false;
           turningAngle = angle;
@@ -399,19 +406,23 @@ class Car implements Collideable {
   }
 
   int getX(){
-    return x;
+    return x - getW() / 2;
   }
 
   int getY(){
-    return y;
+    return y - getH() / 2;
   }
 
   int getW(){
-    return w;
+    if (orient == Direction.UP || orient == Direction.DOWN)
+      return w;
+    return h;
   }
 
   int getH(){
-    return h;
+    if (orient == Direction.UP || orient == Direction.DOWN)
+      return h;
+    return w;
   }
 
   boolean canCollide(){
@@ -421,7 +432,7 @@ class Car implements Collideable {
 
   private void updateButtons(){
     for (CarButton button : buttons){
-      button.setCarPos(x, y);
+      button.setCarPos(getX(), getY(), getW(), getH());
     }
   }
 
@@ -510,12 +521,12 @@ class Car implements Collideable {
   }
   
   void afterTurn(){
+    preciseX=animatedTo.x + getW() / 2;
+    preciseY=animatedTo.y + getH() / 2;
     orient=applyTurn(turn,orient);
     angle=directionToAngle(orient);
     turn=Turn.FORWARD;
     // zakomentirati prethodnu liniju za super Koraljku :)
-    preciseX=animatedTo.x;
-    preciseY=animatedTo.y;
     animateFlag = false;
     fastForwardFlag = true;
     turningAngle=0;

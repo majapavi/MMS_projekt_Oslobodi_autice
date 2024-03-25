@@ -9,7 +9,7 @@ interface LevelButton extends Button {
 }
 
 interface CarButton extends LevelButton {
-  void setCarPos(int x, int y);
+  void setCarPos(int x, int y, int w, int h);
   void setCarDirection(Direction dir);
 }
 
@@ -153,9 +153,11 @@ abstract class InvisibleCarButton implements CarButton {
   void setLevelRef(int x, int y){
   }
 
-  void setCarPos(int x, int y){
+  void setCarPos(int x, int y, int w, int h){
     this.x = x;
     this.y = y;
+    this.w = w;
+    this.h = h;
     right = x + w;
     down = y + h;
   }

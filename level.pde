@@ -52,7 +52,7 @@ class Level {
             buttons.add(turnSign.getButton());
           }
           if (obj.get("type").equals("pjesak")){
-            Pjesak pjesak = new Pjesak(obj);
+            Pjesak pjesak = new Pjesak(this, obj);
             pjesaci.add(pjesak);
             collideObjects.add(pjesak);
           }
@@ -101,6 +101,9 @@ class Level {
     for (Car car : cars){
       car.update(dt);
     }
+    for (Pjesak p : pjesaci){
+      p.update(dt);
+    }
     collisionDetection();
   }
 
@@ -139,5 +142,13 @@ class Level {
 
   int tileToPxY(int tileY){
     return tileY * tileHeight;
+  }
+
+  int centerX(int pixelX){
+    return tileToPxX(pxToTileX(pixelX)) + tileWidth / 2;
+  }
+
+  int centerY(int pixelY){
+    return tileToPxY(pxToTileY(pixelY)) + tileHeight / 2;
   }
 }
