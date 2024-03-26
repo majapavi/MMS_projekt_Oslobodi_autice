@@ -33,7 +33,7 @@ class Light implements Collideable{
   }
 
   boolean canCollide(){
-    return true;
+    return !lightButton.lightColor;
   }
 }
 

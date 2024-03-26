@@ -109,6 +109,19 @@ class TurnButton implements LevelButton {
     rotate(directionToAngle(orient));
     translate(-w/2,-h/2);
     imageMode(CORNER);
+    tint(255, 64);
+    for (Turn turn : turnSign.turns){
+      if (turn == Turn.LEFT){
+        image(leftSignImage, 0, 0);
+      }
+      if (turn == Turn.FORWARD){
+        image(forwardSignImage, 0, 0);
+      }
+      if (turn == Turn.RIGHT){
+        image(rightSignImage, 0, 0);
+      }
+    }
+    noTint();
     if (cur == Turn.LEFT){
       image(leftSignImage, 0, 0);
     }
@@ -138,18 +151,15 @@ class TurnButton implements LevelButton {
 }
 
 
-abstract class InvisibleCarButton implements CarButton {
+abstract class VisibleCarButton implements CarButton {
   int x, y, w, h, right, down;
   Car car;
-  InvisibleCarButton(Car car){
+  VisibleCarButton(Car car){
     this.car = car;
     w = int(car.w);
     h = int(car.h);
   }
   
-  void draw(){
-  }
-
   boolean validCursor(int x, int y){
     return this.x < x && x < right && this.y < y && y < down;
   }
@@ -171,12 +181,38 @@ abstract class InvisibleCarButton implements CarButton {
 }
 
 
-class CarForwardButton extends InvisibleCarButton {
+class CarForwardButton extends VisibleCarButton {
+  PImage img;
   CarForwardButton(Car car){
     super(car);
+    img = loadImage("start_car_button.png");
+  }
+
+  void draw(){
+    image(img, x, y);
   }
 
   void click(){
-   car.fastForwardFlag=true; //auto na klik ide ravno dok se ne sudari/izađe iz ekrana
+    car.start();
+  }
+}
+
+class CarStartStopButton extends VisibleCarButton {
+  PImage img;
+  CarStartStopButton(Car car){
+    super(car);
+    img = loadImage("startstop_car_button.png");
+  }
+
+  void draw(){
+    image(img, x, y);
+  }
+
+  void click(){
+    if (car.started){
+      car.stop();
+    } else {
+      car.start();
+    }
   }
 }

@@ -1,9 +1,10 @@
-String firstLevel = "copac.tmx";
+String firstLevel = "the_grid.tmx";
 
 Level cur;
 String nextLevelName;
 boolean drawLevel = false; // zamijeniti s ozbiljnim main menu kodom!
 boolean startLevelFlag = false;
+boolean levelRunningFlag = false;
 float lives = 3;
 
 PImage carImage;
@@ -30,6 +31,7 @@ void realStartLevel(){
   cur = new Level(this, nextLevelName);
   buttons.addAll(cur.getButtons());
   drawLevel = true;
+  levelRunningFlag = false;
   startLevelFlag = false;
 }
 
@@ -61,6 +63,7 @@ void draw(){
   // input
   if (!lastMousePressed && mousePressed){
     onClick(mouseX, mouseY);
+    levelRunningFlag = true;
   }
   lastMousePressed = mousePressed;
 
@@ -69,7 +72,7 @@ void draw(){
   lastTime = curTime;
 
   // update
-  if (drawLevel){
+  if (levelRunningFlag){
     cur.update(deltaTime);
   }
 

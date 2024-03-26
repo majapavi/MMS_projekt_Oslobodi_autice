@@ -28,6 +28,8 @@ class Pjesak implements Collideable{
     else if (dir==Direction.UP) path = 0;
     else if (dir == Direction.LEFT) path = 1;
     else path = 0;
+    x = (int) lerp(x1, x2, constrain(path, 0, 1));
+    y = (int) lerp(y1, y2, constrain(path, 0, 1));
   }
   
   void draw(){

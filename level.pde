@@ -40,6 +40,7 @@ class Level {
           if (obj.get("type").equals("light")){
             Light light=new Light(obj);
             lights.add(light);
+            collideObjects.add(light);
             LevelButton bt=light.lightButton;
             buttons.add(bt);
           }

@@ -136,12 +136,11 @@ class Car implements Collideable {
   float angle;
   float turningAngle;
   boolean finish;
-  boolean fastForwardFlag = false, animateFlag = false; 
-  boolean startingPosition;
+  boolean started = false, animateFlag = false; 
   Wall currentWall;
   Light currentLight;
   PVector animatedFrom, animatedTo;
-  float animationProgress, angleFrom, angleTo;
+  float angleFrom, angleTo;
   Car(Level level, StringDict attrib, int number){
     this.level = level;
     x = level.centerX(int(attrib.get("x")));
@@ -158,11 +157,18 @@ class Car implements Collideable {
     tileH = level.pxToTileY(h);
     ordNumber=number;
     img = carImage;
+
     buttons = new ArrayList<CarButton>();
-    buttons.add(new CarForwardButton(this));
+    if (attrib.get("action").equals("forward")){
+      buttons.add(new CarForwardButton(this));
+    } else if (attrib.get("action").equals("drive")){
+      start();
+    } else if (attrib.get("action").equals("stop")){
+      buttons.add(new CarStartStopButton(this));
+    }
     updateButtons();
+
     finish = false;
-    startingPosition = true;
     String tmp = attrib.get("turn");
     if (tmp == null) turn = Turn.FORWARD;
     else turn = getTurn(tmp);
@@ -262,32 +268,7 @@ class Car implements Collideable {
     x = int(preciseX);
     y = int(preciseY);
     
-    if(currentLight==null && !startingPosition){
-      for(Light light : level.lights){
-        if(collides(this,light)){
-           if(orient==light.orient){
-             if(!light.lightButton.lightColor){
-                  fastForwardFlag=false;
-                } else{
-                  fastForwardFlag=true;
-                }
-           }
-        }
-      }
-    } else if (currentLight!=null){
-      if(!startingPosition){
-        if(!currentLight.lightButton.lightColor){
-          fastForwardFlag=false;
-        }
-        else {
-          fastForwardFlag=true;
-        }
-        if (!collides(this, currentLight)){
-          currentLight = null;
-        }
-      }
-    }
-    if (currentWall == null && !startingPosition){
+    if (currentWall == null){
       for (Wall wall : level.walls){
         if(collides(this,wall)){ // usli smo u raskrsce
           currentWall = wall;
@@ -312,7 +293,6 @@ class Car implements Collideable {
              (orient==Direction.LEFT && turn==Turn.LEFT))
               animatedTo = new PVector(getX()-level.tileWidth,getY()+level.tileHeight);
           animateFlag = true;
-          fastForwardFlag = false;
           turningAngle = angle;
          }
       }
@@ -322,8 +302,7 @@ class Car implements Collideable {
       }
     }
     
-    if (fastForwardFlag){
-      startingPosition=false;
+    if (started && currentLight == null && !animateFlag){
       fastForward(dt);
     }
 
@@ -332,6 +311,8 @@ class Car implements Collideable {
     if(outOfBounds()){
       finish=true;
     }
+
+    currentLight = null; // resetiraj za slijedeci put
   }
 
   int getX(){
@@ -388,7 +369,7 @@ class Car implements Collideable {
         exit();
       }
       level.crashed(this);
-      fastForwardFlag=false;
+      started = false;
     } else if (obj instanceof Pjesak || obj instanceof Hazard){
         lives-=1;
         if(lives==0){
@@ -396,12 +377,14 @@ class Car implements Collideable {
           exit();
         }
         level.crashed(this);
-        fastForwardFlag=false;
+        started = false;
     } else if (obj instanceof TurnSign){
       TurnSign turnSign = (TurnSign) obj;
       if (turnSign.orient == orient){
         turn = turnSign.getNew();
       }
+    } else if (obj instanceof Light){
+      currentLight = (Light) obj;
     }
   }
   
@@ -456,7 +439,6 @@ class Car implements Collideable {
     turn=Turn.FORWARD;
     // zakomentirati prethodnu liniju za super Koraljku :)
     animateFlag = false;
-    fastForwardFlag = true;
     turningAngle=0;
     return;    
   }
@@ -467,5 +449,13 @@ class Car implements Collideable {
     displace.mult(speed * dt);
     preciseX += displace.x;
     preciseY += displace.y;
+  }
+
+  void start(){
+    started = true;
+  }
+
+  void stop(){
+    started = false;
   }
 }
