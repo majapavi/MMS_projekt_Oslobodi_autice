@@ -112,84 +112,14 @@ boolean collides(Collideable a, Collideable b){
   return false;
 }
 
-class Light implements Collideable{
-  int x,y,w,h;
-  LightButton lightButton;
-  Direction orient;
-  Light(StringDict attrib){
-    x = int(attrib.get("x"));
-    y = int(attrib.get("y"));
-    w = int(attrib.get("width"));
-    h = int(attrib.get("height"));
-    orient = getDirection(attrib.get("direction"));
-    if(orient==Direction.DOWN || orient==Direction.LEFT){
-      lightButton=new LightButton(x+7,y+7,18,18,false);
-    }
-    if(orient==Direction.UP || orient==Direction.RIGHT){
-      lightButton=new LightButton(x+w-25,y+h-25,18,18,false);
-    }
-  }
-  
-  int getX(){
-    return x;
-  }
+boolean inside(Collideable a, Collideable b){
+  if (!a.canCollide() || !b.canCollide()) return false;
 
-  int getY(){
-    return y;
-  }
-
-  int getW(){
-    return w;
-  }
-
-  int getH(){
-    return h;
-  }
-
-  boolean canCollide(){
-    return true;
-  }
-}
-
-class Wall implements Collideable{
-  int x,y,w,h;
-  String ordNumber;
-  boolean forbidden;
-  Direction forbiddenDirection;
-  Wall(StringDict attrib, String num){
-    x = int(attrib.get("x"));
-    y = int(attrib.get("y"));
-    w = int(attrib.get("width"));
-    h = int(attrib.get("height"));
-    String tmp = attrib.get("forbidden");
-    if (tmp == null){
-      forbidden = false;
-    } else {
-      forbidden = true;
-      forbiddenDirection = getDirection(tmp);
-    }
-    ordNumber = num;
-  }
-  
-  int getX(){
-    return x;
-  }
-
-  int getY(){
-    return y;
-  }
-
-  int getW(){
-    return w;
-  }
-
-  int getH(){
-    return h;
-  }
-
-  boolean canCollide(){
-    return true;
-  }
+  if (!pointInCollideable(a.getX(), a.getY(), b)) return false;
+  if (!pointInCollideable(a.getX() + a.getW(), a.getY(), b)) return false;
+  if (!pointInCollideable(a.getX(), a.getY() + a.getH(), b)) return false;
+  if (!pointInCollideable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return false;
+  return true;
 }
 
 class Car implements Collideable {
@@ -345,19 +275,18 @@ class Car implements Collideable {
         }
       }
     } else if (currentLight!=null){
-        if(!startingPosition){
-          if(!currentLight.lightButton.lightColor){
-            fastForwardFlag=false;
-          }
-          else{
-            fastForwardFlag=true;
-           }
-          if (!collides(this, currentLight)){
-            currentLight = null;
-          }
+      if(!startingPosition){
+        if(!currentLight.lightButton.lightColor){
+          fastForwardFlag=false;
+        }
+        else {
+          fastForwardFlag=true;
+        }
+        if (!collides(this, currentLight)){
+          currentLight = null;
         }
       }
-    //verzija sa klasom Wall
+    }
     if (currentWall == null && !startingPosition){
       for (Wall wall : level.walls){
         if(collides(this,wall)){ // usli smo u raskrsce
@@ -429,7 +358,6 @@ class Car implements Collideable {
     return !finish;
   }
 
-
   private void updateButtons(){
     for (CarButton button : buttons){
       button.setCarPos(getX(), getY(), getW(), getH());
@@ -461,7 +389,7 @@ class Car implements Collideable {
       }
       level.crashed(this);
       fastForwardFlag=false;
-    }  else if (obj instanceof Pjesak){
+    } else if (obj instanceof Pjesak || obj instanceof Hazard){
         lives-=1;
         if(lives==0){
           println("Izgubili ste sve zivote!");
@@ -469,7 +397,7 @@ class Car implements Collideable {
         }
         level.crashed(this);
         fastForwardFlag=false;
-    }  else if (obj instanceof TurnSign){
+    } else if (obj instanceof TurnSign){
       TurnSign turnSign = (TurnSign) obj;
       if (turnSign.orient == orient){
         turn = turnSign.getNew();

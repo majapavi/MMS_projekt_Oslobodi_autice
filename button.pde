@@ -99,6 +99,7 @@ class TurnButton implements LevelButton {
     down = y + h;
     this.cur = cur;
     leftSignImage = loadImage("leftsign.png");
+    forwardSignImage = loadImage("upsign.png");
     rightSignImage = loadImage("rightsign.png");
   }
 
@@ -110,6 +111,9 @@ class TurnButton implements LevelButton {
     imageMode(CORNER);
     if (cur == Turn.LEFT){
       image(leftSignImage, 0, 0);
+    }
+    if (cur == Turn.FORWARD){
+      image(forwardSignImage, 0, 0);
     }
     if (cur == Turn.RIGHT){
       image(rightSignImage, 0, 0);

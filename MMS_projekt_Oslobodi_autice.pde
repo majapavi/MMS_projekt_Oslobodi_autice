@@ -1,4 +1,4 @@
-String firstLevel = "lvl2alt.tmx";
+String firstLevel = "copac.tmx";
 
 Level cur;
 String nextLevelName;
@@ -39,7 +39,7 @@ void finishLevel(){
 }
 
 void setup(){
-  size(640, 640);
+  size(960, 640);
   carImage = loadImage("car.png");
   buttons = new ArrayList<Button>();
   reset = new ResetButton(width - 30, 20);

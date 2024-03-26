@@ -36,6 +36,7 @@ class Level {
         StringDict objs[] = map.getObjects(i);
         for (StringDict obj : objs){
           String j=obj.get("name");
+          if (j == null) j = "";
           if (obj.get("type").equals("light")){
             Light light=new Light(obj);
             lights.add(light);
@@ -61,6 +62,10 @@ class Level {
             cars.add(car);
             collideObjects.add(car);
             buttons.addAll(car.getButtons());
+          }
+          if (obj.get("type").equals("hazard")){
+            Hazard hazard = new Hazard(obj);
+            collideObjects.add(hazard);
           }
         }
       }
