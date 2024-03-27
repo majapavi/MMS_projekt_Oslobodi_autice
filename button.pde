@@ -154,14 +154,17 @@ class TurnButton implements LevelButton {
 abstract class VisibleCarButton implements CarButton {
   int x, y, w, h, right, down;
   Car car;
+  static final int ENLARGE = 3;
+
   VisibleCarButton(Car car){
     this.car = car;
-    w = int(car.w);
-    h = int(car.h);
+    w = car.getW();
+    h = car.getH();
   }
   
   boolean validCursor(int x, int y){
-    return this.x < x && x < right && this.y < y && y < down;
+    return this.x - ENLARGE < x && x < right &&
+           this.y - ENLARGE < y && y < down;
   }
 
   void setLevelRef(int x, int y){
@@ -172,8 +175,8 @@ abstract class VisibleCarButton implements CarButton {
     this.y = y;
     this.w = w;
     this.h = h;
-    right = x + w;
-    down = y + h;
+    right = x + w + ENLARGE * 2;
+    down = y + h + ENLARGE * 2;
   }
 
   void setCarDirection(Direction dir){

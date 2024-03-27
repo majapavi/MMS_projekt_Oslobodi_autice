@@ -379,9 +379,11 @@ class Car implements Collideable {
         level.crashed(this);
         started = false;
     } else if (obj instanceof TurnSign){
-      TurnSign turnSign = (TurnSign) obj;
-      if (turnSign.orient == orient){
-        turn = turnSign.getNew();
+      if (!animateFlag){
+        TurnSign turnSign = (TurnSign) obj;
+        if (turnSign.orient == orient){
+          turn = turnSign.getNew();
+        }
       }
     } else if (obj instanceof Light){
       currentLight = (Light) obj;

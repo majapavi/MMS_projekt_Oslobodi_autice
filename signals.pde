@@ -22,6 +22,7 @@ class TurnSign implements Collideable {
     }
     char indexLetter = attrib.get("default").charAt(0);
     index = tmp.indexOf(indexLetter);
+    if (index == -1) index = 0;
     button = new TurnButton(this, x, y, w, h, orient, turns[index]);
   }
 

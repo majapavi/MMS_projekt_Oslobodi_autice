@@ -95,7 +95,7 @@
    <properties>
     <property name="default" value="left"/>
     <property name="orientation" value="down"/>
-    <property name="turn" value="lr"/>
+    <property name="turn" value="lfr"/>
    </properties>
   </object>
   <object id="24" name="b" type="sign" x="288" y="64" width="32" height="32">
