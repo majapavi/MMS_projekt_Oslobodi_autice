@@ -1,4 +1,4 @@
-String firstLevel = "kruzni_tok.tmx";
+String firstLevel = "s_like.tmx";
 
 Level cur;
 String nextLevelName;

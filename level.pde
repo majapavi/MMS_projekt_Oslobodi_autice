@@ -1,5 +1,7 @@
 import ptmx.*;
 
+import java.util.ArrayDeque;
+
 class Level {
   Ptmx map;
   int tileWidth, tileHeight; // sirina pojedinog tile-a u pikselima

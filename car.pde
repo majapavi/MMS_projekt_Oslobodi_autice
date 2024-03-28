@@ -100,16 +100,11 @@ boolean pointInCollideable(int x, int y, Collideable b){
 boolean collides(Collideable a, Collideable b){
   if (!a.canCollide() || !b.canCollide()) return false;
 
-  if (pointInCollideable(a.getX(), a.getY(), b)) return true;
-  if (pointInCollideable(a.getX() + a.getW(), a.getY(), b)) return true;
-  if (pointInCollideable(a.getX(), a.getY() + a.getH(), b)) return true;
-  if (pointInCollideable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return true;
-
-  if (pointInCollideable(b.getX(), b.getY(), a)) return true;
-  if (pointInCollideable(b.getX() + b.getW(), b.getY(), a)) return true;
-  if (pointInCollideable(b.getX(), b.getY() + b.getH(), a)) return true;
-  if (pointInCollideable(b.getX() + b.getW(), b.getY() + b.getH(), a)) return true;
-  return false;
+  if (a.getX() > b.getX() + b.getW()) return false;
+  if (b.getX() > a.getX() + a.getW()) return false;
+  if (a.getY() > b.getY() + b.getH()) return false;
+  if (b.getY() > a.getY() + a.getH()) return false;
+  return true;
 }
 
 boolean inside(Collideable a, Collideable b){
@@ -132,6 +127,7 @@ class Car implements Collideable {
   float speed = 150; // brzina u pikselima po sekundi
   ArrayList<CarButton> buttons;
   Direction orient;
+  TurnLogic turnLogic;
   Turn turn;
   float angle;
   float turningAngle;
@@ -139,6 +135,8 @@ class Car implements Collideable {
   boolean started = false, animateFlag = false; 
   Wall currentWall;
   Light currentLight;
+  TurnSign currentSign = null;
+  boolean currentSignFlag = false;
   PVector animatedFrom, animatedTo;
   float angleFrom, angleTo;
   Car(Level level, StringDict attrib, int number){
@@ -172,6 +170,20 @@ class Car implements Collideable {
     String tmp = attrib.get("turn");
     if (tmp == null) turn = Turn.FORWARD;
     else turn = getTurn(tmp);
+    tmp = attrib.get("logic");
+    if (tmp == null){
+      turnLogic = new ForwardTurn(turn);
+    } else if (tmp.startsWith("f")){
+      turnLogic = new ForwardTurn(turn);
+    } else if (tmp.startsWith("v")){
+      turnLogic = new VariableTurn(turn);
+    } else if (tmp.startsWith("s")){
+      turnLogic = new StackTurn(turn);
+    } else if (tmp.startsWith("q")){
+      turnLogic = new QueueTurn(turn);
+    }
+    turn = turnLogic.read();
+
     for (Wall wall : level.walls){
       if(collides(this,wall)){
         currentWall=wall;
@@ -265,6 +277,7 @@ class Car implements Collideable {
   
   void update(float dt){
     if (animateFlag) animateTurn(dt);
+    else turn = turnLogic.read();
     x = int(preciseX);
     y = int(preciseY);
     
@@ -273,11 +286,11 @@ class Car implements Collideable {
         if(collides(this,wall)){ // usli smo u raskrsce
           currentWall = wall;
           
-          if(turn==Turn.FORWARD) break;
-          
           if (wall.forbidden && applyTurn(turn, orient) == wall.forbiddenDirection)
             continue;
-          
+
+          turnLogic.next();
+          if(turn==Turn.FORWARD) break;
           
           animatedFrom = new PVector(getX()+getW()/2, getY()+getH()/2);
           if((orient==Direction.UP && turn==Turn.LEFT)||
@@ -313,6 +326,10 @@ class Car implements Collideable {
     }
 
     currentLight = null; // resetiraj za slijedeci put
+    if (!currentSignFlag){
+      currentSign = null;
+    }
+    currentSignFlag = false;
   }
 
   int getX(){
@@ -379,11 +396,13 @@ class Car implements Collideable {
         level.crashed(this);
         started = false;
     } else if (obj instanceof TurnSign){
-      if (!animateFlag){
+      currentSignFlag = true;
+      if (currentSign == null){
         TurnSign turnSign = (TurnSign) obj;
         if (turnSign.orient == orient){
-          turn = turnSign.getNew();
+          turnLogic.write(turnSign.getNew());
         }
+        currentSign = turnSign;
       }
     } else if (obj instanceof Light){
       currentLight = (Light) obj;

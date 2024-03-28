@@ -60,3 +60,87 @@ class TurnSign implements Collideable {
     return true;
   }
 }
+
+interface TurnLogic {
+  Turn read();
+  void next();
+  void write(Turn t);
+}
+
+class ForwardTurn implements TurnLogic {
+  Turn current;
+  ForwardTurn(Turn t){
+    current = t;
+  }
+  
+  Turn read(){
+    return current;
+  }
+
+  void next(){
+    current = Turn.FORWARD;
+  }
+
+  void write(Turn t){
+    current = t;
+  }
+}
+
+class VariableTurn implements TurnLogic {
+  // super koraljka :)
+  Turn current;
+  VariableTurn(Turn t){
+    current = t;
+  }
+  
+  Turn read(){
+    return current;
+  }
+
+  void next(){
+  }
+
+  void write(Turn t){
+    current = t;
+  }
+}
+
+class StackTurn implements TurnLogic {
+  ArrayDeque<Turn> stack;
+  StackTurn(Turn t){
+    stack = new ArrayDeque<Turn>();
+  }
+
+  Turn read(){
+    if (stack.isEmpty()) return Turn.FORWARD;
+    return stack.peek();
+  }
+
+  void next(){
+    if (!stack.isEmpty()) stack.pop();
+  }
+
+  void write(Turn t){
+    stack.push(t);
+  }
+}
+
+class QueueTurn implements TurnLogic {
+  ArrayDeque<Turn> queue;
+  QueueTurn(Turn t){
+    queue = new ArrayDeque<Turn>();
+  }
+
+  Turn read(){
+    if (queue.isEmpty()) return Turn.FORWARD;
+    return queue.peekFirst();
+  }
+
+  void next(){
+    if (!queue.isEmpty()) queue.removeFirst();
+  }
+
+  void write(Turn t){
+    queue.add(t);
+  }
+}

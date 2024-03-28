@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="37">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="41">
  <tileset firstgid="1" source="str.tsx"/>
  <layer id="1" name="cesta" width="20" height="20">
   <data encoding="csv">
@@ -54,6 +54,12 @@
     <property name="turn" value="rf"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="5" name="hazards">
+  <object id="37" type="hazard" x="64" y="512" width="32" height="32"/>
+  <object id="38" type="hazard" x="64" y="96" width="32" height="32"/>
+  <object id="39" type="hazard" x="512" y="64" width="32" height="32"/>
+  <object id="40" type="hazard" x="512" y="544" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="cars" visible="0">
   <object id="15" type="car" x="96" y="576" width="32" height="32">
