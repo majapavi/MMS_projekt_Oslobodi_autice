@@ -65,12 +65,16 @@ interface TurnLogic {
   Turn read();
   void next();
   void write(Turn t);
+  void writeHead(Turn t);
+  Iterable<Turn> getTail();
 }
 
 class ForwardTurn implements TurnLogic {
   Turn current;
+  ArrayList<Turn> empty;
   ForwardTurn(Turn t){
     current = t;
+    empty = new ArrayList<Turn>();
   }
   
   Turn read(){
@@ -84,13 +88,23 @@ class ForwardTurn implements TurnLogic {
   void write(Turn t){
     current = t;
   }
+
+  void writeHead(Turn t){
+    current = t;
+  }
+
+  ArrayList<Turn> getTail(){
+    return empty;
+  }
 }
 
 class VariableTurn implements TurnLogic {
   // super koraljka :)
   Turn current;
+  ArrayList<Turn> empty;
   VariableTurn(Turn t){
     current = t;
+    empty = new ArrayList<Turn>();
   }
   
   Turn read(){
@@ -103,30 +117,54 @@ class VariableTurn implements TurnLogic {
   void write(Turn t){
     current = t;
   }
+
+  void writeHead(Turn t){
+    current = t;
+  }
+
+  ArrayList<Turn> getTail(){
+    return empty;
+  }
 }
 
 class StackTurn implements TurnLogic {
   ArrayDeque<Turn> stack;
+  boolean wasEmpty = false;
   StackTurn(Turn t){
     stack = new ArrayDeque<Turn>();
   }
 
   Turn read(){
     if (stack.isEmpty()) return Turn.FORWARD;
-    return stack.peek();
+    return stack.peekFirst();
   }
 
   void next(){
-    if (!stack.isEmpty()) stack.pop();
+    if (!stack.isEmpty()) stack.removeFirst();
   }
 
   void write(Turn t){
-    stack.push(t);
+    stack.addFirst(t);
+  }
+  
+  void writeHead(Turn t){
+    if (wasEmpty) wasEmpty = false;
+    else stack.addFirst(t);
+  }
+
+  ArrayDeque<Turn> getTail(){
+    if (stack.isEmpty()){
+      wasEmpty = true;
+      return stack;
+    }
+    next();
+    return stack;
   }
 }
 
 class QueueTurn implements TurnLogic {
   ArrayDeque<Turn> queue;
+  boolean wasEmpty = false;
   QueueTurn(Turn t){
     queue = new ArrayDeque<Turn>();
   }
@@ -142,5 +180,19 @@ class QueueTurn implements TurnLogic {
 
   void write(Turn t){
     queue.add(t);
+  }
+
+  void writeHead(Turn t){
+    if (wasEmpty) wasEmpty = false;
+    else queue.addFirst(t);
+  }
+
+  ArrayDeque<Turn> getTail(){
+    if (queue.isEmpty()){
+      wasEmpty = true;
+      return queue;
+    }
+    next();
+    return queue;
   }
 }

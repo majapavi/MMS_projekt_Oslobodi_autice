@@ -128,6 +128,7 @@ class Car implements Collideable {
   ArrayList<CarButton> buttons;
   Direction orient;
   TurnLogic turnLogic;
+  String turnLogicLetter;
   Turn turn;
   float angle;
   float turningAngle;
@@ -173,14 +174,19 @@ class Car implements Collideable {
     tmp = attrib.get("logic");
     if (tmp == null){
       turnLogic = new ForwardTurn(turn);
+      turnLogicLetter = "F";
     } else if (tmp.startsWith("f")){
       turnLogic = new ForwardTurn(turn);
+      turnLogicLetter = "F";
     } else if (tmp.startsWith("v")){
       turnLogic = new VariableTurn(turn);
+      turnLogicLetter = "V";
     } else if (tmp.startsWith("s")){
       turnLogic = new StackTurn(turn);
+      turnLogicLetter = "S";
     } else if (tmp.startsWith("q")){
       turnLogic = new QueueTurn(turn);
+      turnLogicLetter = "Q";
     }
     turn = turnLogic.read();
 
@@ -203,24 +209,13 @@ class Car implements Collideable {
       color(255, 255, 255);
       rect(getX(), getY(), getW(), getH());
     }
+    pushMatrix();
+    imageMode(CENTER);
     if(!animateFlag){
-      pushMatrix();
       translate(x,y);
       rotate(angle);
-      imageMode(CENTER);
-      image(img, 0, 0, w, h);
-      if (turn == Turn.LEFT){
-        image(level.leftArrowImage, 0, 0, w, h);
-      } else if (turn == Turn.RIGHT){
-        image(level.rightArrowImage, 0, 0, w, h);
-      } else if (turn == Turn.FORWARD){
-        image(level.upArrowImage, 0, 0, w, h);
-      }
-      imageMode(CORNER);
-      popMatrix();
     }
     if(animateFlag){
-      pushMatrix();
       if(orient==Direction.UP && turn==Turn.LEFT){
         translate(animatedFrom.x-level.tileWidth,animatedFrom.y);
         translate(level.tileWidth*cos(turningAngle),level.tileWidth*sin(turningAngle));
@@ -261,18 +256,33 @@ class Car implements Collideable {
         translate(level.tileWidth*cos(turningAngle),level.tileWidth*sin(turningAngle));
         rotate(turningAngle);
       }
-      imageMode(CENTER);
-      image(img,0,0,w,h);
-      if (turn == Turn.LEFT){
-        image(level.leftArrowImage, 0, 0, w, h);
-      } else if (turn == Turn.RIGHT){
-        image(level.rightArrowImage, 0, 0, w, h);
-      } else if (turn == Turn.FORWARD){
-        image(level.upArrowImage, 0, 0, w, h);
-      }
-      imageMode(CORNER);
-      popMatrix();
     }
+    image(img, 0, 0, w, h);
+    Turn head = turnLogic.read();
+    if (head == Turn.LEFT){
+      image(level.leftArrowImage, 0, 0, w, h);
+    } else if (head == Turn.RIGHT){
+      image(level.rightArrowImage, 0, 0, w, h);
+    } else if (head == Turn.FORWARD){
+      image(level.upArrowImage, 0, 0, w, h);
+    }
+    int i = 0;
+    for (Turn t : turnLogic.getTail()){
+      if (t == Turn.LEFT){
+        image(level.leftArrowImage, 0, h + h/2*i, w, h);
+      } else if (t == Turn.RIGHT){
+        image(level.rightArrowImage, 0, h + h/2*i, w, h);
+      } else if (t == Turn.FORWARD){
+        image(level.upArrowImage, 0, h + h/2*i, w, h);
+      }
+      i++;
+    }
+    turnLogic.writeHead(head);
+    fill(255, 0, 0);
+    textSize(22);
+    text(turnLogicLetter, 0, 16);
+    imageMode(CORNER);
+    popMatrix();
   }
   
   void update(float dt){
@@ -371,10 +381,10 @@ class Car implements Collideable {
   }
   
   boolean outOfBounds(){
-    if(y + h < 0) return true;
-    if(y > height) return true;
-    if(x > width) return true;
-    if(x + w < 0) return true;
+    if(y + h / 2 < 0) return true;
+    if(y - h / 2 > level.pxHeight) return true;
+    if(x - w / 2 > level.pxWidth) return true;
+    if(x + w / 2 < 0) return true;
     return false;
   }
   

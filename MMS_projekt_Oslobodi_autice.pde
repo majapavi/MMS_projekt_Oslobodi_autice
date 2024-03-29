@@ -1,4 +1,4 @@
-String firstLevel = "s_like.tmx";
+String firstLevel = "lvl2alt.tmx";
 
 Level cur;
 String nextLevelName;
@@ -41,7 +41,7 @@ void finishLevel(){
 }
 
 void setup(){
-  size(960, 640);
+  size(640, 640);
   carImage = loadImage("car.png");
   buttons = new ArrayList<Button>();
   reset = new ResetButton(width - 30, 20);

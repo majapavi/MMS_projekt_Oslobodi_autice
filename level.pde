@@ -6,6 +6,7 @@ class Level {
   Ptmx map;
   int tileWidth, tileHeight; // sirina pojedinog tile-a u pikselima
   int mapWidth, mapHeight; // broj tile-ova u nivou
+  int pxWidth, pxHeight;
   ArrayList<Car> cars;
   ArrayList<Wall> walls;
   ArrayList<Light> lights;
@@ -23,6 +24,8 @@ class Level {
     PVector mapSize = map.getMapSize();
     mapWidth = int(mapSize.x);
     mapHeight = int(mapSize.y);
+    pxWidth = tileWidth * mapWidth;
+    pxHeight = tileHeight * mapHeight;
     leftArrowImage = loadImage("leftarrow.png");
     rightArrowImage = loadImage("rightarrow.png");
     upArrowImage = loadImage("uparrow.png");
@@ -122,18 +125,6 @@ class Level {
   void crashed(Car car){
     println("ANIMACIJA SUDARA");
     startLevel();
-  }
-
-  boolean outOfMap(int x, int y){
-    if (x < 0) return true;
-    if (y < 0) return true;
-    if (x >= mapWidth) return true;
-    if (y >= mapHeight) return true;
-    return false;
-  }
-
-  boolean endTile(int x, int y){
-    return outOfMap(x, y);
   }
 
   int pxToTileX(int pixelX){
