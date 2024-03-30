@@ -4,21 +4,29 @@ interface Button {
   boolean validCursor(int x, int y);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
 abstract class GameButton implements Button {
   int x, y, h, w;
+  boolean active;
   GameButton(int x, int y, int h, int w){
     this.x = x;
     this.y = y;
     this.h = h;
     this.w = w;
+    this.active = false;
     
     buttons.add(this);
   }
+
+  boolean isActive() { return this.active; }
   
   boolean validCursor(int x, int y){
-    return this.x < x && x < this.x + w && this.y < y && y < this.y + h;
+    return this.x < x && x < this.x + w
+        && this.y < y && y < this.y + h
+        && this.active;
+  }
+  
+  void switchButton() { 
+    this.active = !this.active;
   }
 }
 
@@ -69,7 +77,7 @@ class StartButton extends TextButton {
   }
 
   void click(){
-    display.state = screenState.PLAY;
+    display.changeDisplayState(screenState.PLAY);
   }
 }
 
@@ -83,7 +91,6 @@ class GoToSelectButton extends TextButton {
   }
 }
 
-
 class ResetButton extends ImageButton {
   ResetButton(int x, int y){
     super(x, y, loadImage("dummy.png"));
@@ -94,7 +101,27 @@ class ResetButton extends ImageButton {
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
+class SelectLevelButton extends ImageButton {
+  String level;
+  
+  // u konstruktoru se predaje naziv levela bez ekstenzije
+  // a u lokalnu varijablu se sprema naziv s ekstenzijom .tmx
+  SelectLevelButton(int x, int y, String level){
+    super(x, y, loadImage(level + ".png"));
+    this.level = level + ".tmx";
+  }
+
+  void click(){
+    setNextLevel(this.level);
+    display.changeDisplayState(screenState.PLAY);
+  }
+  
+  void moveButton(int x, int y){
+    this.x = x;
+    this.y = y;
+  }
+}
+
 
 interface LevelButton extends Button {
   void setLevelRef(int x, int y);

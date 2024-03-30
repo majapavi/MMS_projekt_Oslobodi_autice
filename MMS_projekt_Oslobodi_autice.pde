@@ -1,30 +1,32 @@
 String firstLevel = "lvl.tmx";
 
 Level cur;
-String nextLevelName;                        // current level
-boolean drawLevel = false;                   // flag za crtanje levela na ekran
-boolean startLevelFlag = false;              // aktivan kad se treba ucitati nivo nextLevelName (pokretanje, reset)
-
-Display display;
+String nextLevelName;
+boolean drawLevel = false;
+boolean startLevelFlag = false;
 
 PImage carImage;
-ResetButton reset;
 
-ArrayList<Button> buttons;                    // svi gumbi, resetira se skrz kod novog levela
+ArrayList<Button> buttons;
 boolean lastMousePressed = false;
 
 int lastTime; // u milisekundama
 float deltaTime; // u sekundama
 
+Display display;
+ArrayList<String> allLevelsNames;
+int unlockedLevelsIndex;
+int numberOfLevels;
+
 void setNextLevel(String filename){
   nextLevelName = filename;
 }
 
-void startLevel(){                            // "svaka susa poziva", na klik, reset/pokretanje
+void startLevel(){
   startLevelFlag = true;
 }
 
-void realStartLevel(){                        // interna funkcija, stanje
+void realStartLevel(){
   if (cur != null){
     buttons.removeAll(cur.getButtons());    
   }
@@ -34,25 +36,28 @@ void realStartLevel(){                        // interna funkcija, stanje
   startLevelFlag = false;
 }
 
-void finishLevel(){                          // poziva se kad su svi autici izvan nivoa
-  println("BRAVO");
+void finishLevel(){
   display.changeDisplayState(screenState.END);
-//  exit();
 }
 
 void setup(){
   size(640, 640);
   carImage = loadImage("car.png");
   buttons = new ArrayList<Button>();
-  reset = new ResetButton(width - 30, 20);
-  buttons.add(reset);
+
+  allLevelsNames = new ArrayList<String>();
+  allLevelsNames.add("lvl");
+  allLevelsNames.add("lvl2");
+  unlockedLevelsIndex = 0;
+  numberOfLevels = allLevelsNames.size();
+  display = new Display();
+
   setNextLevel(firstLevel);
   startLevel();
   lastTime = millis();
-  display = new Display();
-}
+} //<>//
 
-void onClick(int x, int y){                  // pomocna funkcija za klikanje misa, da se ne klikne 10000 puta
+void onClick(int x, int y){
   for (Button button : buttons){
     if (button.validCursor(x, y)){
       button.click();
@@ -61,10 +66,8 @@ void onClick(int x, int y){                  // pomocna funkcija za klikanje mis
 }
 
 void draw(){
-  // input
-  if (!lastMousePressed && mousePressed){
+  if (!lastMousePressed && mousePressed)
     onClick(mouseX, mouseY);
-  }
   lastMousePressed = mousePressed;
 
   int curTime = millis();
@@ -72,11 +75,17 @@ void draw(){
   lastTime = curTime;
 
   for (Button button : buttons){
+    if(button instanceof GameButton)
+    {
+      GameButton gameButton = (GameButton) button;
+      if(gameButton.isActive() == false)
+        continue;
+    }
     button.draw();
   }
-  if (startLevelFlag){
+  
+  if (startLevelFlag)
     realStartLevel();
-  }
 
   display.showDisplay();
 

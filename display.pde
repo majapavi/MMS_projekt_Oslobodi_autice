@@ -1,26 +1,41 @@
-// moguca stanja igre
-// moguce osim ovih dodati i brojeve levela ako je zgodnije
+// Stanja u kojima se igra (display) moze naci
 enum screenState {
   START, PLAY, END, LEVEL_SELECT
 }
 
-// klasa koja pamti trenutno stanje igre i iscrtava odgovarajuci display
+// Klasa za pamcenje trenutnog stanje igre i iscrtavanje odgovarajuceg displaya
 class Display
 {
   screenState state;
-  boolean changedState;
+
   Text gameTitle;
   Text displayMessage;
   String gameDescription;
+
   StartButton startButton;
   ResetButton resetButton;
   GoToSelectButton goToSelectButton;
+  ArrayList<SelectLevelButton> levelSelectButtonsList;
   
-  Display() { initStartScreen(); }
+  Display()
+  {
+    startButton = new StartButton( 280, 130 ); //<>//
+    goToSelectButton = new GoToSelectButton( 280, 180 );
+    resetButton = new ResetButton(width - 30, 20);
+
+    levelSelectButtonsList = new ArrayList<SelectLevelButton>();
+    for (int i = 0; i < numberOfLevels; i++)
+      levelSelectButtonsList.add(new SelectLevelButton(0, 300, allLevelsNames.get(i)));
+    
+    initStartScreen();
+  }
   
+  // funkcija za promjenu stanja koja se poziva iz ostalih dijelova igre
   void changeDisplayState(screenState newState) //<>//
   {
-    switch (state){
+    // "destrukturiraj" staro stanje
+    switch (state)
+    {
       case START:
         closeStartScreen();
         break;
@@ -30,10 +45,12 @@ class Display
       case LEVEL_SELECT:
         closeLevelSelectScreen();
         break;
-      default:
+      case PLAY:
         closePlayScreen();
+        break;
     }
 
+    // inicijaliziraj novo stanje
     switch (newState) //<>//
     {
       case START:
@@ -45,12 +62,13 @@ class Display
       case LEVEL_SELECT:
         initLevelSelectScreen();
         break;
-      default:
+      case PLAY:
         initPlayScreen();
+        break;
     }
   }
   
-  // glavna funkcija koja se poziva iz ostalih dijelova igre
+  // funkcija za iscrtavaje koja se poziva iz ostalih dijelova igre
   void showDisplay()
   {
     switch (state)
@@ -64,8 +82,9 @@ class Display
       case LEVEL_SELECT:
         showLevelSelectScreen();
         break;
-      default:
+      case PLAY:
         showPlayScreen();
+        break;
     }
   }
   
@@ -73,77 +92,103 @@ class Display
   void initStartScreen()
   {
     state = screenState.START;
-    gameTitle = new Text( 320, 80, "Oslobodi autiće", 50, color(0, 0, 255));
-    startButton = new StartButton( 280, 130 );
+    
+    gameTitle = new Text( 320, 80, "Oslobodi autiće", 50, color(0, 0, 160));
     gameDescription = "Dobrodošli u igru Oslobodi autiće!\n"
     +"Vaš današnji cilj je poklikati autiće redom tako da svi izađu iz ekrana i ne sudare se međusobno.\n"
     +"Imate par života. Strelice pokazuju koji je predviđeni smjer kretanja pojedinog autica.\n"
     +"Mozete kliknuti vise autica za redom. Strelice na cesti predstavljaju promjenu smjera kretanja autica.";
-    displayMessage = new Text( 320, 220, gameDescription, 15, color(0, 0, 255));
+    displayMessage = new Text( 320, 220, gameDescription, 15, color(0, 0, 160));
+    
+    startButton.switchButton();
   }
   void showStartScreen()
   {
-    background(200);  
+    background(194);  
     gameTitle.ispisiText();
     displayMessage.ispisiText();
     startButton.draw();
   }
   void closeStartScreen()
   {
-    buttons.remove(startButton);
+    startButton.switchButton();
   }
 
     
   void initEndScreen() //<>//
   {
     state = screenState.END;
-    displayMessage = new Text( 350, 100, "Pobijedio si!", 40);
-    goToSelectButton = new GoToSelectButton( 100, 100 );
+    unlockedLevelsIndex = min(unlockedLevelsIndex + 1, numberOfLevels - 1);
+    
+    displayMessage = new Text( 320, 100, "Pobijedio si :)", 40, color(0, 0, 160));
+
+    goToSelectButton.switchButton();
   }
   void showEndScreen() //<>//
   {
-    background(255);
+    background(194);  
     goToSelectButton.draw();
+    displayMessage.ispisiText();
   }    
   void closeEndScreen()
   {
-    buttons.remove(goToSelectButton);
+    goToSelectButton.switchButton();
   }
 
   
-  // iscrtava obican ekran s igrom / levelom
-  // prema potrebi ukloniti i iscrtavati u drugom dijelu koda
   void initPlayScreen()
   {
     state = screenState.PLAY;
+
     startLevel();
+    
+    resetButton.switchButton();
   }
-  // prema potrebi ukloniti i iscrtavati u drugom dijelu koda
+  // iscrtava display sa levelom (glavnim dijelom igre)
   void showPlayScreen()
   {
-    // update
-    if (drawLevel){
+    if (drawLevel)
       cur.update(deltaTime);
-    }
   
-    // crtaj
-    background(35);
-    if (drawLevel){
+    if (drawLevel)
       cur.draw();
-    }
+  
+    resetButton.draw();
   }
   void closePlayScreen() //<>//
-  {}
+  {
+    resetButton.switchButton();
+  }
   
   
   void initLevelSelectScreen() //<>//
   {
     state = screenState.LEVEL_SELECT;
-    background(255, 255, 0);
+    for (int i = 0; i <= unlockedLevelsIndex; i++){
+       levelSelectButtonsList.get(i).switchButton();
+    }
+    
+    background(194);  
+  
+    // centraliziranje pozicije gumbi za izbor levela
+    int buttonWidth = levelSelectButtonsList.get(0).w;
+    int totalButtonsWidth = (unlockedLevelsIndex + 1) * (buttonWidth + 50) - 50;
+    int x = (width - totalButtonsWidth) / 2;
+    for (int i = 0; i <= unlockedLevelsIndex; i++) {
+      levelSelectButtonsList.get(i).moveButton(x, levelSelectButtonsList.get(i).y);
+      x += buttonWidth + 50;
+    }
   }
+  
   void showLevelSelectScreen() //<>//
-  {}
-  void closeLevelSelectScreen()
-  {}
+  {
+    for (int i = 0; i <= unlockedLevelsIndex; i++)
+       levelSelectButtonsList.get(i).draw();
+  }
+  
+  void closeLevelSelectScreen(){
+    for (int i = 0; i <= unlockedLevelsIndex; i++)
+      levelSelectButtonsList.get(i).switchButton();
+  }
   
 }
