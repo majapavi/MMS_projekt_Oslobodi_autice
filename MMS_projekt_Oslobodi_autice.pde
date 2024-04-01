@@ -1,20 +1,24 @@
-String firstLevel = "lvl2alt.tmx";
+String firstLevel = "lvl.tmx";
 
 Level cur;
 String nextLevelName;
-boolean drawLevel = false; // zamijeniti s ozbiljnim main menu kodom!
+boolean drawLevel = false;
 boolean startLevelFlag = false;
 boolean levelRunningFlag = false;
 float lives = 3;
 
 PImage carImage;
-ResetButton reset;
 
 ArrayList<Button> buttons;
 boolean lastMousePressed = false;
 
 int lastTime; // u milisekundama
 float deltaTime; // u sekundama
+
+Display display;
+ArrayList<String> allLevelsNames;
+int unlockedLevelsIndex;
+int numberOfLevels;
 
 void setNextLevel(String filename){
   nextLevelName = filename;
@@ -36,20 +40,25 @@ void realStartLevel(){
 }
 
 void finishLevel(){
-  println("BRAVO");
-  exit();
+  display.changeDisplayState(screenState.END);
 }
 
 void setup(){
   size(640, 640);
   carImage = loadImage("car.png");
   buttons = new ArrayList<Button>();
-  reset = new ResetButton(width - 30, 20);
-  buttons.add(reset);
+
+  allLevelsNames = new ArrayList<String>();
+  allLevelsNames.add("lvl");
+  allLevelsNames.add("lvl2");
+  unlockedLevelsIndex = 0;
+  numberOfLevels = allLevelsNames.size();
+  display = new Display();
+
   setNextLevel(firstLevel);
   startLevel();
   lastTime = millis();
-}
+} //<>//
 
 void onClick(int x, int y){
   for (Button button : buttons){
@@ -60,7 +69,6 @@ void onClick(int x, int y){
 }
 
 void draw(){
-  // input
   if (!lastMousePressed && mousePressed){
     onClick(mouseX, mouseY);
     levelRunningFlag = true;
@@ -71,22 +79,18 @@ void draw(){
   deltaTime = float(curTime - lastTime) / 1000.0;
   lastTime = curTime;
 
-  // update
-  if (levelRunningFlag){
-    cur.update(deltaTime);
-  }
+  display.showDisplay();
 
-  // crtaj
-  background(35);
-  if (drawLevel){
-    cur.draw();
-  }
   for (Button button : buttons){
+    if(button instanceof GameButton)
+    {
+      GameButton gameButton = (GameButton) button;
+      if(gameButton.isActive() == false)
+        continue;
+    }
     button.draw();
   }
-  textSize(40);
-  fill(0);
-  text(lives,608,94);
+
   if (startLevelFlag){
     realStartLevel();
   }
