@@ -204,7 +204,7 @@ class Car implements Collideable {
     }
   }
   
-  void draw(){
+  void drawC(){
     if (DEBUG_COLLISION){
       color(255, 255, 255);
       rect(getX(), getY(), getW(), getH());

@@ -32,7 +32,7 @@ class Pjesak implements Collideable{
     y = (int) lerp(y1, y2, constrain(path, 0, 1));
   }
   
-  void draw(){
+  void drawP(){
     image(pjesakImage,x,y,w,h);
   }
 

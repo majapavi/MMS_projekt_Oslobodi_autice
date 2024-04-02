@@ -1,11 +1,15 @@
-String firstLevel = "lvl.tmx";
+import ptmx.*; //<>// //<>//
+import java.util.ArrayDeque;
+
+// Globalne varijable
+String firstLevel = "Tutorial1.tmx";
 
 Level cur;
 String nextLevelName;
 boolean drawLevel = false;
 boolean startLevelFlag = false;
 boolean levelRunningFlag = false;
-float lives = 3;
+float lives = 3;  // float jer se sudar registrira kod oba auta pa se smanjuje za 0.5
 
 PImage carImage;
 
@@ -20,30 +24,7 @@ ArrayList<String> allLevelsNames;
 int unlockedLevelsIndex;
 int numberOfLevels;
 
-void setNextLevel(String filename){
-  nextLevelName = filename;
-}
-
-void startLevel(){
-  startLevelFlag = true;
-}
-
-void realStartLevel(){
-  if (cur != null){
-    buttons.removeAll(cur.getButtons());
-  }
-  cur = new Level(this, nextLevelName);
-  buttons.addAll(cur.getButtons());
-  drawLevel = true;
-  levelRunningFlag = false;
-  startLevelFlag = false;
-}
-
-void finishLevel(){
-  display.changeDisplayState(screenState.END);
-}
-
-void setup(){
+void setup() {
   size(640, 640);
   carImage = loadImage("car.png");
   buttons = new ArrayList<Button>();
@@ -58,18 +39,10 @@ void setup(){
   setNextLevel(firstLevel);
   startLevel();
   lastTime = millis();
-} //<>//
-
-void onClick(int x, int y){
-  for (Button button : buttons){
-    if (button.validCursor(x, y)){
-      button.click();
-    }
-  }
 }
 
-void draw(){
-  if (!lastMousePressed && mousePressed){
+void draw() {
+  if (!lastMousePressed && mousePressed) {  // da ne registrira klik vise puta
     onClick(mouseX, mouseY);
     levelRunningFlag = true;
   }
@@ -81,17 +54,16 @@ void draw(){
 
   display.showDisplay();
 
-  for (Button button : buttons){
-    if(button instanceof GameButton)
-    {
+  for (Button button : buttons) {
+    if (button instanceof GameButton) {
       GameButton gameButton = (GameButton) button;
-      if(gameButton.isActive() == false)
+      if (gameButton.isActive() == false)
         continue;
     }
-    button.draw();
+    button.drawB();
   }
 
-  if (startLevelFlag){
+  if (startLevelFlag) {
     realStartLevel();
   }
 }

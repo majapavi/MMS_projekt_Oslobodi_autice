@@ -1,7 +1,3 @@
-import ptmx.*;
-
-import java.util.ArrayDeque;
-
 class Level {
   Ptmx map;
   int tileWidth, tileHeight; // sirina pojedinog tile-a u pikselima
@@ -78,13 +74,13 @@ class Level {
     }
   }
 
-  void draw(){
+  void drawL(){
     map.draw(0, 0);
     for (Car car : cars){
-      car.draw();
+      car.drawC();
     }
     for (Pjesak p : pjesaci){
-      p.draw(); 
+      p.drawP(); 
     }
   }
   
@@ -150,4 +146,28 @@ class Level {
   int centerY(int pixelY){
     return tileToPxY(pxToTileY(pixelY)) + tileHeight / 2;
   }
+}
+
+// globalne funkcije za level
+void setNextLevel(String filename){
+  nextLevelName = filename;
+}
+
+void startLevel(){
+  startLevelFlag = true;
+}
+
+void realStartLevel(){
+  if (cur != null){
+    buttons.removeAll(cur.getButtons());
+  }
+  cur = new Level(this, nextLevelName);
+  buttons.addAll(cur.getButtons());
+  drawLevel = true;
+  levelRunningFlag = false;
+  startLevelFlag = false;
+}
+
+void finishLevel(){
+  display.changeDisplayState(screenState.END);
 }
