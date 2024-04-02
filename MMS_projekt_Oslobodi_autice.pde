@@ -2,7 +2,7 @@ import ptmx.*; //<>// //<>//
 import java.util.ArrayDeque;
 
 // Globalne varijable
-String firstLevel = "Tutorial1.tmx";
+String firstLevel;
 
 Level cur;
 String nextLevelName;
@@ -23,6 +23,7 @@ Display display;
 ArrayList<String> allLevelsNames;
 int unlockedLevelsIndex;
 int numberOfLevels;
+int  currentLevel;
 
 void setup() {
   size(640, 640);
@@ -30,12 +31,16 @@ void setup() {
   buttons = new ArrayList<Button>();
 
   allLevelsNames = new ArrayList<String>();
+  allLevelsNames.add("Tutorial1");
   allLevelsNames.add("lvl");
   allLevelsNames.add("lvl2");
+  allLevelsNames.add("lvl2alt");
   unlockedLevelsIndex = 0;
+  currentLevel = 0;
   numberOfLevels = allLevelsNames.size();
   display = new Display();
 
+  firstLevel = allLevelsNames.get(0) + ".tmx";
   setNextLevel(firstLevel);
   startLevel();
   lastTime = millis();
@@ -55,9 +60,9 @@ void draw() {
   display.showDisplay();
 
   for (Button button : buttons) {
-    if (button instanceof GameButton) {
-      GameButton gameButton = (GameButton) button;
-      if (gameButton.isActive() == false)
+    if (button instanceof NavigationButton) {
+      NavigationButton navigationButton = (NavigationButton) button;
+      if (navigationButton.isActive() == false)
         continue;
     }
     button.drawB();

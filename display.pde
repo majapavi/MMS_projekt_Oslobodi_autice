@@ -25,7 +25,7 @@ class Display
 
     levelSelectButtonsList = new ArrayList<SelectLevelButton>();
     for (int i = 0; i < numberOfLevels; i++)
-      levelSelectButtonsList.add(new SelectLevelButton(0, 300, allLevelsNames.get(i)));
+      levelSelectButtonsList.add(new SelectLevelButton(0, 300, allLevelsNames.get(i), i));
 
     initStartScreen();
   }
@@ -33,6 +33,7 @@ class Display
   // funkcija za promjenu stanja koja se poziva iz ostalih dijelova igre
   void changeDisplayState(screenState newState)
   {
+    print(unlockedLevelsIndex);
     // "destrukturiraj" staro stanje
     switch (state)
     {
@@ -122,7 +123,8 @@ class Display
   void initEndScreen()
   {
     state = screenState.END;
-    unlockedLevelsIndex = min(unlockedLevelsIndex + 1, numberOfLevels - 1);
+    if(currentLevel == unlockedLevelsIndex && currentLevel < numberOfLevels - 1)
+      unlockedLevelsIndex = currentLevel + 1;
 
     displayMessage = new Text( 320, 100, "Pobijedio si :)", 40, color(0, 0, 160));
 
