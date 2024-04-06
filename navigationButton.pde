@@ -34,7 +34,7 @@ abstract class ImageButton extends NavigationButton {
     this.img = img;
   }
 
-  void drawB() {
+  void render() {
     image(img, x, y);
   }
 }
@@ -61,7 +61,7 @@ abstract class TextButton extends NavigationButton {
     this.buttonColor = 255;
   }
 
-  void drawB() {
+  void render() {
     fill(buttonColor);
     rect(x, y, w, h);
     this.text.ispisiText();

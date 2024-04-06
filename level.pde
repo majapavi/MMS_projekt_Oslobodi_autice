@@ -74,7 +74,7 @@ class Level {
     }
   }
 
-  void drawL(){
+  void render(){
     map.draw(0, 0);
     for (Car car : cars){
       car.drawC();

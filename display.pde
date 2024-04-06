@@ -112,7 +112,7 @@ class Display
     background(194);
     gameTitle.ispisiText();
     displayMessage.ispisiText();
-    startButton.drawB();
+    startButton.render();
   }
   void closeStartScreen()
   {
@@ -133,7 +133,7 @@ class Display
   void showEndScreen()
   {
     background(194);
-    goToSelectButton.drawB();
+    goToSelectButton.render();
     displayMessage.ispisiText();
   }
   void closeEndScreen()
@@ -157,9 +157,9 @@ class Display
       cur.update(deltaTime);
 
     if (drawLevel)
-      cur.drawL();
+      cur.render();
 
-    resetButton.drawB();
+    resetButton.render();
   }
   void closePlayScreen()
   {
@@ -189,7 +189,7 @@ class Display
   void showLevelSelectScreen()
   {
     for (int i = 0; i <= unlockedLevelsIndex; i++)
-      levelSelectButtonsList.get(i).drawB();
+      levelSelectButtonsList.get(i).render();
   }
 
   void closeLevelSelectScreen() {

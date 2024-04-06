@@ -32,6 +32,8 @@ void setup() {
 
   allLevelsNames = new ArrayList<String>();
   allLevelsNames.add("Tutorial1");
+  allLevelsNames.add("Tutorial2");
+  allLevelsNames.add("Tutorial3");
   allLevelsNames.add("lvl");
   allLevelsNames.add("lvl2");
   allLevelsNames.add("lvl2alt");
@@ -65,7 +67,7 @@ void draw() {
       if (navigationButton.isActive() == false)
         continue;
     }
-    button.drawB();
+    button.render();
   }
 
   if (startLevelFlag) {

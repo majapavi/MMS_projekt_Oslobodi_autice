@@ -1,5 +1,5 @@
 interface Button {
-  void drawB();
+  void render();
   void click();
   boolean validCursor(int x, int y);
 }
@@ -27,7 +27,7 @@ class LightButton implements LevelButton {
     else img=loadImage("red.png");
   }
 
-  void drawB() {
+  void render() {
     if (drawLevel)
       image(img, x, y, w, h);
   }
@@ -72,7 +72,7 @@ class TurnButton implements LevelButton {
     rightSignImage = loadImage("rightsign.png");
   }
 
-  void drawB() {
+  void render() {
     pushMatrix();
     translate(x+w/2, y+h/2);
     rotate(directionToAngle(orient));
@@ -160,7 +160,7 @@ class CarForwardButton extends VisibleCarButton {
     img = loadImage("start_car_button.png");
   }
 
-  void drawB() {
+  void render() {
     //print(drawLevel);
     if (drawLevel)
       image(img, x, y);
@@ -178,7 +178,7 @@ class CarStartStopButton extends VisibleCarButton {
     img = loadImage("startstop_car_button.png");
   }
 
-  void drawB() {
+  void render() {
     if (drawLevel)
       image(img, x, y);
   }
