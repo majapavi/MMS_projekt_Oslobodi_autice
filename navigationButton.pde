@@ -27,17 +27,21 @@ abstract class NavigationButton implements Button {
   }
 }
 
-abstract class ImageButton extends NavigationButton {
-  PImage img;
-  ImageButton(int x, int y, PImage img) {
-    super(x, y, img.width, img.height);
-    this.img = img;
-  }
+// NEKORISTENA IMPLEMENTACIJA
+//abstract class ImageButton extends NavigationButton {
+//  PImage img;
+//  ImageButton(int x, int y, PImage img) {
+//    super(x, y, img.width, img.height);
+//    this.img = img;
+//  }
 
-  void render() {
-    image(img, x, y);
-  }
-}
+//  void render() {
+//    image(img, x, y);
+//  }
+//}
+
+int defaultTextButtonH = 30;
+int defaultTextButtonW = 110;
 
 abstract class TextButton extends NavigationButton {
   Text text;
@@ -56,22 +60,29 @@ abstract class TextButton extends NavigationButton {
   }
 
   TextButton(int x, int y, String text) {
-    super(x, y, 20, 40);
+    super(x, y, defaultTextButtonH, defaultTextButtonW);
     this.text = new Text(this.x + this.w / 2, this.y + this.h / 2, text);
     this.buttonColor = 255;
   }
 
   void render() {
     fill(buttonColor);
-    stroke(color(0, 0, 160));
+    //stroke(color(0, 0, 160));
     rect(x, y, w, h);
     this.text.ispisiText();
+  }
+
+  void moveButton(int x, int y) {
+    this.x = x;
+    this.y = y;
+    this.text.x = this.x + this.w / 2;
+    this.text.y = this.y + this.h / 2;
   }
 }
 
 class StartButton extends TextButton {
   StartButton(int x, int y) {
-    super(x, y, "Započni igru", 20, 90);
+    super(x, y, "Započni igru");
   }
 
   void click() {
@@ -81,7 +92,7 @@ class StartButton extends TextButton {
 
 class GoToSelectButton extends TextButton {
   GoToSelectButton(int x, int y) {
-    super(x, y, "Izaberi level", 20, 80);
+    super(x, y, "Izaberi level");
   }
 
   void click() {
@@ -91,7 +102,7 @@ class GoToSelectButton extends TextButton {
 
 class ResetButton extends TextButton {
   ResetButton(int x, int y) {
-    super(x, y, "Resetiraj\nlevel", 40, 60);
+    super(x, y, "Resetiraj level");
   }
 
   void click() {
@@ -106,7 +117,7 @@ class SelectLevelButton extends TextButton {
   // u konstruktoru se predaje naziv levela bez ekstenzije
   // a u lokalnu varijablu se sprema naziv s ekstenzijom .tmx
   SelectLevelButton(int x, int y, String levelName, int levelNumber) {
-    super(x, y, "level "+str(levelNumber+1), 20, 80);
+    super(x, y, "level "+str(levelNumber+1));
     this.levelName = levelName + ".tmx";
     this.levelNumber = levelNumber;
   }
@@ -115,12 +126,5 @@ class SelectLevelButton extends TextButton {
     setNextLevel(this.levelName);
     display.changeDisplayState(screenState.PLAY);
     currentLevel = this.levelNumber;
-  }
-
-  void moveButton(int x, int y) {
-    this.x = x;
-    this.y = y;
-    this.text.x = this.x + this.w / 2;
-    this.text.y = this.y + this.h / 2;
   }
 }

@@ -19,9 +19,9 @@ class Display
 
   Display()
   {
-    startButton = new StartButton( 280, 130 );
-    goToSelectButton = new GoToSelectButton( 280, 180 );
-    resetButton = new ResetButton(width - 80, 10);
+    startButton = new StartButton( width/2 - defaultTextButtonW/2, 400 );
+    resetButton = new ResetButton( width - defaultTextButtonW - 10, 10 );
+    goToSelectButton = new GoToSelectButton(width - defaultTextButtonW - 10, defaultTextButtonH + 10 + 10 );
 
     levelSelectButtonsList = new ArrayList<SelectLevelButton>();
     for (int i = 0; i < numberOfLevels; i++)
@@ -97,12 +97,13 @@ class Display
   {
     state = screenState.START;
 
-    gameTitle = new Text( 320, 80, "Oslobodi autiće", 50, color(0, 0, 160));
-    gameDescription = "Dobrodošli u igru Oslobodi autiće!\n"
-      +"Vaš današnji cilj je poklikati autiće redom tako da svi izađu iz ekrana i ne sudare se međusobno.\n"
-      +"Imate par života. Strelice pokazuju koji je predviđeni smjer kretanja pojedinog autica.\n"
-      +"Mozete kliknuti vise autica za redom. Strelice na cesti predstavljaju promjenu smjera kretanja autica.";
-    displayMessage = new Text( 320, 220, gameDescription, 15, color(0, 0, 160));
+    gameTitle = new Text( 320, 80, "Oslobodi autiće", 50);
+    gameDescription = "Dobrodošli u igru Oslobodi autiće!\n\n"
+      +"Vaš današnji cilj je poklikati autiće redom tako da svi izađu iz ekrana\n"
+      +"i ne sudare se međusobno. Imate 3 života. Možete kliknuti više autića za redom.\n"
+      +"Strelice pokazuju koji je predviđeni smjer kretanja pojedinog autića.\n"
+      +"Strelice na cesti predstavljaju promjenu smjera kretanja autića.";
+    displayMessage = new Text( 320, 220, gameDescription);
 
     startButton.switchButton();
   }
@@ -125,8 +126,9 @@ class Display
     if(currentLevel == unlockedLevelsIndex && currentLevel < numberOfLevels - 1)
       unlockedLevelsIndex = currentLevel + 1;
 
-    displayMessage = new Text( 320, 100, "Pobijedio si :)", 40, color(0, 0, 160));
+    displayMessage = new Text( 320, 100, "Bravo!\nUspješno si prešao level "+str(currentLevel + 1), 40);
 
+    goToSelectButton.moveButton(width/2 - defaultTextButtonW/2, 200);
     goToSelectButton.switchButton();
   }
   void showEndScreen()
@@ -148,6 +150,8 @@ class Display
     startLevel();
 
     resetButton.switchButton();
+    goToSelectButton.moveButton(width - defaultTextButtonW - 10, defaultTextButtonH + 10 + 10);
+    goToSelectButton.switchButton();    
   }
   // iscrtava display sa levelom (glavnim dijelom igre)
   void showPlayScreen()
@@ -159,10 +163,12 @@ class Display
       cur.render();
 
     resetButton.render();
+    goToSelectButton.render();
   }
   void closePlayScreen()
   {
     resetButton.switchButton();
+    goToSelectButton.switchButton();
   }
 
 
@@ -176,12 +182,19 @@ class Display
     background(194);
 
     // centraliziranje pozicije gumbi za izbor levela
-    int buttonWidth = levelSelectButtonsList.get(0).w;
-    int totalButtonsWidth = (unlockedLevelsIndex + 1) * (buttonWidth + 50) - 50;
+    int spacing = 50;
+    int columns = min(4, unlockedLevelsIndex + 1); // Broj stupaca ograničen na 4 ili manje ako je manje otključanih razina
+    int totalButtonsWidth = columns * defaultTextButtonW + (columns - 1) * spacing;
     int x = (width - totalButtonsWidth) / 2;
+    int y = 50;
+    
     for (int i = 0; i <= unlockedLevelsIndex; i++) {
-      levelSelectButtonsList.get(i).moveButton(x, levelSelectButtonsList.get(i).y);
-      x += buttonWidth + 50;
+      levelSelectButtonsList.get(i).moveButton(x, y);
+      x += defaultTextButtonW + spacing;
+      if ((i + 1) % columns == 0) {
+        x = (width - totalButtonsWidth) / 2;
+        y += defaultTextButtonH + spacing;
+      }
     }
   }
 
