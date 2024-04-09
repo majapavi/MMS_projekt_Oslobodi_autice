@@ -63,6 +63,7 @@ abstract class TextButton extends NavigationButton {
 
   void render() {
     fill(buttonColor);
+    stroke(color(0, 0, 160));
     rect(x, y, w, h);
     this.text.ispisiText();
   }
@@ -88,9 +89,9 @@ class GoToSelectButton extends TextButton {
   }
 }
 
-class ResetButton extends ImageButton {
+class ResetButton extends TextButton {
   ResetButton(int x, int y) {
-    super(x, y, loadImage("dummy.png"));
+    super(x, y, "Resetiraj\nlevel", 40, 60);
   }
 
   void click() {
@@ -98,14 +99,14 @@ class ResetButton extends ImageButton {
   }
 }
 
-class SelectLevelButton extends ImageButton {
+class SelectLevelButton extends TextButton {
   String levelName;
   int levelNumber;
 
   // u konstruktoru se predaje naziv levela bez ekstenzije
   // a u lokalnu varijablu se sprema naziv s ekstenzijom .tmx
   SelectLevelButton(int x, int y, String levelName, int levelNumber) {
-    super(x, y, loadImage(levelName + ".png"));
+    super(x, y, "level "+str(levelNumber+1), 20, 80);
     this.levelName = levelName + ".tmx";
     this.levelNumber = levelNumber;
   }
@@ -119,5 +120,7 @@ class SelectLevelButton extends ImageButton {
   void moveButton(int x, int y) {
     this.x = x;
     this.y = y;
+    this.text.x = this.x + this.w / 2;
+    this.text.y = this.y + this.h / 2;
   }
 }

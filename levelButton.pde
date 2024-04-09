@@ -161,7 +161,6 @@ class CarForwardButton extends VisibleCarButton {
   }
 
   void render() {
-    //print(drawLevel);
     if (drawLevel)
       image(img, x, y);
   }

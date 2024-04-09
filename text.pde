@@ -19,7 +19,7 @@ class Text {
     y = y_;
     textSize = textSize_;
     text = text_;
-    textColor = color(0);
+    textColor = color(0, 0, 160);
   }
 
   //konstruktor: boja_teksta-crna, velicina_teksta-15
@@ -28,7 +28,7 @@ class Text {
     y = y_;
     textSize = 15;
     text = text_;
-    textColor = color(0);
+    textColor = color(0, 0, 160);
   }
 
   void ispisiText() {

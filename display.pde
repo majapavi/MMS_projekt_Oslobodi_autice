@@ -21,7 +21,7 @@ class Display
   {
     startButton = new StartButton( 280, 130 );
     goToSelectButton = new GoToSelectButton( 280, 180 );
-    resetButton = new ResetButton(width - 30, 20);
+    resetButton = new ResetButton(width - 80, 10);
 
     levelSelectButtonsList = new ArrayList<SelectLevelButton>();
     for (int i = 0; i < numberOfLevels; i++)
@@ -33,7 +33,6 @@ class Display
   // funkcija za promjenu stanja koja se poziva iz ostalih dijelova igre
   void changeDisplayState(screenState newState)
   {
-    print(unlockedLevelsIndex);
     // "destrukturiraj" staro stanje
     switch (state)
     {
