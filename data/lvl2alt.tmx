@@ -26,36 +26,36 @@
 </data>
  </layer>
  <objectgroup id="3" name="walls" visible="0">
-  <object id="18" name="bucklebury" type="wall" x="59.6667" y="157" width="73" height="70.3333"/>
-  <object id="19" name="helm's deep" type="wall" x="187.333" y="155.333" width="74" height="74">
+  <object id="18" name="bucklebury" type="wall" x="64" y="160" width="64" height="64"/>
+  <object id="19" name="helm's deep" type="wall" x="192" y="160" width="64" height="64">
    <properties>
     <property name="forbidden" value="down"/>
    </properties>
   </object>
-  <object id="20" name="barad-dur" type="wall" x="59" y="283" width="73" height="73">
+  <object id="20" name="barad-dur" type="wall" x="64" y="288" width="64" height="64">
    <properties>
     <property name="forbidden" value="left"/>
    </properties>
   </object>
-  <object id="22" name="minas morgul" type="wall" x="506.948" y="283.789" width="73" height="73">
+  <object id="22" name="minas morgul" type="wall" x="512" y="288" width="64" height="64">
    <properties>
     <property name="forbidden" value="right"/>
    </properties>
   </object>
-  <object id="23" name="moria" type="wall" x="510" y="155" width="73" height="73"/>
-  <object id="24" name="edoras" type="wall" x="508" y="412" width="73" height="73"/>
-  <object id="25" name="bree" type="wall" x="59" y="411" width="73" height="73"/>
-  <object id="26" name="rivendell" type="wall" x="187" y="411" width="73" height="73">
+  <object id="23" name="moria" type="wall" x="512" y="160" width="64" height="64"/>
+  <object id="24" name="edoras" type="wall" x="512" y="416" width="64" height="64"/>
+  <object id="25" name="bree" type="wall" x="64" y="416" width="64" height="64"/>
+  <object id="26" name="rivendell" type="wall" x="192" y="416" width="64" height="64">
    <properties>
     <property name="forbidden" value="up"/>
    </properties>
   </object>
-  <object id="27" name="minas tirith" type="wall" x="379" y="154" width="73" height="73">
+  <object id="27" name="minas tirith" type="wall" x="384" y="160" width="64" height="64">
    <properties>
     <property name="forbidden" value="down"/>
    </properties>
   </object>
-  <object id="28" name="hobbiton" type="wall" x="379" y="412" width="73" height="73">
+  <object id="28" name="hobbiton" type="wall" x="384" y="416" width="64" height="64">
    <properties>
     <property name="forbidden" value="up"/>
    </properties>

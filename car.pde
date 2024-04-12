@@ -415,7 +415,9 @@ class Car implements Collideable {
         currentSign = turnSign;
       }
     } else if (obj instanceof Light){
-      currentLight = (Light) obj;
+      Light light = (Light) obj;
+      if (light.orient == orient)
+        currentLight = (Light) obj;
     }
   }
   
@@ -467,8 +469,6 @@ class Car implements Collideable {
     preciseY=animatedTo.y + getH() / 2;
     orient=applyTurn(turn,orient);
     angle=directionToAngle(orient);
-    turn=Turn.FORWARD;
-    // zakomentirati prethodnu liniju za super Koraljku :)
     animateFlag = false;
     turningAngle=0;
     return;    
