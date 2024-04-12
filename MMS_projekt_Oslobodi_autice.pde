@@ -1,13 +1,17 @@
-String firstLevel = "lvl2alt.tmx";
+import ptmx.*; //<>// //<>//
+import java.util.ArrayDeque;
+
+// Globalne varijable
+String firstLevel;
 
 Level cur;
 String nextLevelName;
-boolean drawLevel = false; // zamijeniti s ozbiljnim main menu kodom!
+boolean drawLevel = false;
 boolean startLevelFlag = false;
-float lives = 3;
+boolean levelRunningFlag = false;
+float lives = 3;  // float jer se sudar registrira kod oba auta pa se smanjuje za 0.5
 
 PImage carImage;
-ResetButton reset;
 
 ArrayList<Button> buttons;
 boolean lastMousePressed = false;
@@ -15,52 +19,39 @@ boolean lastMousePressed = false;
 int lastTime; // u milisekundama
 float deltaTime; // u sekundama
 
-void setNextLevel(String filename){
-  nextLevelName = filename;
-}
+Display display;
+ArrayList<String> allLevelsNames;
+int unlockedLevelsIndex;
+int numberOfLevels;
+int  currentLevel;
 
-void startLevel(){
-  startLevelFlag = true;
-}
-
-void realStartLevel(){
-  if (cur != null){
-    buttons.removeAll(cur.getButtons());
-  }
-  cur = new Level(this, nextLevelName);
-  buttons.addAll(cur.getButtons());
-  drawLevel = true;
-  startLevelFlag = false;
-}
-
-void finishLevel(){
-  println("BRAVO");
-  exit();
-}
-
-void setup(){
+void setup() {
   size(640, 640);
   carImage = loadImage("car.png");
   buttons = new ArrayList<Button>();
-  reset = new ResetButton(width - 30, 20);
-  buttons.add(reset);
+
+  allLevelsNames = new ArrayList<String>();
+  allLevelsNames.add("Tutorial1");
+  allLevelsNames.add("Tutorial2");
+  allLevelsNames.add("Tutorial3");
+  allLevelsNames.add("lvl");
+  allLevelsNames.add("lvl2");
+  allLevelsNames.add("lvl2alt");
+  unlockedLevelsIndex = 0;
+  currentLevel = 0;
+  numberOfLevels = allLevelsNames.size();
+  display = new Display();
+
+  firstLevel = allLevelsNames.get(0) + ".tmx";
   setNextLevel(firstLevel);
   startLevel();
   lastTime = millis();
 }
 
-void onClick(int x, int y){
-  for (Button button : buttons){
-    if (button.validCursor(x, y)){
-      button.click();
-    }
-  }
-}
-
-void draw(){
-  // input
-  if (!lastMousePressed && mousePressed){
+void draw() {
+  if (!lastMousePressed && mousePressed) {  // da ne registrira klik vise puta
     onClick(mouseX, mouseY);
+    levelRunningFlag = true;
   }
   lastMousePressed = mousePressed;
 
@@ -68,23 +59,18 @@ void draw(){
   deltaTime = float(curTime - lastTime) / 1000.0;
   lastTime = curTime;
 
-  // update
-  if (drawLevel){
-    cur.update(deltaTime);
+  display.showDisplay();
+
+  for (Button button : buttons) {
+    if (button instanceof NavigationButton) {
+      NavigationButton navigationButton = (NavigationButton) button;
+      if (navigationButton.isActive() == false)
+        continue;
+    }
+    button.render();
   }
 
-  // crtaj
-  background(35);
-  if (drawLevel){
-    cur.draw();
-  }
-  for (Button button : buttons){
-    button.draw();
-  }
-  textSize(40);
-  fill(0);
-  text(lives,608,94);
-  if (startLevelFlag){
+  if (startLevelFlag) {
     realStartLevel();
   }
 }

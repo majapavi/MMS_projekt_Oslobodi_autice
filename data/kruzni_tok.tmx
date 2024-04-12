@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="41">
+ <tileset firstgid="1" source="str.tsx"/>
+ <layer id="1" name="cesta" width="20" height="20">
+  <data encoding="csv">
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,
+49,49,49,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,25,49,49,49,
+49,49,49,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,
+49,49,49,25,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49
+</data>
+ </layer>
+ <objectgroup id="2" name="signs" visible="0">
+  <object id="1" type="sign" x="512" y="448" width="32" height="32">
+   <properties>
+    <property name="default" value="right"/>
+    <property name="orientation" value="down"/>
+    <property name="turn" value="lr"/>
+   </properties>
+  </object>
+  <object id="2" type="sign" x="160" y="512" width="32" height="32">
+   <properties>
+    <property name="default" value="forward"/>
+    <property name="orientation" value="left"/>
+    <property name="turn" value="fr"/>
+   </properties>
+  </object>
+  <object id="3" type="sign" x="96" y="160" width="32" height="32">
+   <properties>
+    <property name="default" value="forward"/>
+    <property name="orientation" value="up"/>
+    <property name="turn" value="rf"/>
+   </properties>
+  </object>
+  <object id="4" type="sign" x="448" y="96" width="32" height="32">
+   <properties>
+    <property name="default" value="right"/>
+    <property name="orientation" value="right"/>
+    <property name="turn" value="rf"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="hazards">
+  <object id="37" type="hazard" x="64" y="512" width="32" height="32"/>
+  <object id="38" type="hazard" x="64" y="96" width="32" height="32"/>
+  <object id="39" type="hazard" x="512" y="64" width="32" height="32"/>
+  <object id="40" type="hazard" x="512" y="544" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="3" name="cars" visible="0">
+  <object id="15" type="car" x="96" y="576" width="32" height="32">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+   </properties>
+  </object>
+  <object id="25" type="car" x="416" y="512" width="32" height="32">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="left"/>
+   </properties>
+  </object>
+  <object id="26" type="car" x="576" y="512" width="32" height="32">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="left"/>
+   </properties>
+  </object>
+  <object id="27" type="car" x="576" y="96" width="32" height="32">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="left"/>
+    <property name="turn" value="right"/>
+   </properties>
+  </object>
+  <object id="28" type="car" x="96" y="32" width="32" height="32">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="down"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="walls" visible="0">
+  <object id="33" type="wall" x="96" y="96" width="32" height="32">
+   <properties>
+    <property name="forbidden" value="left"/>
+   </properties>
+  </object>
+  <object id="34" type="wall" x="96" y="512" width="32" height="32">
+   <properties>
+    <property name="forbidden" value="left"/>
+   </properties>
+  </object>
+  <object id="35" type="wall" x="512" y="512" width="32" height="32">
+   <properties>
+    <property name="forbidden" value="down"/>
+   </properties>
+  </object>
+  <object id="36" type="wall" x="512" y="96" width="32" height="32">
+   <properties>
+    <property name="forbidden" value="up"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

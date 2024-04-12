@@ -1,9 +1,8 @@
-import ptmx.*;
-
 class Level {
   Ptmx map;
   int tileWidth, tileHeight; // sirina pojedinog tile-a u pikselima
   int mapWidth, mapHeight; // broj tile-ova u nivou
+  int pxWidth, pxHeight;
   ArrayList<Car> cars;
   ArrayList<Wall> walls;
   ArrayList<Light> lights;
@@ -21,6 +20,8 @@ class Level {
     PVector mapSize = map.getMapSize();
     mapWidth = int(mapSize.x);
     mapHeight = int(mapSize.y);
+    pxWidth = tileWidth * mapWidth;
+    pxHeight = tileHeight * mapHeight;
     leftArrowImage = loadImage("leftarrow.png");
     rightArrowImage = loadImage("rightarrow.png");
     upArrowImage = loadImage("uparrow.png");
@@ -36,9 +37,11 @@ class Level {
         StringDict objs[] = map.getObjects(i);
         for (StringDict obj : objs){
           String j=obj.get("name");
+          if (j == null) j = "";
           if (obj.get("type").equals("light")){
             Light light=new Light(obj);
             lights.add(light);
+            collideObjects.add(light);
             LevelButton bt=light.lightButton;
             buttons.add(bt);
           }
@@ -52,7 +55,7 @@ class Level {
             buttons.add(turnSign.getButton());
           }
           if (obj.get("type").equals("pjesak")){
-            Pjesak pjesak = new Pjesak(obj);
+            Pjesak pjesak = new Pjesak(this, obj);
             pjesaci.add(pjesak);
             collideObjects.add(pjesak);
           }
@@ -62,18 +65,22 @@ class Level {
             collideObjects.add(car);
             buttons.addAll(car.getButtons());
           }
+          if (obj.get("type").equals("hazard")){
+            Hazard hazard = new Hazard(obj);
+            collideObjects.add(hazard);
+          }
         }
       }
     }
   }
 
-  void draw(){
+  void render(){
     map.draw(0, 0);
     for (Car car : cars){
-      car.draw();
+      car.drawC();
     }
     for (Pjesak p : pjesaci){
-      p.draw(); 
+      p.drawP(); 
     }
   }
   
@@ -101,6 +108,9 @@ class Level {
     for (Car car : cars){
       car.update(dt);
     }
+    for (Pjesak p : pjesaci){
+      p.update(dt);
+    }
     collisionDetection();
   }
 
@@ -111,18 +121,6 @@ class Level {
   void crashed(Car car){
     println("ANIMACIJA SUDARA");
     startLevel();
-  }
-
-  boolean outOfMap(int x, int y){
-    if (x < 0) return true;
-    if (y < 0) return true;
-    if (x >= mapWidth) return true;
-    if (y >= mapHeight) return true;
-    return false;
-  }
-
-  boolean endTile(int x, int y){
-    return outOfMap(x, y);
   }
 
   int pxToTileX(int pixelX){
@@ -140,4 +138,36 @@ class Level {
   int tileToPxY(int tileY){
     return tileY * tileHeight;
   }
+
+  int centerX(int pixelX){
+    return tileToPxX(pxToTileX(pixelX)) + tileWidth / 2;
+  }
+
+  int centerY(int pixelY){
+    return tileToPxY(pxToTileY(pixelY)) + tileHeight / 2;
+  }
+}
+
+// globalne funkcije za level
+void setNextLevel(String filename){
+  nextLevelName = filename;
+}
+
+void startLevel(){
+  startLevelFlag = true;
+}
+
+void realStartLevel(){
+  if (cur != null){
+    buttons.removeAll(cur.getButtons());
+  }
+  cur = new Level(this, nextLevelName);
+  buttons.addAll(cur.getButtons());
+  drawLevel = true;
+  levelRunningFlag = false;
+  startLevelFlag = false;
+}
+
+void finishLevel(){
+  display.changeDisplayState(screenState.END);
 }

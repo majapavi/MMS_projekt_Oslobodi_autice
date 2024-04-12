@@ -26,36 +26,36 @@
 </data>
  </layer>
  <objectgroup id="3" name="walls" visible="0">
-  <object id="18" name="bucklebury" type="wall" x="55.5789" y="151.579" width="80.8421" height="79.9064"/>
-  <object id="19" name="helm's deep" type="wall" x="182.269" y="150.924" width="80.8421" height="79.9064">
+  <object id="18" name="bucklebury" type="wall" x="64" y="160" width="64" height="64"/>
+  <object id="19" name="helm's deep" type="wall" x="192" y="160" width="64" height="64">
    <properties>
     <property name="forbidden" value="down"/>
    </properties>
   </object>
-  <object id="20" name="barad-dur" type="wall" x="56.8889" y="281.918" width="80.8421" height="79.9064">
+  <object id="20" name="barad-dur" type="wall" x="64" y="288" width="64" height="64">
    <properties>
     <property name="forbidden" value="left"/>
    </properties>
   </object>
-  <object id="22" name="minas morgul" type="wall" x="503.205" y="280.982" width="80.8421" height="79.9064">
+  <object id="22" name="minas morgul" type="wall" x="512" y="288" width="64" height="64">
    <properties>
     <property name="forbidden" value="right"/>
    </properties>
   </object>
-  <object id="23" name="moria" type="wall" x="504.14" y="150.924" width="80.8421" height="79.9064"/>
-  <object id="24" name="edoras" type="wall" x="503.205" y="408.234" width="80.8421" height="79.9064"/>
-  <object id="25" name="bree" type="wall" x="55.9532" y="408.234" width="80.8421" height="79.9064"/>
-  <object id="26" name="rivendell" type="wall" x="182.269" y="408.234" width="80.8421" height="79.9064">
+  <object id="23" name="moria" type="wall" x="512" y="160" width="64" height="64"/>
+  <object id="24" name="edoras" type="wall" x="512" y="416" width="64" height="64"/>
+  <object id="25" name="bree" type="wall" x="64" y="416" width="64" height="64"/>
+  <object id="26" name="rivendell" type="wall" x="192" y="416" width="64" height="64">
    <properties>
     <property name="forbidden" value="up"/>
    </properties>
   </object>
-  <object id="27" name="minas tirith" type="wall" x="375.018" y="150.924" width="80.8421" height="79.9064">
+  <object id="27" name="minas tirith" type="wall" x="384" y="160" width="64" height="64">
    <properties>
     <property name="forbidden" value="down"/>
    </properties>
   </object>
-  <object id="28" name="hobbiton" type="wall" x="375.018" y="411.041" width="80.8421" height="79.9064">
+  <object id="28" name="hobbiton" type="wall" x="384" y="416" width="64" height="64">
    <properties>
     <property name="forbidden" value="up"/>
    </properties>
@@ -101,7 +101,7 @@
     <property name="turn" value="right"/>
    </properties>
   </object>
-  <object id="6" name="aragorn" type="car" x="96" y="247.579" width="32" height="32">
+  <object id="6" name="aragorn" type="car" x="96" y="256" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
@@ -114,14 +114,14 @@
     <property name="orientation" value="up"/>
    </properties>
   </object>
-  <object id="8" name="merry" type="car" x="595.649" y="159.251" width="32" height="32">
+  <object id="8" name="merry" type="car" x="608" y="160" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="left"/>
     <property name="turn" value="left"/>
    </properties>
   </object>
-  <object id="9" name="samwise" type="car" x="141.099" y="160" width="32" height="32">
+  <object id="9" name="samwise" type="car" x="128" y="160" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>
@@ -135,7 +135,7 @@
     <property name="turn" value="right"/>
    </properties>
   </object>
-  <object id="11" name="eowyn" type="car" x="224.936" y="501.52" width="32" height="32">
+  <object id="11" name="eowyn" type="car" x="224" y="512" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
@@ -162,7 +162,7 @@
     <property name="turn" value="left"/>
    </properties>
   </object>
-  <object id="15" name="faramir" type="car" x="543.064" y="366.971" width="32" height="32">
+  <object id="15" name="faramir" type="car" x="544" y="384" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>

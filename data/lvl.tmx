@@ -171,17 +171,17 @@
   </object>
  </objectgroup>
  <objectgroup id="5" name="pjesaci" visible="0">
-  <object id="39" name="trpimir" type="pjesak" x="512" y="576" width="32" height="32">
+  <object id="39" name="trpimir" type="pjesak" x="416" y="576" width="128" height="32">
    <properties>
     <property name="direction" value="left"/>
    </properties>
   </object>
-  <object id="41" name="hladimir" type="pjesak" x="0" y="224" width="32" height="32">
+  <object id="41" name="hladimir" type="pjesak" x="0" y="224" width="128" height="32">
    <properties>
     <property name="direction" value="right"/>
    </properties>
   </object>
-  <object id="42" name="maksimir" type="pjesak" x="96" y="448" width="32" height="32">
+  <object id="42" name="maksimir" type="pjesak" x="96" y="352" width="32" height="128">
    <properties>
     <property name="direction" value="up"/>
    </properties>

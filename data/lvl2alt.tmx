@@ -26,36 +26,36 @@
 </data>
  </layer>
  <objectgroup id="3" name="walls" visible="0">
-  <object id="18" name="bucklebury" type="wall" x="59.6667" y="157" width="73" height="70.3333"/>
-  <object id="19" name="helm's deep" type="wall" x="187.333" y="155.333" width="74" height="74">
+  <object id="18" name="bucklebury" type="wall" x="64" y="160" width="64" height="64"/>
+  <object id="19" name="helm's deep" type="wall" x="192" y="160" width="64" height="64">
    <properties>
     <property name="forbidden" value="down"/>
    </properties>
   </object>
-  <object id="20" name="barad-dur" type="wall" x="59" y="283" width="73" height="73">
+  <object id="20" name="barad-dur" type="wall" x="64" y="288" width="64" height="64">
    <properties>
     <property name="forbidden" value="left"/>
    </properties>
   </object>
-  <object id="22" name="minas morgul" type="wall" x="506.948" y="283.789" width="73" height="73">
+  <object id="22" name="minas morgul" type="wall" x="512" y="288" width="64" height="64">
    <properties>
     <property name="forbidden" value="right"/>
    </properties>
   </object>
-  <object id="23" name="moria" type="wall" x="510" y="155" width="73" height="73"/>
-  <object id="24" name="edoras" type="wall" x="508" y="412" width="73" height="73"/>
-  <object id="25" name="bree" type="wall" x="59" y="411" width="73" height="73"/>
-  <object id="26" name="rivendell" type="wall" x="187" y="411" width="73" height="73">
+  <object id="23" name="moria" type="wall" x="512" y="160" width="64" height="64"/>
+  <object id="24" name="edoras" type="wall" x="512" y="416" width="64" height="64"/>
+  <object id="25" name="bree" type="wall" x="64" y="416" width="64" height="64"/>
+  <object id="26" name="rivendell" type="wall" x="192" y="416" width="64" height="64">
    <properties>
     <property name="forbidden" value="up"/>
    </properties>
   </object>
-  <object id="27" name="minas tirith" type="wall" x="379" y="154" width="73" height="73">
+  <object id="27" name="minas tirith" type="wall" x="384" y="160" width="64" height="64">
    <properties>
     <property name="forbidden" value="down"/>
    </properties>
   </object>
-  <object id="28" name="hobbiton" type="wall" x="379" y="412" width="73" height="73">
+  <object id="28" name="hobbiton" type="wall" x="384" y="416" width="64" height="64">
    <properties>
     <property name="forbidden" value="up"/>
    </properties>
@@ -84,32 +84,32 @@
   </object>
  </objectgroup>
  <objectgroup id="4" name="pjesaci" visible="0">
-  <object id="30" name="anduin" type="pjesak" x="32" y="224" width="32" height="32">
+  <object id="30" name="anduin" type="pjesak" x="32" y="224" width="128" height="32">
    <properties>
     <property name="direction" value="right"/>
    </properties>
   </object>
-  <object id="31" name="baranduin" type="pjesak" x="256" y="128" width="32" height="32">
+  <object id="31" name="baranduin" type="pjesak" x="160" y="128" width="128" height="32">
    <properties>
     <property name="direction" value="left"/>
    </properties>
   </object>
-  <object id="32" name="entwash" type="pjesak" x="160" y="480" width="32" height="32">
+  <object id="32" name="entwash" type="pjesak" x="160" y="480" width="128" height="32">
    <properties>
     <property name="direction" value="right"/>
    </properties>
   </object>
-  <object id="33" name="hoarwell" type="pjesak" x="576" y="384" width="32" height="32">
+  <object id="33" name="hoarwell" type="pjesak" x="480" y="384" width="32" height="128">
    <properties>
     <property name="direction" value="down"/>
    </properties>
   </object>
-  <object id="34" name="bruinen" type="pjesak" x="128" y="352" width="32" height="32">
+  <object id="34" name="bruinen" type="pjesak" x="128" y="256" width="32" height="128">
    <properties>
     <property name="direction" value="up"/>
    </properties>
   </object>
-  <object id="35" name="nimrodel" type="pjesak" x="480" y="256" width="32" height="32">
+  <object id="35" name="nimrodel" type="pjesak" x="480" y="256" width="32" height="128">
    <properties>
     <property name="direction" value="down"/>
    </properties>
@@ -135,13 +135,13 @@
     <property name="turn" value="left"/>
    </properties>
   </object>
-  <object id="3" name="gimli" type="car" x="512" y="94.1287" width="32" height="32">
+  <object id="3" name="gimli" type="car" x="512" y="96" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="down"/>
    </properties>
   </object>
-  <object id="4" name="legolas" type="car" x="64" y="95.0643" width="32" height="32">
+  <object id="4" name="legolas" type="car" x="64" y="96" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="down"/>
@@ -155,27 +155,27 @@
     <property name="turn" value="right"/>
    </properties>
   </object>
-  <object id="6" name="aragorn" type="car" x="96.9357" y="256" width="32" height="32">
+  <object id="6" name="aragorn" type="car" x="96" y="256" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
     <property name="turn" value="right"/>
    </properties>
   </object>
-  <object id="7" name="pippin" type="car" x="64" y="352.187" width="32" height="32">
+  <object id="7" name="pippin" type="car" x="64" y="352" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
    </properties>
   </object>
-  <object id="8" name="merry" type="car" x="607.813" y="159.251" width="32" height="32">
+  <object id="8" name="merry" type="car" x="608" y="160" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="left"/>
     <property name="turn" value="left"/>
    </properties>
   </object>
-  <object id="9" name="samwise" type="car" x="159.812" y="160" width="32" height="32">
+  <object id="9" name="samwise" type="car" x="160" y="160" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>
@@ -189,14 +189,14 @@
     <property name="turn" value="right"/>
    </properties>
   </object>
-  <object id="11" name="eowyn" type="car" x="224.936" y="512.748" width="32" height="32">
+  <object id="11" name="eowyn" type="car" x="224" y="512" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
     <property name="turn" value="left"/>
    </properties>
   </object>
-  <object id="12" name="eomer" type="car" x="0.187135" y="447.064" width="32" height="32">
+  <object id="12" name="eomer" type="car" x="0" y="448" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="right"/>
@@ -216,7 +216,7 @@
     <property name="turn" value="left"/>
    </properties>
   </object>
-  <object id="15" name="faramir" type="car" x="543.064" y="350.129" width="32" height="32">
+  <object id="15" name="faramir" type="car" x="544" y="352" width="32" height="32">
    <properties>
     <property name="action" value="forward"/>
     <property name="orientation" value="up"/>
