@@ -1,29 +1,27 @@
-import ptmx.*; //<>// //<>//
+import ptmx.*; // Potrebno instalirati biblioteku Ptmx //<>//
 import java.util.ArrayDeque;
 
 // Globalne varijable
-String firstLevel;
-
-Level cur;
-String nextLevelName;
-boolean drawLevel = false;
-boolean startLevelFlag = false;
-boolean levelRunningFlag = false;
-float lives = 3;  // float jer se sudar registrira kod oba auta pa se smanjuje za 0.5
+Level cur;                          // trenutni level
+String nextLevelName;               // ime datoteke sljedeceg levela za ucitavanje (bez .tmx nastavka)
+boolean drawLevel = false;          // zastavica je true ako se level treba crtati na ekran 
+boolean startLevelFlag = false;     // zastavica je true ako se level crta ispocetka (prvi puta ili zbog reseta)
+//boolean levelRunningFlag = false;
+float lives;                        // float jer se sudar registrira kod oba auta pa se smanjuje za 0.5
 
 PImage carImage;
 
-ArrayList<Button> buttons;
-boolean lastMousePressed = false;
+ArrayList<Button> buttons;          // lista svega na sto se moze kliknuti misem (na trenutnom ekranu)
+boolean lastMousePressed = false;   // kontrolna varijabla za klikanje misem
 
 int lastTime; // u milisekundama
 float deltaTime; // u sekundama
 
 Display display;
-ArrayList<String> allLevelsNames;
-int unlockedLevelsIndex;
-int numberOfLevels;
-int  currentLevel;
+ArrayList<String> allLevelsNames;   // svi nazivi levela koji ce se pojaviti u igrici redoslijedom kojim su dodani, bez .tmx
+int unlockedLevelsIndex;            // broj levela koje je igrac prosao
+int numberOfLevels;                 // broj levela koji postoje u igrici (duljina liste allLevelsNames)
+int currentLevel;                   // indeks levela koji se trenutno igra
 
 void setup() {
   size(640, 640);
@@ -41,17 +39,21 @@ void setup() {
   currentLevel = 0;
   numberOfLevels = allLevelsNames.size();
   display = new Display();
-
-  firstLevel = allLevelsNames.get(0) + ".tmx";
-  setNextLevel(firstLevel);
-  startLevel();
+  
+  //String firstLevel;
+  //firstLevel = allLevelsNames.get(0) + ".tmx";
+  
+  //setNextLevel(firstLevel);
+  nextLevelName = allLevelsNames.get(0) + ".tmx";
+  startLevelFlag = true;
+  lives = 3;
   lastTime = millis();
 }
 
 void draw() {
   if (!lastMousePressed && mousePressed) {  // da ne registrira klik vise puta
     onClick(mouseX, mouseY);
-    levelRunningFlag = true;
+    //levelRunningFlag = true;
   }
   lastMousePressed = mousePressed;
 

@@ -147,7 +147,8 @@ class Display
   {
     state = screenState.PLAY;
 
-    startLevel();
+    startLevelFlag = true;
+    lives = 3;
 
     resetButton.switchButton();
     goToSelectButton.moveButton(width - defaultTextButtonW - 10, defaultTextButtonH + 10 + 10);

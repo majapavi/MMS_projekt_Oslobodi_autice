@@ -120,7 +120,7 @@ class Level {
 
   void crashed(Car car){
     println("ANIMACIJA SUDARA");
-    startLevel();
+    startLevelFlag = true;
   }
 
   int pxToTileX(int pixelX){
@@ -149,13 +149,13 @@ class Level {
 }
 
 // globalne funkcije za level
-void setNextLevel(String filename){
-  nextLevelName = filename;
-}
+//void setNextLevel(String filename){
+//  nextLevelName = filename;
+//}
 
-void startLevel(){
-  startLevelFlag = true;
-}
+//void startLevel(){
+//  startLevelFlag = true;
+//}
 
 void realStartLevel(){
   if (cur != null){
@@ -163,9 +163,11 @@ void realStartLevel(){
   }
   cur = new Level(this, nextLevelName);
   buttons.addAll(cur.getButtons());
+  
   drawLevel = true;
-  levelRunningFlag = false;
+  //levelRunningFlag = false;
   startLevelFlag = false;
+  
 }
 
 void finishLevel(){

@@ -106,7 +106,7 @@ class ResetButton extends TextButton {
   }
 
   void click() {
-    startLevel();
+    startLevelFlag = true;
   }
 }
 
@@ -123,7 +123,8 @@ class SelectLevelButton extends TextButton {
   }
 
   void click() {
-    setNextLevel(this.levelName);
+    nextLevelName = this.levelName;
+    //setNextLevel(this.levelName);
     display.changeDisplayState(screenState.PLAY);
     currentLevel = this.levelNumber;
   }

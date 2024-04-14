@@ -123,7 +123,7 @@ class Car implements Collideable {
   float preciseX, preciseY;
   int tileX, tileY, tileW, tileH;
   int ordNumber;
-  PImage img;
+  //PImage img;
   float speed = 150; // brzina u pikselima po sekundi
   ArrayList<CarButton> buttons;
   Direction orient;
@@ -155,7 +155,7 @@ class Car implements Collideable {
     tileW = level.pxToTileX(w);
     tileH = level.pxToTileY(h);
     ordNumber=number;
-    img = carImage;
+    //img = carImage;
 
     buttons = new ArrayList<CarButton>();
     if (attrib.get("action").equals("forward")){
@@ -257,7 +257,7 @@ class Car implements Collideable {
         rotate(turningAngle);
       }
     }
-    image(img, 0, 0, w, h);
+    image(carImage, 0, 0, w, h);
     Turn head = turnLogic.read();
     if (head == Turn.LEFT){
       image(level.leftArrowImage, 0, 0, w, h);
@@ -393,7 +393,7 @@ class Car implements Collideable {
       lives-=0.5;
       if(lives==0){
         println("GUBITAK");
-        exit();
+          display.changeDisplayState(screenState.START);
       }
       level.crashed(this);
       started = false;
@@ -401,7 +401,7 @@ class Car implements Collideable {
         lives-=1;
         if(lives==0){
           println("Izgubili ste sve zivote!");
-          exit();
+          display.changeDisplayState(screenState.START);
         }
         level.crashed(this);
         started = false;
