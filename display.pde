@@ -25,7 +25,7 @@ class Display
 
     levelSelectButtonsList = new ArrayList<SelectLevelButton>();
     for (int i = 0; i < numberOfLevels; i++)
-      levelSelectButtonsList.add(new SelectLevelButton(0, 300, allLevelsNames.get(i), i));
+      levelSelectButtonsList.add(new SelectLevelButton(0, 0, allLevelsNames.get(i), i));
 
     initStartScreen();
   }
@@ -186,7 +186,7 @@ class Display
     int columns = min(4, unlockedLevelsIndex + 1); // Broj stupaca ograničen na 4 ili manje ako je manje otključanih razina
     int totalButtonsWidth = columns * defaultTextButtonW + (columns - 1) * spacing;
     int x = (width - totalButtonsWidth) / 2;
-    int y = 50;
+    int y = 320;
     
     for (int i = 0; i <= unlockedLevelsIndex; i++) {
       levelSelectButtonsList.get(i).moveButton(x, y);
