@@ -126,6 +126,6 @@ class SelectLevelButton extends TextButton {
     nextLevelName = this.levelName;
     //setNextLevel(this.levelName);
     display.changeDisplayState(screenState.PLAY);
-    currentLevel = this.levelNumber;
+    currentLevelIndex = this.levelNumber;
   }
 }

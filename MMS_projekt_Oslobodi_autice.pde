@@ -2,7 +2,7 @@ import ptmx.*; // Potrebno instalirati biblioteku Ptmx //<>//
 import java.util.ArrayDeque;
 
 // Globalne varijable
-Level cur;                          // trenutni level
+Level currentLevel;                 // trenutni level
 String nextLevelName;               // ime datoteke sljedeceg levela za ucitavanje (bez .tmx nastavka)
 boolean drawLevel = false;          // zastavica je true ako se level treba crtati na ekran 
 boolean startLevelFlag = false;     // zastavica je true ako se level crta ispocetka (prvi puta ili zbog reseta)
@@ -21,7 +21,7 @@ Display display;
 ArrayList<String> allLevelsNames;   // svi nazivi levela koji ce se pojaviti u igrici redoslijedom kojim su dodani, bez .tmx
 int unlockedLevelsIndex;            // broj levela koje je igrac prosao
 int numberOfLevels;                 // broj levela koji postoje u igrici (duljina liste allLevelsNames)
-int currentLevel;                   // indeks levela koji se trenutno igra
+int currentLevelIndex;                   // indeks levela koji se trenutno igra
 
 void setup() {
   size(640, 640);
@@ -36,7 +36,7 @@ void setup() {
   allLevelsNames.add("lvl2");
   allLevelsNames.add("lvl2alt");
   unlockedLevelsIndex = 0;
-  currentLevel = 0;
+  currentLevelIndex = 0;
   numberOfLevels = allLevelsNames.size();
   display = new Display();
   
@@ -64,11 +64,18 @@ void draw() {
   display.showDisplay();
 
   for (Button button : buttons) {
+    // Gumbe za navigaciju ne crtaj kada nisu aktivni
     if (button instanceof NavigationButton) {
       NavigationButton navigationButton = (NavigationButton) button;
       if (navigationButton.isActive() == false)
         continue;
     }
+    
+    // Ne crtaj gumbe VisibleCarButton koji ovise o vrsti autica
+    if (button instanceof VisibleCarButton) {
+      continue;
+    }
+    
     button.render();
   }
 

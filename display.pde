@@ -75,19 +75,19 @@ class Display
     {
     case START:
       showStartScreen();
-      drawLevel = false;
+      //drawLevel = false;
       break;
     case END:
       showEndScreen();
-      drawLevel = false;
+      //drawLevel = false;
       break;
     case LEVEL_SELECT:
       showLevelSelectScreen();
-      drawLevel = false;
+      //drawLevel = false;
       break;
     case PLAY:
       showPlayScreen();
-      drawLevel = true;
+      //drawLevel = true;
       break;
     }
   }
@@ -123,10 +123,10 @@ class Display
   void initEndScreen()
   {
     state = screenState.END;
-    if(currentLevel == unlockedLevelsIndex && currentLevel < numberOfLevels - 1)
-      unlockedLevelsIndex = currentLevel + 1;
+    if(currentLevelIndex == unlockedLevelsIndex && currentLevelIndex < numberOfLevels - 1)
+      unlockedLevelsIndex = currentLevelIndex + 1;
 
-    displayMessage = new Text( 320, 100, "Bravo!\nUspješno si prešao level "+str(currentLevel + 1), 40);
+    displayMessage = new Text( 320, 100, "Bravo!\nUspješno si prešao level "+str(currentLevelIndex + 1), 40);
 
     goToSelectButton.moveButton(width/2 - defaultTextButtonW/2, 200);
     goToSelectButton.switchButton();
@@ -158,10 +158,10 @@ class Display
   void showPlayScreen()
   {
     if (drawLevel)
-      cur.update(deltaTime);
+      currentLevel.update(deltaTime);
 
     if (drawLevel)
-      cur.render();
+      currentLevel.render();
 
     resetButton.render();
     goToSelectButton.render();

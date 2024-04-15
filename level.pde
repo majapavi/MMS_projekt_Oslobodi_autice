@@ -78,7 +78,7 @@ class Level {
   void render(){
     map.draw(0, 0);
     for (Car car : cars){
-      car.drawC();
+      car.render();
     }
     for (Pjesak p : pjesaci){
       p.drawP(); 
@@ -159,11 +159,11 @@ class Level {
 //}
 
 void realStartLevel(){
-  if (cur != null){
-    buttons.removeAll(cur.getButtons());
+  if (currentLevel != null){
+    buttons.removeAll(currentLevel.getButtons());
   }
-  cur = new Level(this, nextLevelName);
-  buttons.addAll(cur.getButtons());
+  currentLevel = new Level(this, nextLevelName);
+  buttons.addAll(currentLevel.getButtons());
   
   drawLevel = true;
   //levelRunningFlag = false;
@@ -172,5 +172,6 @@ void realStartLevel(){
 }
 
 void finishLevel(){
+  drawLevel = false;
   display.changeDisplayState(screenState.END);
 }

@@ -28,8 +28,7 @@ class LightButton implements LevelButton {
   }
 
   void render() {
-    if (drawLevel)
-      image(img, x, y, w, h);
+    image(img, x, y, w, h);
   }
 
   void click() {
@@ -161,8 +160,7 @@ class CarForwardButton extends VisibleCarButton {
   }
 
   void render() {
-    if (drawLevel)
-      image(img, x, y);
+    image(img, x, y);
   }
 
   void click() {
@@ -178,8 +176,7 @@ class CarStartStopButton extends VisibleCarButton {
   }
 
   void render() {
-    if (drawLevel)
-      image(img, x, y);
+    image(img, x, y);
   }
 
   void click() {
