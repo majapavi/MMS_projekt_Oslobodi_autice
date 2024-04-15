@@ -35,8 +35,8 @@ void setup() {
   allLevelsNames.add("lvl");
   allLevelsNames.add("lvl2");
   allLevelsNames.add("lvl2alt");
-  unlockedLevelsIndex = 4;
-  currentLevelIndex = 3;
+  unlockedLevelsIndex = 3;
+  currentLevelIndex = 4;
   numberOfLevels = allLevelsNames.size();
   display = new Display();
   
@@ -61,9 +61,12 @@ void draw() {
   deltaTime = float(curTime - lastTime) / 1000.0;
   lastTime = curTime;
 
+  // Prikazi ekran
   display.showDisplay();
 
+  // Nacrtaj sve gumbe koji se mogu kliknuti u trenutnom ekranu
   for (Button button : buttons) {
+    
     // Gumbe za navigaciju ne crtaj kada nisu aktivni
     if (button instanceof NavigationButton) {
       NavigationButton navigationButton = (NavigationButton) button;
@@ -80,6 +83,6 @@ void draw() {
   }
 
   if (startLevelFlag) {
-    realStartLevel();
+    startLevel();
   }
 }

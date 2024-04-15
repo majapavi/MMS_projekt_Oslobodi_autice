@@ -1,9 +1,9 @@
-// Stanja u kojima se igra (display) moze naci //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+// Stanja u kojima se igra (display) moze naci //<>//
 enum screenState {
   START, PLAY, END, LEVEL_SELECT
 }
 
-// Klasa za pamcenje trenutnog stanje igre i iscrtavanje odgovarajuceg displaya
+// Klasa za pamcenje trenutnog stanja igre i iscrtavanje odgovarajuceg displaya
 class Display
 {
   screenState state;
@@ -12,16 +12,19 @@ class Display
   Text displayMessage;
   String gameDescription;
 
-  StartButton startButton;
-  ResetButton resetButton;
-  GoToSelectButton goToSelectButton;
+  StartButton startButton;            // gumb za pokretanje igre
+  ResetButton resetButton;            // gumb za resetiranje levela
+  GoToSelectButton goToSelectButton;  // gumb za prijelaz u ekran za biranje levela
+  
+  // lista gumbi otkljucanih levela
   ArrayList<SelectLevelButton> levelSelectButtonsList;
 
   Display()
   {
+    // Inicijalizacija gumbi
     startButton = new StartButton( width/2 - defaultTextButtonW/2, 400 );
     resetButton = new ResetButton( width - defaultTextButtonW - 10, 10 );
-    goToSelectButton = new GoToSelectButton(width - defaultTextButtonW - 10, defaultTextButtonH + 10 + 10 );
+    goToSelectButton = new GoToSelectButton(width - defaultTextButtonW - 10, defaultTextButtonH + 20 );
 
     levelSelectButtonsList = new ArrayList<SelectLevelButton>();
     for (int i = 0; i < numberOfLevels; i++)
@@ -83,7 +86,7 @@ class Display
       break;
     case LEVEL_SELECT:
       showLevelSelectScreen();
-      //drawLevel = false;
+      drawLevel = false;
       break;
     case PLAY:
       showPlayScreen();
@@ -92,7 +95,7 @@ class Display
     }
   }
 
-
+  // Inicijalizacija pocetnog ekrana
   void initStartScreen()
   {
     state = screenState.START;
@@ -105,44 +108,55 @@ class Display
       +"Strelice na cesti predstavljaju promjenu smjera kretanja autića.";
     displayMessage = new Text( 320, 220, gameDescription);
 
-    startButton.switchButton();
+    startButton.switchButton();  // aktiviraj startButton
   }
+  
+  // Prikazi pocetni ekran
   void showStartScreen()
   {
     background(194);
     gameTitle.ispisiText();
     displayMessage.ispisiText();
-    startButton.render();
+    //startButton.render();
   }
+  
+  // Zatvori pocetni ekran
   void closeStartScreen()
   {
-    startButton.switchButton();
+    startButton.switchButton();  // deaktiviraj gumb
   }
 
-
+  // Inicijalizacija pobjednickog ekrana (nakon uspjesno zavrsenog levela)
   void initEndScreen()
   {
     state = screenState.END;
+    
+    // Otkljucaj sljedeci level
     if(currentLevelIndex == unlockedLevelsIndex && currentLevelIndex < numberOfLevels - 1)
       unlockedLevelsIndex = currentLevelIndex + 1;
 
     displayMessage = new Text( 320, 100, "Bravo!\nUspješno si prešao level "+str(currentLevelIndex + 1), 40);
 
+    // Pomakni i aktiviraj gumb za odabir levela
     goToSelectButton.moveButton(width/2 - defaultTextButtonW/2, 200);
     goToSelectButton.switchButton();
   }
+  
+  // Prikazi pobjednicki ekran
   void showEndScreen()
   {
     background(194);
-    goToSelectButton.render();
+    //goToSelectButton.render();
     displayMessage.ispisiText();
   }
+  
+  // Zatvori pobjednicki ekran
   void closeEndScreen()
   {
     goToSelectButton.switchButton();
   }
 
-
+  // Inicijalizacija ekrana za igru
   void initPlayScreen()
   {
     state = screenState.PLAY;
@@ -154,25 +168,27 @@ class Display
     goToSelectButton.moveButton(width - defaultTextButtonW - 10, defaultTextButtonH + 10 + 10);
     goToSelectButton.switchButton();    
   }
+  
   // iscrtava display sa levelom (glavnim dijelom igre)
   void showPlayScreen()
   {
-    if (drawLevel)
+    if (drawLevel) {
       currentLevel.update(deltaTime);
-
-    if (drawLevel)
       currentLevel.render();
+    }
 
     resetButton.render();
     goToSelectButton.render();
   }
+  
+  // Zatvori ekran za igru
   void closePlayScreen()
   {
     resetButton.switchButton();
     goToSelectButton.switchButton();
   }
 
-
+  // Inicijalizacija ekrana za odabir levela
   void initLevelSelectScreen()
   {
     state = screenState.LEVEL_SELECT;
@@ -182,9 +198,10 @@ class Display
 
     background(194);
 
-    // centraliziranje pozicije gumbi za izbor levela
+    // Centraliziranje pozicije gumbi za izbor levela
     int spacing = 50;
-    int columns = min(4, unlockedLevelsIndex + 1); // Broj stupaca ograničen na 4 ili manje ako je manje otključanih razina
+    // Broj stupaca ograničen na 4 ili manje ako je manje otključanih razina
+    int columns = min(3, unlockedLevelsIndex + 1); 
     int totalButtonsWidth = columns * defaultTextButtonW + (columns - 1) * spacing;
     int x = (width - totalButtonsWidth) / 2;
     int y = 50;
@@ -199,12 +216,14 @@ class Display
     }
   }
 
+  // Prikazi ekran za odabir levela
   void showLevelSelectScreen()
   {
     for (int i = 0; i <= unlockedLevelsIndex; i++)
       levelSelectButtonsList.get(i).render();
   }
 
+  // Zatvori ekran za odabir levela
   void closeLevelSelectScreen() {
     for (int i = 0; i <= unlockedLevelsIndex; i++)
       levelSelectButtonsList.get(i).switchButton();

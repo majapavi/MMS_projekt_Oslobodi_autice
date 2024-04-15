@@ -28,7 +28,8 @@ class LightButton implements LevelButton {
   }
 
   void render() {
-    image(img, x, y, w, h);
+    if(drawLevel)
+      image(img, x, y, w, h);
   }
 
   void click() {

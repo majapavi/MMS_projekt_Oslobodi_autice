@@ -150,16 +150,7 @@ class Level {
   }
 }
 
-// globalne funkcije za level
-//void setNextLevel(String filename){
-//  nextLevelName = filename;
-//}
-
-//void startLevel(){
-//  startLevelFlag = true;
-//}
-
-void realStartLevel(){
+void startLevel(){
   if (currentLevel != null){
     buttons.removeAll(currentLevel.getButtons());
   }
