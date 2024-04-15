@@ -35,8 +35,8 @@ void setup() {
   allLevelsNames.add("lvl");
   allLevelsNames.add("lvl2");
   allLevelsNames.add("lvl2alt");
-  unlockedLevelsIndex = 0;
-  currentLevelIndex = 0;
+  unlockedLevelsIndex = 4;
+  currentLevelIndex = 3;
   numberOfLevels = allLevelsNames.size();
   display = new Display();
   

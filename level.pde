@@ -119,7 +119,8 @@ class Level {
     return buttons;
   }
 
-  void crashed(Car car){
+  // Prilikom sudara 2 auta, resetiraj level
+  void crashed(){  //Car car){
     println("ANIMACIJA SUDARA");
     startLevelFlag = true;
   }

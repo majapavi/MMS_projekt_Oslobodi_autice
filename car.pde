@@ -346,23 +346,32 @@ class Car implements Collideable {
   // kraj render()
   // -------------
 
+  // Azuriranje pozicije autica
+  // -------------
   void update(float dt) {
+    // Azuriraj kretanje
     if (animateFlag) animateTurn(dt);
     else turn = turnLogic.read();
+    
     x = int(preciseX);
     y = int(preciseY);
 
+    // Provjeri jesi li dosao do raskrsca
     if (currentWall == null) {
       for (Wall wall : level.walls) {
         if (collides(this, wall)) { // usli smo u raskrsce
           currentWall = wall;
-
+          
+          // Ne skreci u zid/zabranjeni smjer
           if (wall.forbidden && applyTurn(turn, orient) == wall.forbiddenDirection)
             continue;
 
+          // Za tipove StackTurn i QueueTurn dohvati sljedeci smjer
           turnLogic.next();
-          if (turn==Turn.FORWARD) break;
+          
+          if (turn == Turn.FORWARD) break;  // idi ravno
 
+          // Postavi vektore za skretanje u zadani smjer
           animatedFrom = new PVector(getX()+getW()/2, getY()+getH()/2);
           if ((orient==Direction.UP && turn==Turn.LEFT)||
             (orient==Direction.LEFT && turn==Turn.RIGHT))
@@ -380,29 +389,35 @@ class Car implements Collideable {
           turningAngle = angle;
         }
       }
-    } else if (currentWall!=null) {
+    } else if (currentWall != null) {
       if (!collides(this, currentWall)) { // izasli smo iz raskrsca
         currentWall = null;
       }
     }
 
+    // Ako si u pokretu, nemas crveni semafor i ne skreces, idi ravno
     if (started && currentLight == null && !animateFlag) {
       fastForward(dt);
     }
 
-    updateButtons();
+    updateButtons();  // azuriraj gumbe s pozicijom autica
 
     if (outOfBounds()) {
-      finish=true;
+      finish = true;  // zapamti da si izasao iz ekrana
     }
 
     currentLight = null; // resetiraj za slijedeci put
+    
     if (!currentSignFlag) {
       currentSign = null;
     }
     currentSignFlag = false;
   }
+  // kraj update()
+  // -------------
 
+  // Geteri
+  // ------
   int getX() {
     return x - getW() / 2;
   }
@@ -422,25 +437,30 @@ class Car implements Collideable {
       return h;
     return w;
   }
-
+    
+  ArrayList<CarButton> getButtons() {
+    return carButtons;
+  }
+  // ------
+  
+  // Vrati true ako se mogu sudariti s njime, tj ako je unutar ekrana
   boolean canCollide() {
     return !finish;
   }
-
+  
+  // Pozicioniraj gumb(e) na mjesto autica
   private void updateButtons() {
     for (CarButton button : carButtons) {
       button.setCarPos(getX(), getY(), getW(), getH());
     }
   }
 
-  ArrayList<CarButton> getButtons() {
-    return carButtons;
-  }
-
+  // Vrati true ako je autic izasao iz ekrana
   boolean finished() {
     return finish;
   }
 
+  // Vrati true ako je pozicija autica izvan ekrana
   boolean outOfBounds() {
     if (y + h / 2 < 0) return true;
     if (y - h / 2 > level.pxHeight) return true;
@@ -449,24 +469,29 @@ class Car implements Collideable {
     return false;
   }
 
+  // Poziva se kada dodje do sudara autica s nekim objektom
+  // --------------------
   void collideAction(Collideable obj) {
+    // Ako se sudario s drugim auticem, oba registriraju sudar pa smanji zivot za 0.5
     if (obj instanceof Car) {
-      lives-=0.5;
-      if (lives==0) {
+      lives -= 0.5;
+      if (lives == 0) {        // izgubljeni svi zivoti, vrati se na pocetni ekran
         println("GUBITAK");
         display.changeDisplayState(screenState.START);
       }
-      level.crashed(this);
+      level.crashed();  //this);
       started = false;
-    } else if (obj instanceof Pjesak || obj instanceof Hazard) {
-      lives-=1;
-      if (lives==0) {
+    } // Ako se sudario s pjesakom ili znakom, smanji zivote za 1
+    else if (obj instanceof Pjesak || obj instanceof Hazard) {
+      lives -= 1;
+      if (lives == 0) {
         println("Izgubili ste sve zivote!");
         display.changeDisplayState(screenState.START);
       }
-      level.crashed(this);
+      level.crashed();  //this);
       started = false;
-    } else if (obj instanceof TurnSign) {
+    } // Ako se "sudario" sa znakom na cesti, promijeni/dodaj mu smjer
+    else if (obj instanceof TurnSign) {
       currentSignFlag = true;
       if (currentSign == null) {
         TurnSign turnSign = (TurnSign) obj;
@@ -475,15 +500,20 @@ class Car implements Collideable {
         }
         currentSign = turnSign;
       }
-    } else if (obj instanceof Light) {
+    } // Ako se "sudario" sa semaforom, azuriraj varijablu currentLight
+    else if (obj instanceof Light) {
       Light light = (Light) obj;
       if (light.orient == orient)
-        currentLight = (Light) obj;
+        //currentLight = (Light) obj;
+        currentLight = light;
     }
   }
+  // kraj collideAction()
+  // --------------------
 
+  // Autic skrece u predodredjenom smjeru, argument dt = deltaTime
   void animateTurn(float dt) {
-    if (turn==Turn.LEFT) {
+    if (turn == Turn.LEFT) {
       turningAngle -= dt * speed / level.tileWidth;
       if (orient==Direction.UP && turningAngle<=-PI/2) {
         afterTurn();
@@ -502,7 +532,7 @@ class Car implements Collideable {
         return;
       }
     }
-    if (turn==Turn.RIGHT) {
+    if (turn == Turn.RIGHT) {
       turningAngle += dt * speed / level.tileWidth;
       if (orient==Direction.UP && turningAngle>=PI/2) {
         afterTurn();
@@ -525,28 +555,32 @@ class Car implements Collideable {
     return;
   }
 
+  // Poziva se poslije skretanja
   void afterTurn() {
-    preciseX=animatedTo.x + getW() / 2;
-    preciseY=animatedTo.y + getH() / 2;
-    orient=applyTurn(turn, orient);
-    angle=directionToAngle(orient);
+    preciseX = animatedTo.x + getW() / 2;
+    preciseY = animatedTo.y + getH() / 2;
+    orient = applyTurn(turn, orient);
+    angle = directionToAngle(orient);
     animateFlag = false;
-    turningAngle=0;
+    turningAngle = 0;
     return;
   }
 
+  // Premjesti auto naprijed
   void fastForward(float dt) {
     PVector displace = new PVector(0, -1);
     displace.rotate(directionToAngle(orient));
-    displace.mult(speed * dt);
+    displace.mult(speed * dt); // pomnozi vektor displace sa skalarom speed*dt
     preciseX += displace.x;
     preciseY += displace.y;
   }
 
+  // Pokreni autic naprijed
   void start() {
     started = true;
   }
 
+  // Zaustavi autic na mjestu
   void stop() {
     started = false;
   }
