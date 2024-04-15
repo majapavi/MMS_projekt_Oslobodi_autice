@@ -62,12 +62,10 @@ void draw() {
   display.showDisplay();
 
   for (Button button : buttons) {
-    if (button instanceof NavigationButton) {
-      NavigationButton navigationButton = (NavigationButton) button;
-      if (navigationButton.isActive() == false)
-        continue;
-    }
-    button.render();
+    if (button instanceof NavigationButton)
+    ; //<>//
+    else
+      button.render();
   }
 
   if (startLevelFlag) {
