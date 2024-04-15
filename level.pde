@@ -60,7 +60,8 @@ class Level {
             collideObjects.add(pjesak);
           }
           if (obj.get("type").equals("car")){
-            Car car = new Car(this, obj, int(j));
+            //Car car = new Car(this, obj, int(j));
+            Car car = new Car(this, obj);
             cars.add(car);
             collideObjects.add(car);
             buttons.addAll(car.getButtons());

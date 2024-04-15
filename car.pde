@@ -1,9 +1,11 @@
-boolean DEBUG_COLLISION = false;
+boolean DEBUG_COLLISION = false;  // staviti na true za prikaz crvenog kvadrata oko auta - detekcija kolizije
 
+// Mogući smjerovi u kojima auto vozi
 enum Direction {
   UP, RIGHT, DOWN, LEFT
 }
 
+// Vrati smjer u kojem auto vozi
 Direction getDirection(String name){
   if (name.startsWith("u")){
     return Direction.UP;
@@ -20,50 +22,56 @@ Direction getDirection(String name){
   return Direction.UP;
 }
 
+// Vrati suprotan smjer
 Direction oppositeDirection(Direction dir){
   switch (dir){
-    case UP: return Direction.DOWN;
+    case UP:    return Direction.DOWN;
     case RIGHT: return Direction.LEFT;
-    case DOWN: return Direction.UP;
-    case LEFT: return Direction.RIGHT;
-    default: return Direction.UP;
+    case DOWN:  return Direction.UP;
+    case LEFT:  return Direction.RIGHT;
+    default:    return Direction.UP;
   }
 }
 
+// Vrati smjer za lijevo skretanje
 Direction leftTurnDirection(Direction dir){
   switch (dir){
-    case UP: return Direction.LEFT;
+    case UP:    return Direction.LEFT;
     case RIGHT: return Direction.UP;
-    case DOWN: return Direction.RIGHT;
-    case LEFT: return Direction.DOWN;
-    default: return Direction.UP;
+    case DOWN:  return Direction.RIGHT;
+    case LEFT:  return Direction.DOWN;
+    default:    return Direction.UP;
   }
 }
 
+// Vrati smjer za desno skretanje
 Direction rightTurnDirection(Direction dir){
   switch (dir){
-    case UP: return Direction.RIGHT;
+    case UP:    return Direction.RIGHT;
     case RIGHT: return Direction.DOWN;
-    case DOWN: return Direction.LEFT;
-    case LEFT: return Direction.UP;
-    default: return Direction.UP;
+    case DOWN:  return Direction.LEFT;
+    case LEFT:  return Direction.UP;
+    default:    return Direction.UP;
   }
 }
 
+// Vrati kut rotacije ovisno o smjeru
 float directionToAngle(Direction dir){
   switch (dir){
-    case UP: return 0;
+    case UP:    return 0;
     case RIGHT: return PI/2;
-    case DOWN: return PI;
-    case LEFT: return 3*PI/2;
-    default: return 0;
+    case DOWN:  return PI;
+    case LEFT:  return 3*PI/2;
+    default:    return 0;
   }
 }
 
+// Moguća skretanja
 enum Turn {
   LEFT, RIGHT, FORWARD
 }
 
+// Vrati skretanje prema imenu
 Turn getTurn(String name){
   if (name.startsWith("l")){
     return Turn.LEFT;
@@ -74,29 +82,38 @@ Turn getTurn(String name){
   return Turn.FORWARD;
 }
 
+// Primijeni dobiveno skretanje u odnosu na dobiveni smjer
 Direction applyTurn(Turn t, Direction dir){
   switch (t){
-    case LEFT: return leftTurnDirection(dir);
-    case RIGHT: return rightTurnDirection(dir);
+    case LEFT:    return leftTurnDirection(dir);
+    case RIGHT:   return rightTurnDirection(dir);
     case FORWARD: return dir;
-    default: return dir;
+    default:      return dir;
   }
 }
 
+// Klasa objekata koji postoje u levelu
 interface Collideable {
+  // (x,y) je pozicija objekta 
   int getX();
   int getY();
+  
+  // w = sirina, h = visina objekta
   int getW();
   int getH();
+  
+  // Vraca true kada je moguce sudariti se s objektom
   boolean canCollide();
 }
 
-
+// Vraca true ukoliko je pozicija (x,y) "unutar" objekta s kojim se moguce sudariti
 boolean pointInCollideable(int x, int y, Collideable b){
   return (b.getX() <= x && x <= b.getX() + b.getW()
        && b.getY() <= y && y <= b.getY() + b.getH());
 }
 
+// Vraca true ukoliko se objekt a sudario s objektom b
+// - koristi se za zidove (tj raskrsca) i semafore
 boolean collides(Collideable a, Collideable b){
   if (!a.canCollide() || !b.canCollide()) return false;
 
@@ -107,40 +124,47 @@ boolean collides(Collideable a, Collideable b){
   return true;
 }
 
-boolean inside(Collideable a, Collideable b){
-  if (!a.canCollide() || !b.canCollide()) return false;
+//// Vraca true ukoliko je objekt a unutar objekta b
+//boolean inside(Collideable a, Collideable b){
+//  if (!a.canCollide() || !b.canCollide()) return false;
 
-  if (!pointInCollideable(a.getX(), a.getY(), b)) return false;
-  if (!pointInCollideable(a.getX() + a.getW(), a.getY(), b)) return false;
-  if (!pointInCollideable(a.getX(), a.getY() + a.getH(), b)) return false;
-  if (!pointInCollideable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return false;
-  return true;
-}
+//  if (!pointInCollideable(a.getX(), a.getY(), b)) return false;
+//  if (!pointInCollideable(a.getX() + a.getW(), a.getY(), b)) return false;
+//  if (!pointInCollideable(a.getX(), a.getY() + a.getH(), b)) return false;
+//  if (!pointInCollideable(a.getX() + a.getW(), a.getY() + a.getH(), b)) return false;
+//  return true;
+//}
 
 class Car implements Collideable {
-  Level level;
-  int x, y, w, h;
-  float preciseX, preciseY;
-  int tileX, tileY, tileW, tileH;
-  int ordNumber;
+  // Popis varijabli
+  // ---------------
+  Level level;                     // level u kojem se auto nalazi
+  int x, y, w, h;                  // pozicija, sirina i visina auta
+  float preciseX, preciseY;        // preciznija pozicija
+  //int tileX, tileY, tileW, tileH;  
+  //int ordNumber;
   //PImage img;
-  float speed = 150; // brzina u pikselima po sekundi
-  ArrayList<CarButton> buttons;
-  Direction orient;
-  TurnLogic turnLogic;
-  String turnLogicLetter;
-  Turn turn;
+  float speed = 150;               // brzina u pikselima po sekundi
+  ArrayList<CarButton> carButtons; // lista klikabilnih autica
+  Direction orient;                // orijentacija auta
+  TurnLogic turnLogic;             // logika za skretanje
+  String turnLogicLetter;          // slovo za logiku skretanja - moguca F, V, S, Q
+  Turn turn;                       // enum za skretanje
   float angle;
   float turningAngle;
-  boolean finish;
-  boolean started = false, animateFlag = false; 
-  Wall currentWall;
-  Light currentLight;
-  TurnSign currentSign = null;
-  boolean currentSignFlag = false;
-  PVector animatedFrom, animatedTo;
-  float angleFrom, angleTo;
-  Car(Level level, StringDict attrib, int number){
+  boolean finish;                  // vrijednost mu je true ako je izvan ekrana
+  boolean started = false;         // vrijednost je true kada je auto pokrenut/u pokretu
+  boolean animateFlag = false;     // vrijednost je true kada auto skrece??? - crta strelicu smjera kretanja auta?!
+  Wall currentWall;                // trenutni zid (raskrce) s kojim se auto moze sudariti
+  Light currentLight;              // trenutni semafor koji moze stopirati auto
+  TurnSign currentSign = null;     // trenutni znak na cesti koji moze okrenuti smjer kretanja auta
+  boolean currentSignFlag = false; // vrijednost je true kada je znak na cesti aktivan???
+  PVector animatedFrom, animatedTo; // vektori pocetka i kraja animacije skretanja
+  //float angleFrom, angleTo;        // kutevi pocetka i kraja skretanja???
+  
+  // Konstruktor
+  // -----------
+  Car(Level level, StringDict attrib){ //, int number){
     this.level = level;
     x = level.centerX(int(attrib.get("x")));
     y = level.centerY(int(attrib.get("y")));
@@ -150,20 +174,20 @@ class Car implements Collideable {
     h = 30;
     orient = getDirection(attrib.get("orientation"));
     angle = directionToAngle(orient);
-    tileX = level.pxToTileX(x);
-    tileY = level.pxToTileY(y);
-    tileW = level.pxToTileX(w);
-    tileH = level.pxToTileY(h);
-    ordNumber=number;
+    //tileX = level.pxToTileX(x);
+    //tileY = level.pxToTileY(y);
+    //tileW = level.pxToTileX(w);
+    //tileH = level.pxToTileY(h);
+    //ordNumber=number;
     //img = carImage;
 
-    buttons = new ArrayList<CarButton>();
+    carButtons = new ArrayList<CarButton>();
     if (attrib.get("action").equals("forward")){
-      buttons.add(new CarForwardButton(this));
+      carButtons.add(new CarForwardButton(this));
     } else if (attrib.get("action").equals("drive")){
       start();
     } else if (attrib.get("action").equals("stop")){
-      buttons.add(new CarStartStopButton(this));
+      carButtons.add(new CarStartStopButton(this));
     }
     updateButtons();
 
@@ -367,13 +391,13 @@ class Car implements Collideable {
   }
 
   private void updateButtons(){
-    for (CarButton button : buttons){
+    for (CarButton button : carButtons){
       button.setCarPos(getX(), getY(), getW(), getH());
     }
   }
 
   ArrayList<CarButton> getButtons(){
-    return buttons;
+    return carButtons;
   }
 
   boolean finished(){
