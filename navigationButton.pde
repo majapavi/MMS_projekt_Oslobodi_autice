@@ -1,4 +1,4 @@
-// interface Button je u datoteci levelButton
+// Sucelje Button je u datoteci levelButton.pde
 
 // Konstante za visinu i sirinu gumba
 int defaultTextButtonH = 30;

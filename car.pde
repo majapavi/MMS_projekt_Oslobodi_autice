@@ -117,7 +117,7 @@ Direction applyTurn(Turn t, Direction dir) {
   }
 }
 
-// Klasa objekata koji postoje u levelu
+// Sucelje objekata koji postoje u levelu
 interface Collideable {
   // (x,y) je pozicija objekta
   int getX();

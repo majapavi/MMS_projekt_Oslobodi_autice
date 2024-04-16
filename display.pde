@@ -165,7 +165,7 @@ class Display
     lives = 3;
 
     resetButton.switchButton();
-    goToSelectButton.moveButton(width - defaultTextButtonW - 10, defaultTextButtonH + 10 + 10);
+    goToSelectButton.moveButton(width - defaultTextButtonW - 10, defaultTextButtonH + 20);
     goToSelectButton.switchButton();    
   }
   
