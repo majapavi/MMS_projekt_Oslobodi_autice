@@ -216,10 +216,10 @@ class Car implements Collideable {
       turnLogic = new VariableTurn(turn);
       turnLogicLetter = "V";
     } else if (tmp.startsWith("s")) {
-      turnLogic = new StackTurn(turn);
+      turnLogic = new StackTurn();  //turn);
       turnLogicLetter = "S";
     } else if (tmp.startsWith("q")) {
-      turnLogic = new QueueTurn(turn);
+      turnLogic = new QueueTurn();
       turnLogicLetter = "Q";
     }
     turn = turnLogic.read();
