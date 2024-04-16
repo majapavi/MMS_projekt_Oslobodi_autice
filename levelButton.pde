@@ -230,12 +230,3 @@ class CarStartStopButton extends VisibleCarButton {
     }
   }
 }
-
-// globalna funkcija za validaciju klika misem
-void onClick(int x, int y) {
-  for (Button button : buttons) {
-    if (button.validCursor(x, y)) {
-      button.click();
-    }
-  }
-}

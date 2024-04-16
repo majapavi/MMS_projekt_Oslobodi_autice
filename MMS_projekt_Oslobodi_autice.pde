@@ -21,7 +21,16 @@ Display display;
 ArrayList<String> allLevelsNames;   // svi nazivi levela koji ce se pojaviti u igrici redoslijedom kojim su dodani, bez .tmx
 int unlockedLevelsIndex;            // broj levela koje je igrac prosao
 int numberOfLevels;                 // broj levela koji postoje u igrici (duljina liste allLevelsNames)
-int currentLevelIndex;                   // indeks levela koji se trenutno igra
+int currentLevelIndex;              // indeks levela koji se trenutno igra
+
+// Globalna funkcija za validaciju klika misem
+void onClick(int x, int y) {
+  for (Button button : buttons) {
+    if (button.validCursor(x, y)) {
+      button.click();
+    }
+  }
+}
 
 void setup() {
   size(640, 640);
