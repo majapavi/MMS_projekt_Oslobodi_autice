@@ -74,7 +74,7 @@ void draw() {
         continue;
     }
     
-    // Ne crtaj gumbe VisibleCarButton koji ovise o vrsti autica
+    // Ne crtaj slikicu koja oznacava koje je vrste autica
     if (button instanceof VisibleCarButton) {
       continue;
     }
