@@ -1,9 +1,18 @@
-// klasa za rukovanje tekstom
+// Klasa za rukovanje tekstom
 class Text {
-  float x, y;
-  int textSize;
-  String text;
+  float x, y;    // pozicija teksta
+  int textSize;  // font
+  String text;   // sadrzaj
 
+  // Konstruktor
+  Text(float x_, float y_, String text_) {
+    x = x_;
+    y = y_;
+    textSize = 18;
+    text = text_;
+  }
+  
+  // Konstruktor s varijabilnim fontom
   Text(float x_, float y_, String text_, int textSize_) {
     x = x_;
     y = y_;
@@ -11,13 +20,7 @@ class Text {
     text = text_;
   }
 
-  Text(float x_, float y_, String text_) {
-    x = x_;
-    y = y_;
-    textSize = 18;
-    text = text_;
-  }
-
+  // Prikazi tekst na ekranu
   void ispisiText() {
     fill(0);
     textAlign(CENTER, CENTER);
