@@ -14,12 +14,12 @@ class Light implements Collideable{
     h = int(attrib.get("height"));
     orient = getDirection(attrib.get("direction"));
     
+    // Pozicija gumba semafora ovisi o orijentaciji
     if(orient==Direction.DOWN || orient==Direction.LEFT){
-      lightButton=new LightButton(x+7,y+7,18,18,false);
+      lightButton = new LightButton(x+7, y+7, 18, 18, false);
     }
-    
     if(orient==Direction.UP || orient==Direction.RIGHT){
-      lightButton=new LightButton(x+w-25,y+h-25,18,18,false);
+      lightButton = new LightButton(x+w-25, y+h-25, 18, 18, false);
     }
   }
   
@@ -62,6 +62,7 @@ class Wall implements Collideable{
     w = int(attrib.get("width"));
     h = int(attrib.get("height"));
     
+    // Postavi zabranjeni smjer, ako postoji
     String tmp = attrib.get("forbidden");
     if (tmp == null){
       forbidden = false;  // nema parametra forbidden
@@ -69,6 +70,7 @@ class Wall implements Collideable{
       forbidden = true;
       forbiddenDirection = getDirection(tmp);
     }
+    
     ordNumber = num;
   }
   
