@@ -195,8 +195,7 @@ class Car implements Collideable {
     } else if (attrib.get("action").equals("stop")) {
       carButtons.add(new CarStartStopButton(this));
     }
-
-    //updateButtons();  // postavlja koordinate svih gumbiju na koordinate autica
+    
     finish = false;
 
     // Postavljanje varijabli za skretanje
@@ -389,9 +388,12 @@ class Car implements Collideable {
           turningAngle = angle;
         }
       }
-    } else if (currentWall != null) {
-      if (!collides(this, currentWall)) { // izasli smo iz raskrsca
-        currentWall = null;
+    }
+    // Slucaj kada je autic (bio) u raskrscu
+    else if (currentWall != null) {
+      // Provjeri je li izasao iz njega
+      if (!collides(this, currentWall)) {
+        currentWall = null;  // izasao iz raskrsca
       }
     }
 
@@ -407,6 +409,7 @@ class Car implements Collideable {
     }
 
     currentLight = null; // resetiraj za slijedeci put
+    // -> funkcija collisionDetection() ce postaviti ponovo ako je potrebno
     
     if (!currentSignFlag) {
       currentSign = null;
@@ -504,7 +507,6 @@ class Car implements Collideable {
     else if (obj instanceof Light) {
       Light light = (Light) obj;
       if (light.orient == orient)
-        //currentLight = (Light) obj;
         currentLight = light;
     }
   }
@@ -512,6 +514,7 @@ class Car implements Collideable {
   // --------------------
 
   // Autic skrece u predodredjenom smjeru, argument dt = deltaTime
+  // ------------------
   void animateTurn(float dt) {
     if (turn == Turn.LEFT) {
       turningAngle -= dt * speed / level.tileWidth;
@@ -554,6 +557,8 @@ class Car implements Collideable {
 
     return;
   }
+  // kraj animateTurn()
+  // ------------------
 
   // Poziva se poslije skretanja
   void afterTurn() {

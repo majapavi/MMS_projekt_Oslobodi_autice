@@ -44,15 +44,11 @@ void setup() {
   allLevelsNames.add("lvl");
   allLevelsNames.add("lvl2");
   allLevelsNames.add("lvl2alt");
-  unlockedLevelsIndex = 3;
-  currentLevelIndex = 4;
+  unlockedLevelsIndex = 0;
+  currentLevelIndex = 0;
   numberOfLevels = allLevelsNames.size();
   display = new Display();
-  
-  //String firstLevel;
-  //firstLevel = allLevelsNames.get(0) + ".tmx";
-  
-  //setNextLevel(firstLevel);
+
   nextLevelName = allLevelsNames.get(0) + ".tmx";
   startLevelFlag = true;
   lives = 3;
@@ -62,7 +58,6 @@ void setup() {
 void draw() {
   if (!lastMousePressed && mousePressed) {  // da ne registrira klik vise puta
     onClick(mouseX, mouseY);
-    //levelRunningFlag = true;
   }
   lastMousePressed = mousePressed;
 

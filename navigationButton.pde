@@ -80,7 +80,6 @@ abstract class TextButton extends NavigationButton {
   // Crtaj gumb za navigaciju
   void render() {
     fill(buttonColor);
-    //stroke(color(0, 0, 160));
     rect(x, y, w, h);
     this.text.ispisiText();
   }

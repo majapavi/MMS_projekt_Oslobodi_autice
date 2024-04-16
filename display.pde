@@ -78,11 +78,11 @@ class Display
     {
     case START:
       showStartScreen();
-      //drawLevel = false;
+      drawLevel = false;
       break;
     case END:
       showEndScreen();
-      //drawLevel = false;
+      drawLevel = false;
       break;
     case LEVEL_SELECT:
       showLevelSelectScreen();
@@ -90,7 +90,7 @@ class Display
       break;
     case PLAY:
       showPlayScreen();
-      //drawLevel = true;
+      drawLevel = true;
       break;
     }
   }
@@ -117,7 +117,6 @@ class Display
     background(194);
     gameTitle.ispisiText();
     displayMessage.ispisiText();
-    //startButton.render();
   }
   
   // Zatvori pocetni ekran
@@ -146,7 +145,6 @@ class Display
   void showEndScreen()
   {
     background(194);
-    //goToSelectButton.render();
     displayMessage.ispisiText();
   }
   

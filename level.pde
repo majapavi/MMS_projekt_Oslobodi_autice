@@ -1,3 +1,4 @@
+// Klasa koja se brine o svemu vezanom uz level
 class Level {
   Ptmx map;                  // mapa iz programa Tiled
   int tileWidth, tileHeight; // sirina pojedinog tile-a u pikselima
@@ -6,7 +7,7 @@ class Level {
   ArrayList<Car> cars;
   ArrayList<Wall> walls;
   ArrayList<Light> lights;
-  ArrayList<LevelButton> buttons; // levelButtons;
+  ArrayList<LevelButton> levelButtons;
   ArrayList<Pjesak> pjesaci;
   ArrayList<Collideable> collideObjects;
   PImage leftArrowImage, rightArrowImage, upArrowImage;
@@ -35,7 +36,7 @@ class Level {
     cars = new ArrayList<Car>();
     walls = new ArrayList<Wall>();
     lights = new ArrayList<Light>();
-    buttons = new ArrayList<LevelButton>();    //levelButtons
+    levelButtons = new ArrayList<LevelButton>();
     pjesaci = new ArrayList<Pjesak>();
     
     // Inicijalizacija raznih gumbiju na levelu
@@ -46,39 +47,44 @@ class Level {
         for (StringDict obj : objs){
           String j = obj.get("name");
           if (j == null) j = "";
+          
           // Semafori
           if (obj.get("type").equals("light")){
             Light light = new Light(obj);
             lights.add(light);
             collideObjects.add(light);
             LevelButton bt = light.lightButton;
-            buttons.add(bt);  // levelButtons
+            levelButtons.add(bt);
           }
+          
           // Zidovi/raskrsca
           if (obj.get("type").equals("wall")){
             Wall wall = new Wall(obj, j);
             walls.add(wall);
           }
+          
           // Strelice na cesti
           if (obj.get("type").equals("sign")){
             TurnSign turnSign = new TurnSign(this, obj);
             collideObjects.add(turnSign);
-            buttons.add(turnSign.getButton());  // levelButtons
+            levelButtons.add(turnSign.getButton());
           }
+          
           // Pjesaci
           if (obj.get("type").equals("pjesak")){
             Pjesak pjesak = new Pjesak(this, obj);
             pjesaci.add(pjesak);
             collideObjects.add(pjesak);
           }
+          
           // Autici
           if (obj.get("type").equals("car")){
-            //Car car = new Car(this, obj, int(j));
             Car car = new Car(this, obj);
             cars.add(car);
             collideObjects.add(car);
-            buttons.addAll(car.getButtons());  // levelButtons
+            levelButtons.addAll(car.getButtons());
           }
+          
           // Prepreke
           if (obj.get("type").equals("hazard")){
             Hazard hazard = new Hazard(obj);
@@ -137,11 +143,11 @@ class Level {
 
   // Vraca listu gumbiju tipa LevelButton
   ArrayList<LevelButton> getButtons(){
-    return buttons;  // levelButtons
+    return levelButtons;
   }
 
   // Prilikom sudara 2 auta, resetiraj level
-  void crashed(){  //Car car){
+  void crashed(){
     println("ANIMACIJA SUDARA");
     startLevelFlag = true;
   }
@@ -183,7 +189,6 @@ void startLevel(){
   buttons.addAll(currentLevel.getButtons());
   
   drawLevel = true;
-  //levelRunningFlag = false;
   startLevelFlag = false;
 }
 
