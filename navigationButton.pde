@@ -95,7 +95,6 @@ abstract class TextButton extends NavigationButton {
 
 // Klasa gumba za pocetak igre
 class StartButton extends TextButton {
-  // Konstruktor
   StartButton(int x, int y) {
     super(x, y, "Započni igru");
   }
@@ -108,7 +107,6 @@ class StartButton extends TextButton {
 
 // Klasa gumba za odabir levela
 class GoToSelectButton extends TextButton {
-  // Konstruktor
   GoToSelectButton(int x, int y) {
     super(x, y, "Izaberi level");
   }
@@ -121,7 +119,6 @@ class GoToSelectButton extends TextButton {
 
 // Klasa gumba za reset levela
 class ResetButton extends TextButton {
-  // Konstruktor
   ResetButton(int x, int y) {
     super(x, y, "Resetiraj level");
   }
@@ -149,7 +146,6 @@ class SelectLevelButton extends TextButton {
   // Na klik gumba prebaci se na odabrani level
   void click() {
     nextLevelName = this.levelName;
-    //setNextLevel(this.levelName);
     currentLevelIndex = this.levelNumber;
     display.changeDisplayState(screenState.PLAY);
   }

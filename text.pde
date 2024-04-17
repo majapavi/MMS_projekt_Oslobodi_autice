@@ -1,7 +1,7 @@
 // Klasa za rukovanje tekstom
 class Text {
   float x, y;    // pozicija teksta
-  int textSize;  // font
+  int textSize;  // velicina teksta
   String text;   // sadrzaj
 
   // Konstruktor

@@ -16,7 +16,7 @@ class Display
   ResetButton resetButton;            // gumb za resetiranje levela
   GoToSelectButton goToSelectButton;  // gumb za prijelaz u ekran za biranje levela
   
-  // lista gumbi otkljucanih levela
+  // lista gumbi svih levela
   ArrayList<SelectLevelButton> levelSelectButtonsList;
 
   Display()
@@ -167,7 +167,7 @@ class Display
     goToSelectButton.switchButton();    
   }
   
-  // iscrtava display sa levelom (glavnim dijelom igre)
+  // Iscrtava display sa levelom (glavnim dijelom igre)
   void showPlayScreen()
   {
     if (drawLevel) {
@@ -198,7 +198,7 @@ class Display
 
     // Centraliziranje pozicije gumbi za izbor levela
     int spacing = 50;
-    // Broj stupaca ograničen na 4 ili manje ako je manje otključanih razina
+    // Broj stupaca ograničen na 3 ili manje ako je manje otključanih razina
     int columns = min(3, unlockedLevelsIndex + 1); 
     int totalButtonsWidth = columns * defaultTextButtonW + (columns - 1) * spacing;
     int x = (width - totalButtonsWidth) / 2;
