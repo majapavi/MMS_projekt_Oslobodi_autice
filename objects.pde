@@ -14,7 +14,7 @@ class Light implements Collideable{
     h = int(attrib.get("height"));
     orient = getDirection(attrib.get("direction"));
     
-    // Pozicija gumba semafora ovisi o orijentaciji
+    // Semafor se nalazi s desne strane autica na koje utjece
     if(orient==Direction.DOWN || orient==Direction.LEFT){
       lightButton = new LightButton(x+7, y+7, 18, 18, false);
     }
@@ -51,12 +51,11 @@ class Light implements Collideable{
 // Klasa koja oznacava raskrsca
 class Wall implements Collideable{
   int x, y, w, h;
-  String ordNumber;               // redni broj raskrsca
   boolean forbidden;              // false ako je otvoreno raskrsce (cesta sa sve 4 strane)
   Direction forbiddenDirection;   // smjer u koji je zabranjeno skrenuti (nema ceste u tom smjeru)
   
   // Konstruktor
-  Wall(StringDict attrib, String num){
+  Wall(StringDict attrib){
     x = int(attrib.get("x"));
     y = int(attrib.get("y"));
     w = int(attrib.get("width"));
@@ -71,7 +70,6 @@ class Wall implements Collideable{
       forbiddenDirection = getDirection(tmp);
     }
     
-    ordNumber = num;
   }
   
   // Geteri

@@ -59,7 +59,7 @@ class Level {
           
           // Zidovi/raskrsca
           if (obj.get("type").equals("wall")){
-            Wall wall = new Wall(obj, j);
+            Wall wall = new Wall(obj);
             walls.add(wall);
           }
           

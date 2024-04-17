@@ -169,7 +169,7 @@ abstract class VisibleCarButton implements CarButton {
       this.y - ENLARGE < y && y < down;
   }
 
-  // Postavi poziciju autica
+  // Postavi gumb na poziciju autica
   void setCarPos(int x, int y, int w, int h) {
     this.x = x;
     this.y = y;

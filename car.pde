@@ -138,7 +138,7 @@ boolean pointInCollideable(int x, int y, Collideable b) {
 }
 
 // Vraca true ukoliko se objekt a sudario s objektom b
-// - koristi se za zidove (tj raskrsca) i semafore
+// - koristi se za aute, zidove (tj raskrsca) i semafore
 boolean collides(Collideable a, Collideable b) {
   if (!a.canCollide() || !b.canCollide()) return false;
 
@@ -153,8 +153,8 @@ class Car implements Collideable {
   // Popis varijabli
   // ---------------
   Level level;                     // level u kojem se auto nalazi
-  int x, y, w, h;                  // pozicija, sirina i visina auta
-  float preciseX, preciseY;        // preciznija pozicija
+  int x, y, w, h;                  // pozicija auta na pocetku, sirina i visina auta
+  float preciseX, preciseY;        // trenutna pozicija auta
   float speed = 150;               // brzina u pikselima po sekundi
   ArrayList<CarButton> carButtons; // lista gumbiju autica, zasad samo 1 gumb preko cijelog autica
   Direction orient;                // orijentacija auta
@@ -166,8 +166,8 @@ class Car implements Collideable {
   boolean finish;                  // vrijednost mu je true ako je izvan ekrana
   boolean started = false;         // vrijednost je true kada je auto pokrenut/u pokretu
   boolean animateFlag = false;     // vrijednost je true kada auto skrece
-  Wall currentWall;                // trenutni zid (raskrce) s kojim se auto moze sudariti
-  Light currentLight;              // trenutni semafor koji moze stopirati auto
+  Wall currentWall;                // trenutni zid (raskrce) s kojim se auto "sudario"
+  Light currentLight;              // trenutni semafor s kojim se auto "sudario"
   TurnSign currentSign = null;     // trenutni znak na cesti koji moze okrenuti smjer kretanja auta
   boolean currentSignFlag = false; // vrijednost je true kada je znak na cesti aktivan???
   PVector animatedFrom, animatedTo; // vektori pocetka i kraja animacije skretanja
