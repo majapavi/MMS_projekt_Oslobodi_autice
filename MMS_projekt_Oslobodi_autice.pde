@@ -75,7 +75,6 @@ void draw() {
     if (button instanceof VisibleCarButton) {
       continue;
     }
-    
     if (button instanceof NavigationButton)
     ; //<>//
     else
