@@ -91,6 +91,7 @@ class TurnButton implements LevelButton {
 
   // Crta strelicu na cesti
   void render() {
+    if(!drawLevel) return;
     // Sve transformacije izmedju pushMatrix() i popMatrix() se odnose samo na ovaj objekt
     pushMatrix();
     translate(x + w/2, y + h/2);

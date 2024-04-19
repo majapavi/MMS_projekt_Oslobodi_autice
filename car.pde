@@ -6,7 +6,7 @@ enum Direction {
   UP, RIGHT, DOWN, LEFT
 }
 
-// Vrati smjer u kojem auto vozi
+// Vrati smjer prema imenu
 Direction getDirection(String name) {
   if (name.startsWith("u")) {
     return Direction.UP;
@@ -117,7 +117,7 @@ Direction applyTurn(Turn t, Direction dir) {
   }
 }
 
-// Sucelje objekata koji postoje u levelu
+// Sucelje objekata s kojima se autic moze sudariti
 interface Collideable {
   // (x,y) je pozicija objekta
   int getX();
@@ -153,8 +153,8 @@ class Car implements Collideable {
   // Popis varijabli
   // ---------------
   Level level;                     // level u kojem se auto nalazi
-  int x, y, w, h;                  // pozicija auta na pocetku, sirina i visina auta
-  float preciseX, preciseY;        // trenutna pozicija auta
+  int x, y, w, h;                  // pozicija sredista auta koristena za citanje pozicije, sirina i visina auta
+  float preciseX, preciseY;        // trenutna pozicija sredista auta, koristi se za micanje auta
   float speed = 150;               // brzina u pikselima po sekundi
   ArrayList<CarButton> carButtons; // lista gumbiju autica, zasad samo 1 gumb preko cijelog autica
   Direction orient;                // orijentacija auta
@@ -169,12 +169,15 @@ class Car implements Collideable {
   Wall currentWall;                // trenutni zid (raskrce) s kojim se auto "sudario"
   Light currentLight;              // trenutni semafor s kojim se auto "sudario"
   TurnSign currentSign = null;     // trenutni znak na cesti koji moze okrenuti smjer kretanja auta
-  boolean currentSignFlag = false; // vrijednost je true kada je znak na cesti aktivan???
-  PVector animatedFrom, animatedTo; // vektori pocetka i kraja animacije skretanja
+  boolean currentSignFlag = false;
+  // currentSignFlag sluzi kako se ne bi dupliciralo citanje znaka za ceste 
+  // (kad autic dodje iznad znaka se znak procita i currentSignFlag postavi, 
+  //   dalje se taj isti znak nece citati)
+  PVector animatedFrom, animatedTo; // trenutne i zavrsne koordinate animacije skretanja
 
   // Konstruktor
   // -----------
-  Car(Level level, StringDict attrib) { //, int number){
+  Car(Level level, StringDict attrib) {
     this.level = level;
     x = level.centerX(int(attrib.get("x")));
     y = level.centerY(int(attrib.get("y")));
@@ -223,7 +226,7 @@ class Car implements Collideable {
     }
     turn = turnLogic.read();
 
-    // Ukoliko je autic tocno ispred raskrsca, registriraj zid
+    // Ukoliko je autic tocno unutar raskrsca, registriraj zid
     for (Wall wall : level.walls) {
       if (collides(this, wall)) {
         currentWall = wall;
@@ -318,7 +321,7 @@ class Car implements Collideable {
       image(level.upArrowImage, 0, 0, w, h);
     }
     
-    // Za tipove StackTurn i QueueTurn nacrtaj sljedeci smjer
+    // Za tipove StackTurn i QueueTurn nacrtaj sljedece smjerove
     int i = 0;
     for (Turn t : turnLogic.getTail()) {
       if (t == Turn.LEFT) {
@@ -333,11 +336,11 @@ class Car implements Collideable {
     turnLogic.writeHead(head);
     
     // Prikaz slova ovisno o vrsti autica - F/V/S/Q
-    /***
+    /*
     fill(255, 0, 0);
     textSize(22);
     text(turnLogicLetter, 0, 16);
-    ***/
+    */
     
     imageMode(CORNER);
     popMatrix();
@@ -463,7 +466,7 @@ class Car implements Collideable {
     return finish;
   }
 
-  // Vrati true ako je pozicija autica izvan ekrana
+  // Vrati true ako je pozicija autica izvan levela
   boolean outOfBounds() {
     if (y + h / 2 < 0) return true;
     if (y - h / 2 > level.pxHeight) return true;
@@ -491,7 +494,7 @@ class Car implements Collideable {
         println("Izgubili ste sve zivote!");
         display.changeDisplayState(screenState.START);
       }
-      level.crashed();  //this);
+      level.crashed();
       started = false;
     } // Ako se "sudario" sa znakom na cesti, promijeni/dodaj mu smjer
     else if (obj instanceof TurnSign) {

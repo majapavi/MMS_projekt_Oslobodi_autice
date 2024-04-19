@@ -117,6 +117,7 @@ class Display
     background(194);
     gameTitle.ispisiText();
     displayMessage.ispisiText();
+    startButton.render();
   }
   
   // Zatvori pocetni ekran
@@ -146,6 +147,7 @@ class Display
   {
     background(194);
     displayMessage.ispisiText();
+    goToSelectButton.render();
   }
   
   // Zatvori pobjednicki ekran

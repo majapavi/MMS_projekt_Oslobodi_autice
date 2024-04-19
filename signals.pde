@@ -87,111 +87,95 @@ interface TurnLogic {
   Iterable<Turn> getTail();
 }
 
-// Klasa za kretanje ravno
+// Odigrati s_like.tmx za demonstraciju logika
+
 class ForwardTurn implements TurnLogic {
   Turn current;           // trenutni smjer u kojem se autic krece
   ArrayList<Turn> empty;  // prazna lista skretanja
   
-  // Konstruktor
   ForwardTurn(Turn t){
     current = t;
     empty = new ArrayList<Turn>();
   }
   
-  // Vraca trenutni smjer kretanja autica
   Turn read(){
     return current;
   }
 
-  // Postavi sljedeci smjer u kojem se treba kretati
   void next(){
     current = Turn.FORWARD;
   }
 
-  // Postavi dobiveni smjer na trenutni
   void write(Turn t){
     current = t;
   }
 
-  // Postavi dobiveni smjer na trenutni
   void writeHead(Turn t){
     current = t;
   }
 
-  // Vrati listu skretanja
   ArrayList<Turn> getTail(){
     return empty;
   }
 }
 
-// Klasa za varijabilna skretanja
+
 class VariableTurn implements TurnLogic {
   // super koraljka :)
   Turn current;            // trenutni smjer u kojem se autic krece
   ArrayList<Turn> empty;   // prazna lista skretanja
   
-  // Konstruktor
   VariableTurn(Turn t){
     current = t;
     empty = new ArrayList<Turn>();
   }
   
-  // Vraca trenutni smjer kretanja autica
   Turn read(){
     return current;
   }
 
-  // Postavi sljedeci smjer u kojem se treba kretati
   void next(){
   }
 
-  // Postavi dobiveni smjer na trenutni
   void write(Turn t){
     current = t;
   }
 
-  // Postavi dobiveni smjer na trenutni
   void writeHead(Turn t){
     current = t;
   }
 
-  // Vrati listu skretanja
   ArrayList<Turn> getTail(){
     return empty;
   }
 }
 
-// Klasa za "stogovna" skretanja
+
 class StackTurn implements TurnLogic {
   ArrayDeque<Turn> stack;
   boolean wasEmpty = false;
-  StackTurn(){  //Turn t){
+  StackTurn(){
     stack = new ArrayDeque<Turn>();
   }
 
-  // Vraca trenutni smjer kretanja autica
   Turn read(){
     if (stack.isEmpty()) return Turn.FORWARD;
     return stack.peekFirst();
   }
 
-  // Postavi sljedeci smjer u kojem se treba kretati
   void next(){
     if (!stack.isEmpty()) stack.removeFirst();
   }
 
-  // Postavi dobiveni smjer na trenutni
   void write(Turn t){
     stack.addFirst(t);
   }
   
-  // Dodaj dobiveni smjer na stog
   void writeHead(Turn t){
     if (wasEmpty) wasEmpty = false;
     else stack.addFirst(t);
   }
 
-  // Vrati stog skretanja
   ArrayDeque<Turn> getTail(){
     if (stack.isEmpty()){
       wasEmpty = true;
@@ -202,39 +186,33 @@ class StackTurn implements TurnLogic {
   }
 }
 
-// Klasa za "redno" skretanje
+
 class QueueTurn implements TurnLogic {
   ArrayDeque<Turn> queue;
   boolean wasEmpty = false;
   
-  // Konstruktor
-  QueueTurn(){  //Turn t){
+  QueueTurn(){
     queue = new ArrayDeque<Turn>();
   }
 
-  // Vraca trenutni smjer kretanja autica
   Turn read(){
     if (queue.isEmpty()) return Turn.FORWARD;
     return queue.peekFirst();
   }
 
-  // Postavi sljedeci smjer u kojem se treba kretati
   void next(){
     if (!queue.isEmpty()) queue.removeFirst();
   }
 
-  // Dodaj dobiveni smjer u red
   void write(Turn t){
     queue.add(t);
   }
 
-  // Dodaj dobiveni smjer na prvo mjesto
   void writeHead(Turn t){
     if (wasEmpty) wasEmpty = false;
     else queue.addFirst(t);
   }
 
-  // Vrati red smjerova
   ArrayDeque<Turn> getTail(){
     if (queue.isEmpty()){
       wasEmpty = true;

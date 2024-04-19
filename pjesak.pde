@@ -11,8 +11,10 @@ class Pjesak implements Collideable{
   
   // pozicija 1 je s jedne strane ceste, a pozicija 0 je s druge strane ceste
   //   -> ako je pjesak na cesti, path je u intervalu <0,1>
-  float path = 1;        // vrijednost u intervalu [0,1]
-  float speed = 60;      // brzina kretanja pjesaka
+  // Vrijednosti manje od nula se reduciraju na 0, vrijednosti vece od 1 se postave na 1.
+  // Vrijednosti izvan intervala [0, 1] oznacavaju cekanje pjesaka.
+  float path = 1;        // vrijednost u intervalu [-0.5,1.5]
+  float speed = 60;      // brzina kretanja pjesaka u pikselima po sekundi
   
   // Konstruktor
   Pjesak(Level level, StringDict attrib){
@@ -38,7 +40,7 @@ class Pjesak implements Collideable{
     else if (dir == Direction.LEFT) path = 1;
     else path = 0;
     
-    // Odredi poziciju pjesaka - odaberi stranu ceste s koje krece?
+    // Odredi poziciju pjesaka - izracunaj koordinate
     x = (int) lerp(x1, x2, constrain(path, 0, 1));
     y = (int) lerp(y1, y2, constrain(path, 0, 1));
   }
@@ -63,7 +65,7 @@ class Pjesak implements Collideable{
       path += dt * speed / distance;
     }
     
-    // ako je dosao na drugu stranu ceste, promijeni mu smjer kretanja
+    // ako je dosao na drugu stranu ceste i cekao dovoljno, promijeni mu smjer kretanja
     if(path >= 1.5 || path <= -0.5){
       dir = oppositeDirection(dir);
     }

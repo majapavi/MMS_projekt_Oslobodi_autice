@@ -70,20 +70,16 @@ void draw() {
 
   // Nacrtaj sve gumbe koji se mogu kliknuti u trenutnom ekranu
   for (Button button : buttons) {
-    
-    // Gumbe za navigaciju ne crtaj kada nisu aktivni
-    if (button instanceof NavigationButton) {
-      NavigationButton navigationButton = (NavigationButton) button;
-      if (navigationButton.isActive() == false)
-        continue;
-    }
-    
-    // Ne crtaj slikicu koja oznacava koje je vrste autica
+
+    // Ne crtaj slikicu koja oznacava vrstu gumba autica
     if (button instanceof VisibleCarButton) {
       continue;
     }
     
-    button.render();
+    if (button instanceof NavigationButton)
+    ; //<>//
+    else
+      button.render();
   }
 
   if (startLevelFlag) {

@@ -39,7 +39,7 @@ class Level {
     levelButtons = new ArrayList<LevelButton>();
     pjesaci = new ArrayList<Pjesak>();
     
-    // Inicijalizacija raznih gumbiju na levelu
+    // Inicijalizacija svih objekata, tj citanje iz Tiled mape
     for (int i = 0;map.getType(i)!=null;i++){
       String type = map.getType(i);
       if (type.equals("objectgroup")){
@@ -116,7 +116,7 @@ class Level {
     return true;
   }
 
-  // Provjera sudara autica s nekim objektom
+  // Detekcija sudara autica s nekim objektom
   private void collisionDetection(){
     for (Car car : cars){
       for (Collideable obj : collideObjects){
