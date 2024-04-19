@@ -1,12 +1,18 @@
+// Sucelje Collideable je u datoteci car.pde
+
+// Klasa za strelice na cesti
 class TurnSign implements Collideable {
   int x, y, w, h;
   Level level;
   Direction orient;
-  Turn turns[];
-  int index;
-  int len;
-  TurnButton button;
+  Turn turns[];      // polje koje cuva sva moguca skretanja
+  int index;         // indeks trenutno odabranog skretanja
+  int len;           // duljina polja turns
+  TurnButton button; // gumb za promjenu smjera strelice
+  
+  // Konstruktor
   TurnSign(Level level, StringDict attrib){
+    // Inicijalizacija varijabli
     this.level = level;
     x = int(attrib.get("x")) + 2;
     y = int(attrib.get("y")) + 2;
@@ -14,32 +20,41 @@ class TurnSign implements Collideable {
     h = int(attrib.get("height")) - 4;
     orient = getDirection(attrib.get("orientation"));
     
+    // Inicijalizacija polja sa skretanjima
     String tmp = attrib.get("turn");
     len = tmp.length();
     turns = new Turn[len];
     for (int i = 0;i < len;i++){
       turns[i] = getTurn("" + tmp.charAt(i));
     }
+    
+    // Postavi index
     char indexLetter = attrib.get("default").charAt(0);
     index = tmp.indexOf(indexLetter);
     if (index == -1) index = 0;
+    
     button = new TurnButton(this, x, y, w, h, orient, turns[index]);
   }
 
+  // Promijeni smjer strelice
   void change(){
     index++;
     index %= len;
     button.setTurn(turns[index]);
   }
 
+  // Vrati gumb strelice na cesti
   TurnButton getButton(){
     return button;
   }
 
+  // Vrati sljedeci smjer strelice
   Turn getNew(){
     return turns[index];
   }
 
+  // Geteri
+  // ------
   int getX(){
     return x;
   }
@@ -55,12 +70,15 @@ class TurnSign implements Collideable {
   int getH(){
     return h;
   }
+  // ------
 
+  // Vraca true jer se uvijek moze autic "sudariti" sa strelicom na cesti
   boolean canCollide(){
     return true;
   }
 }
 
+// Sucelje za logiku iza skretanja
 interface TurnLogic {
   Turn read();
   void next();
@@ -69,9 +87,12 @@ interface TurnLogic {
   Iterable<Turn> getTail();
 }
 
+// Odigrati s_like.tmx za demonstraciju logika
+
 class ForwardTurn implements TurnLogic {
-  Turn current;
-  ArrayList<Turn> empty;
+  Turn current;           // trenutni smjer u kojem se autic krece
+  ArrayList<Turn> empty;  // prazna lista skretanja
+  
   ForwardTurn(Turn t){
     current = t;
     empty = new ArrayList<Turn>();
@@ -98,10 +119,12 @@ class ForwardTurn implements TurnLogic {
   }
 }
 
+
 class VariableTurn implements TurnLogic {
   // super koraljka :)
-  Turn current;
-  ArrayList<Turn> empty;
+  Turn current;            // trenutni smjer u kojem se autic krece
+  ArrayList<Turn> empty;   // prazna lista skretanja
+  
   VariableTurn(Turn t){
     current = t;
     empty = new ArrayList<Turn>();
@@ -127,10 +150,11 @@ class VariableTurn implements TurnLogic {
   }
 }
 
+
 class StackTurn implements TurnLogic {
   ArrayDeque<Turn> stack;
   boolean wasEmpty = false;
-  StackTurn(Turn t){
+  StackTurn(){
     stack = new ArrayDeque<Turn>();
   }
 
@@ -162,10 +186,12 @@ class StackTurn implements TurnLogic {
   }
 }
 
+
 class QueueTurn implements TurnLogic {
   ArrayDeque<Turn> queue;
   boolean wasEmpty = false;
-  QueueTurn(Turn t){
+  
+  QueueTurn(){
     queue = new ArrayDeque<Turn>();
   }
 
