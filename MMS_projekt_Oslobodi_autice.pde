@@ -41,6 +41,9 @@ void setup() {
   allLevelsNames.add("Tutorial1");
   allLevelsNames.add("Tutorial2");
   allLevelsNames.add("Tutorial3");
+  allLevelsNames.add("Tutorial4");
+  allLevelsNames.add("Tutorial5");
+  allLevelsNames.add("Tutorial6");
   allLevelsNames.add("lvl");
   allLevelsNames.add("lvl2");
   allLevelsNames.add("lvl2alt");

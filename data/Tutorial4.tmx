@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="9">
+ <tileset firstgid="1" source="str.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="20" height="20">
+  <data encoding="csv">
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+8,8,8,8,8,8,8,9,10,10,10,13,8,8,8,8,8,8,8,8,
+22,22,22,22,22,22,22,20,25,25,25,20,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,20,25,25,25,20,22,22,22,22,22,22,22,22,
+36,36,36,36,36,36,36,37,10,25,10,41,36,36,36,36,36,36,36,36,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,2,4,25,4,6,49,49,49,49,49,49,49,49
+</data>
+ </layer>
+ <objectgroup id="2" name="pjesaci" visible="0">
+  <object id="1" name="trpimir" type="pjesak" x="224" y="256" width="160" height="32">
+   <properties>
+    <property name="direction" value="left"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="cars" visible="0">
+  <object id="7" name="6" type="car" x="320" y="576" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+    <property name="turn" value="right"/>
+   </properties>
+  </object>
+  <object id="5" name="5" type="car" x="160" y="320" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="right"/>
+    <property name="turn" value="right"/>
+   </properties>
+  </object>
+  <object id="2" name="4" type="car" x="256" y="416" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+   </properties>
+  </object>
+  <object id="6" name="3" type="car" x="544" y="288" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="left"/>
+    <property name="turn" value="right"/>
+   </properties>
+  </object>
+  <object id="4" name="2" type="car" x="416" y="288" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="left"/>
+   </properties>
+  </object>
+  <object id="3" name="1" type="car" x="256" y="32" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="down"/>
+    <property name="turn" value="right"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="walls" visible="0">
+  <object id="8" name="zid" type="wall" x="256" y="288" width="96" height="68.75"/>
+ </objectgroup>
+</map>

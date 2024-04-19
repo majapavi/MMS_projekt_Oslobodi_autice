@@ -10,7 +10,7 @@ class Level {
   ArrayList<LevelButton> levelButtons;
   ArrayList<Pjesak> pjesaci;
   ArrayList<Collideable> collideObjects;
-  PImage leftArrowImage, rightArrowImage, upArrowImage;
+  PImage leftArrowImage, rightArrowImage, upArrowImage, heartImage;
   
   // Konstruktor
   // -----------
@@ -30,6 +30,7 @@ class Level {
     leftArrowImage = loadImage("leftarrow.png");
     rightArrowImage = loadImage("rightarrow.png");
     upArrowImage = loadImage("uparrow.png");
+    heartImage = loadImage("heart.png");
     
     // Inicijalizacija listi drugih objekata
     collideObjects = new ArrayList<Collideable>();
@@ -106,6 +107,8 @@ class Level {
     for (Pjesak p : pjesaci){
       p.render(); 
     }
+    image(heartImage, 0, 0, 32, 32);
+    text((int)lives, 25, 16);
   }
   
   // Vraca true ako su svi autici izvan ekrana

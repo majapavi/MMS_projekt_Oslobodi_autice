@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="19">
+ <tileset firstgid="1" source="str.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="20" height="20">
+  <data encoding="csv">
+49,44,46,46,48,49,49,49,49,49,49,49,44,4,4,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,4,4,48,49,49,49,49,
+49,44,46,11,13,49,49,49,49,49,49,49,9,11,4,48,49,49,49,49,
+49,44,4,25,27,22,22,22,22,22,22,22,27,25,4,48,49,49,49,49,
+49,44,46,11,41,36,36,36,36,36,36,36,37,11,4,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,4,4,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,4,4,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,4,4,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,4,4,48,49,49,49,49,
+8,9,11,11,13,8,8,8,8,8,8,8,9,11,11,13,8,8,8,8,
+28,27,25,25,27,28,28,28,28,28,28,28,27,25,25,27,28,28,28,28,
+28,27,25,25,41,36,36,36,36,36,36,36,37,11,11,41,36,36,36,36,
+36,37,11,11,48,49,49,49,49,49,49,49,44,46,46,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,46,46,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,46,46,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,46,46,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,46,46,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,46,46,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,46,46,48,49,49,49,49,
+49,44,46,46,48,49,49,49,49,49,49,49,44,46,46,48,49,49,49,49
+</data>
+ </layer>
+ <objectgroup id="2" name="cars" visible="0">
+  <object id="12" name="8" type="car" x="0" y="320" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="right"/>
+    <property name="turn" value="right"/>
+   </properties>
+  </object>
+  <object id="13" name="7" type="car" x="64" y="576" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+    <property name="turn" value="right"/>
+   </properties>
+  </object>
+  <object id="16" name="6" type="car" x="416" y="448" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+   </properties>
+  </object>
+  <object id="17" name="5" type="car" x="448" y="448" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+   </properties>
+  </object>
+  <object id="18" name="4" type="car" x="416" y="192" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+   </properties>
+  </object>
+  <object id="7" name="3" type="car" x="416" y="32" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="down"/>
+    <property name="turn" value="right"/>
+   </properties>
+  </object>
+  <object id="8" name="2" type="car" x="448" y="256" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+   </properties>
+  </object>
+  <object id="9" name="1" type="car" x="96" y="480" width="30" height="30">
+   <properties>
+    <property name="action" value="forward"/>
+    <property name="orientation" value="up"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="walls" visible="0">
+  <object id="3" name="none" type="wall" x="64" y="320" width="64" height="32"/>
+  <object id="5" name="right" type="wall" x="416" y="96" width="64" height="32">
+   <properties>
+    <property name="forbidden" value="right"/>
+   </properties>
+  </object>
+  <object id="6" name="none" type="wall" x="416" y="320" width="64" height="32"/>
+  <object id="10" name="left" type="wall" x="64" y="96" width="64" height="32">
+   <properties>
+    <property name="forbidden" value="left"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="hazards" visible="0">
+  <object id="11" name="plocnik" type="hazard" x="0" y="96" width="64" height="32"/>
+ </objectgroup>
+ <objectgroup id="4" name="signs" visible="0">
+  <object id="1" name="right" type="sign" x="320" y="320" width="32" height="32">
+   <properties>
+    <property name="default" value="right"/>
+    <property name="orientation" value="right"/>
+    <property name="turn" value="lfr"/>
+   </properties>
+  </object>
+  <object id="2" name="left" type="sign" x="192" y="96" width="32" height="32">
+   <properties>
+    <property name="default" value="forward"/>
+    <property name="orientation" value="left"/>
+    <property name="turn" value="lfr"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
