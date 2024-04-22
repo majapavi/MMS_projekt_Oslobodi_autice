@@ -1,0 +1,31 @@
+TILED program:
+Potrebno je instalirati Tiled na racunalo kako bi se radili novi leveli
+
+Izrada novih levela
+-------------------
+
+Tile set je datoteka str.tsx u mapi data
+Za novi level radi se nova mapa (Ctrl+N)
+Nacrta se raspored cesta i zidova po zelji koristeci tile-ove iz odabranog tile seta
+Dodaje se novi layer naziva cars i prekopiraju se autici iz postojecih levela te rasporede na mapu po zelji
+	imaju parametre: action - ugl postavljeno na forward
+					 orientation - u kojem smjeru gleda
+					 turn - ukoliko skrece u nekom smjeru
+	nazivi autica u Tutorial levelima su brojevi koji oznacavaju koji po redu treba biti stisnut taj autic kako bi se rijesio level
+		(nije nuzno jedinstveno odreden)
+Ako postoje raskrizja u mapi, potrebno je dodati zidove
+	- novi layer naziva walls u koji se iskopira zid i postavi se preko cijelog raskrizja
+	- ima parametar forbidden koji je postavljen na zabranjeni smjer kretanja (tamo nema ceste nego je zid)
+Pjesaci su novi layer istog imena, imaju parametar direction za smjer u kojem se krece na pocetku
+Semafori su novi object layer pod nazivom lights, imaju parametar direction koji odreduje smjer u koji autic ide i zaustavlja se na crveno
+Strelice na cesti su novi layer imena signs
+	imaju parametre: default - smjer koji je postavljen na pocetku prilikom pokretanja levela
+					 orientation - smjer u koji autic ide kada se strelice primjenjuju na njega
+					 turn - slova koja odreduju koja sve skretanja strelice dozvoljavaju, lfr = left, forward, right
+Prepreke su novi layer naziva hazards, nemaju parametara, animiraju sudar ako ih autic dotakne s bilo koje strane
+	- najcesce koristene za "sudar" s plocnikom (vidi Tutorial6.tmx)
+	
+Level lvl.tmx moze posluziti za osnovu novih levela (autici, pjesaci, semafori), 
+a copac.tmx za prepreke (hazards) i strelice na cesti (signs).
+Na kraju bitno je staviti da su svi layeri osim Tile layera invisible, u protivnom ce se crtati crni kvadratici u igrici
+Spremiti level u mapu data s ekstenzijom .tmx i dodati ga u glavnom programu u listu levela: allLevelsNames (bez ekstenzije)
