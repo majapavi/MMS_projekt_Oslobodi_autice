@@ -55,7 +55,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="hazards">
+ <objectgroup id="5" name="hazards" visible="0">
   <object id="37" type="hazard" x="64" y="512" width="32" height="32"/>
   <object id="38" type="hazard" x="64" y="96" width="32" height="32"/>
   <object id="39" type="hazard" x="512" y="64" width="32" height="32"/>

@@ -56,10 +56,15 @@ void setup() {
   allLevelsNames.add("lvl");
   allLevelsNames.add("lvl2");
   allLevelsNames.add("lvl2alt");
-  allLevelsNames.add("divide");
   allLevelsNames.add("kruzni_tok");
+  allLevelsNames.add("divide");
+  allLevelsNames.add("kapaljka");
+  allLevelsNames.add("brza_kapaljka");
   allLevelsNames.add("the_grid");
+  allLevelsNames.add("q_navigation");
+  allLevelsNames.add("q_navigation2");
   allLevelsNames.add("s_like");
+  allLevelsNames.add("city");
   unlockedLevelsIndex = 0;
   currentLevelIndex = 0;
   numberOfLevels = allLevelsNames.size();
