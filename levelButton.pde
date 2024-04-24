@@ -198,7 +198,8 @@ class CarForwardButton extends VisibleCarButton {
 
   // Nacrtaj slicicu koja oznacava vrstu autica
   void render() {
-    image(img, x, y);
+    if (SHOW_EVERYTHING)
+      image(img, x, y);
   }
 
   // Na klik misa, pokreni autic
@@ -219,7 +220,8 @@ class CarStartStopButton extends VisibleCarButton {
 
   // Nacrtaj slicicu koja oznacava vrstu autica
   void render() {
-    image(img, x, y);
+    if (SHOW_EVERYTHING)
+      image(img, x, y);
   }
 
   // Na klik misa pokreni ili zaustavi autic

@@ -27,10 +27,12 @@ class Level {
     mapHeight = int(mapSize.y);
     pxWidth = tileWidth * mapWidth;
     pxHeight = tileHeight * mapHeight;
+    windowResize(pxWidth, pxHeight);
     leftArrowImage = loadImage("leftarrow.png");
     rightArrowImage = loadImage("rightarrow.png");
     upArrowImage = loadImage("uparrow.png");
     heartImage = loadImage("heart.png");
+    if (STOP_TIME_WHEN_LEVEL_STARTS) TIME_GOES = false;
     
     // Inicijalizacija listi drugih objekata
     collideObjects = new ArrayList<Collideable>();
@@ -113,6 +115,10 @@ class Level {
   
   // Vraca true ako su svi autici izvan ekrana
   boolean finished(){
+    if (SKIP_LEVEL){
+      SKIP_LEVEL = false;
+      return true;
+    }
     for (Car car : cars){
       if (!car.finished()) return false;
     }

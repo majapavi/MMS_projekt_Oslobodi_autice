@@ -173,7 +173,7 @@ class Display
   void showPlayScreen()
   {
     if (drawLevel) {
-      currentLevel.update(deltaTime);
+      if (TIME_GOES) currentLevel.update(deltaTime);
       currentLevel.render();
     }
 
@@ -204,7 +204,7 @@ class Display
     int columns = min(3, unlockedLevelsIndex + 1); 
     int totalButtonsWidth = columns * defaultTextButtonW + (columns - 1) * spacing;
     int x = (width - totalButtonsWidth) / 2;
-    int y = 320;
+    int y = 120;
     
     for (int i = 0; i <= unlockedLevelsIndex; i++) {
       levelSelectButtonsList.get(i).moveButton(x, y);
