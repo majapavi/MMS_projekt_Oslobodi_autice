@@ -1,5 +1,5 @@
 TILED program:
-Potrebno je instalirati Tiled na racunalo kako bi se radili novi leveli
+Potrebno je instalirati Tiled (https://www.mapeditor.org) na racunalo kako bi se radili novi leveli
 
 Izrada novih levela
 -------------------
