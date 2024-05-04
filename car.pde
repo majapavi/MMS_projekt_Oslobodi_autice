@@ -241,6 +241,8 @@ class Car implements Collideable {
         break;
       } else currentLight = null;
     }
+
+    update(0);
   }
   // kraj konstruktora
   // -----------------
@@ -336,11 +338,11 @@ class Car implements Collideable {
     turnLogic.writeHead(head);
     
     // Prikaz slova ovisno o vrsti autica - F/V/S/Q
-    /*
-    fill(255, 0, 0);
-    textSize(22);
-    text(turnLogicLetter, 0, 16);
-    */
+    if (SHOW_EVERYTHING){
+      fill(255, 0, 0);
+      textSize(22);
+      text(turnLogicLetter, 0, 16);
+    }
     
     imageMode(CORNER);
     popMatrix();

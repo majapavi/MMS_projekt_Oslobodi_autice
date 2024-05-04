@@ -1,5 +1,6 @@
 import ptmx.*; // Potrebno instalirati biblioteku Ptmx //<>//
 import java.util.ArrayDeque;
+import static java.awt.event.KeyEvent.*;
 
 // Globalne varijable
 Level currentLevel;                 // trenutni level
@@ -23,11 +24,19 @@ int unlockedLevelsIndex;            // broj levela koje je igrac prosao
 int numberOfLevels;                 // broj levela koji postoje u igrici (duljina liste allLevelsNames)
 int currentLevelIndex;              // indeks levela koji se trenutno igra
 
+// showcase postavke
+boolean TIME_GOES = true;
+boolean STOP_TIME_WHEN_LEVEL_STARTS = false;
+boolean SLOW_TIME = false;
+boolean SKIP_LEVEL = false;
+boolean SHOW_EVERYTHING = false;
+
 // Globalna funkcija za validaciju klika misem
 void onClick(int x, int y) {
   for (Button button : buttons) {
     if (button.validCursor(x, y)) {
       button.click();
+      break;
     }
   }
 }
@@ -47,6 +56,15 @@ void setup() {
   allLevelsNames.add("lvl");
   allLevelsNames.add("lvl2");
   allLevelsNames.add("lvl2alt");
+  allLevelsNames.add("kruzni_tok");
+  allLevelsNames.add("divide");
+  allLevelsNames.add("kapaljka");
+  allLevelsNames.add("brza_kapaljka");
+  allLevelsNames.add("the_grid");
+  allLevelsNames.add("q_navigation");
+  allLevelsNames.add("q_navigation2");
+  allLevelsNames.add("s_like");
+  allLevelsNames.add("city");
   unlockedLevelsIndex = 0;
   currentLevelIndex = 0;
   numberOfLevels = allLevelsNames.size();
@@ -61,11 +79,13 @@ void setup() {
 void draw() {
   if (!lastMousePressed && mousePressed) {  // da ne registrira klik vise puta
     onClick(mouseX, mouseY);
+    TIME_GOES = true;
   }
   lastMousePressed = mousePressed;
 
   int curTime = millis();
   deltaTime = float(curTime - lastTime) / 1000.0;
+  if (SLOW_TIME) deltaTime /= 3.0;
   lastTime = curTime;
 
   // Prikazi ekran
@@ -74,10 +94,6 @@ void draw() {
   // Nacrtaj sve gumbe koji se mogu kliknuti u trenutnom ekranu
   for (Button button : buttons) {
 
-    // Ne crtaj slikicu koja oznacava vrstu gumba autica
-    if (button instanceof VisibleCarButton) {
-      continue;
-    }
     if (button instanceof NavigationButton)
     ; //<>//
     else
@@ -86,5 +102,32 @@ void draw() {
 
   if (startLevelFlag) {
     startLevel();
+  }
+}
+
+void keyPressed(){
+  if (keyCode == java.awt.event.KeyEvent.VK_F1){
+    DEBUG_COLLISION = !DEBUG_COLLISION;
+  }
+  if (keyCode == java.awt.event.KeyEvent.VK_F2){
+    SHOW_EVERYTHING = !SHOW_EVERYTHING;
+  }
+  if (keyCode == java.awt.event.KeyEvent.VK_F3){
+    unlockedLevelsIndex = numberOfLevels - 1;
+  }
+  if (keyCode == java.awt.event.KeyEvent.VK_F4){
+    STOP_TIME_WHEN_LEVEL_STARTS = !STOP_TIME_WHEN_LEVEL_STARTS;
+  }
+  if (keyCode == java.awt.event.KeyEvent.VK_F5){
+    TIME_GOES = !TIME_GOES;
+  }
+  if (keyCode == java.awt.event.KeyEvent.VK_F6){
+    SLOW_TIME = !SLOW_TIME;
+  }
+  if (keyCode == java.awt.event.KeyEvent.VK_F7){
+    SKIP_LEVEL = true;
+  }
+  if (keyCode == java.awt.event.KeyEvent.VK_F8){
+    lives += 1.0;
   }
 }
